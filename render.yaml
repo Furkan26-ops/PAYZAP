@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: payzap
+    runtime: node
+    plan: free
+    buildCommand: rm -rf .next && npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
