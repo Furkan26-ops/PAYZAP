@@ -1,0 +1,37 @@
+{
+  "name": "arc-pay",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@circle-fin/adapter-viem-v2": "^1.8.2",
+    "@circle-fin/app-kit": "^1.4.1",
+    "@circle-fin/swap-kit": "^1.1.0",
+    "@circle-fin/w3s-pw-web-sdk": "^1.1.11",
+    "@supabase/supabase-js": "^2.104.0",
+    "@yudiel/react-qr-scanner": "^2.5.1",
+    "lucide-react": "^1.8.0",
+    "next": "14.2.35",
+    "next-themes": "^0.4.6",
+    "qrcode.react": "^4.2.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "uuid": "^14.0.0",
+    "viem": "^2.48.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.35",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
