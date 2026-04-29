@@ -111,7 +111,7 @@ export default function SwapToken() {
                 params.from = { chain: "Arc_Testnet" };
             }
 
-            const estimate = await withCircleApiProxy(() => kit.estimateSwap(params));
+            const estimate: any = await withCircleApiProxy(() => kit.estimateSwap(params));
             setAmountOut(estimate.estimatedOutput.amount);
         } catch (e) {
             console.error("Quote error", e);
@@ -209,7 +209,7 @@ export default function SwapToken() {
         })
       );
 
-      const hash = swapResult.txHash as `0x${string}`;
+      const hash = (swapResult as any).txHash as `0x${string}`;
       
       // Wait for the transaction to ACTUALLY be mined on the Arc Testnet
       const publicClient = createPublicClient({
