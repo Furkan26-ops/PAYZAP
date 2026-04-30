@@ -13,6 +13,59 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 // Constants & SDK Imports
 import { ARC_TESTNET_SWAP_TOKENS, TOKENS, Token } from '@/constants/tokens';
 
+const ARC_TESTNET_CHAIN = {
+  id: 5042002,
+  name: 'Arc Testnet',
+  nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 },
+  rpcUrls: {
+    default: { http: ['https://rpc.testnet.arc.network'] },
+    public: { http: ['https://rpc.testnet.arc.network'] },
+  },
+  blockExplorers: { default: { name: 'ArcScan', url: 'https://testnet.arcscan.app' } }
+};
+
+const ARC_NATIVE_USDC_GAS_RESERVE = 0.05;
+const SWAP_SLIPPAGE_BPS = 300;
+const BALANCE_CONFIRMATION_ATTEMPTS = 6;
+const BALANCE_CONFIRMATION_DELAY_MS = 1200;
+const ERC20_BALANCE_ABI = [{
+  constant: true,
+  inputs: [{ name: '_owner', type: 'address' }],
+  name: 'balanceOf',
+  outputs: [{ name: 'balance', type: 'uint256' }],
+  type: 'function',
+}] as const;
+
+function extractSwapAmountOut(result: any): string {
+  return String(
+    result?.estimatedOutput?.amount ??
+    result?.amountOut ??
+    result?.outputAmount ??
+    result?.tokenOutAmount ??
+    ''
+  );
+}
+
+async function readArcTokenBalance(
+  publicClient: ReturnType<typeof createPublicClient>,
+  token: Token,
+  address: string
+) {
+  if (token.address && token.address !== '0x0000000000000000000000000000000000000000') {
+    const raw = await publicClient.readContract({
+      address: token.address,
+      abi: ERC20_BALANCE_ABI,
+      functionName: 'balanceOf',
+      args: [address as `0x${string}`],
+    }) as bigint;
+
+    return Number(formatUnits(raw, token.decimals));
+  }
+
+  const raw = await publicClient.getBalance({ address: address as `0x${string}` });
+  return Number(formatUnits(raw, 18));
+}
+
 export default function SwapToken() {
   const [tokenIn, setTokenIn] = useState<Token>(ARC_TESTNET_SWAP_TOKENS[0]);
   const [tokenOut, setTokenOut] = useState<Token>(ARC_TESTNET_SWAP_TOKENS[1]);
@@ -20,6 +73,8 @@ export default function SwapToken() {
   const [amountOut, setAmountOut] = useState('');
   const [processing, setProcessing] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [quoteError, setQuoteError] = useState('');
   const [receipt, setReceipt] = useState<any>(null);
   const [balances, setBalances] = useState<Record<string, string>>({
       USDC: '0.00', EURC: '0.00', ARC: '0.00', WBTC: '0.00', WETH: '0.00'
@@ -36,13 +91,7 @@ export default function SwapToken() {
       if (!address) return;
 
       const fetchBalances = async () => {
-          const arcChain = {
-              id: 5042002,
-              name: 'Arc Testnet',
-              nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 },
-              rpcUrls: { default: { http: ['https://rpc.testnet.arc.network'] } }
-          };
-          const publicClient = createPublicClient({ chain: arcChain, transport: http() });
+          const publicClient = createPublicClient({ chain: ARC_TESTNET_CHAIN, transport: http() });
           
           const newBalances: Record<string, string> = {
               USDC: '0.00',
@@ -54,26 +103,8 @@ export default function SwapToken() {
           
           for (const token of ARC_TESTNET_SWAP_TOKENS) {
               try {
-                  if (token.symbol === 'USDC') {
-                      // USDC is the Native gas token on Arc Testnet
-                      const bal = await publicClient.getBalance({ address: address as `0x${string}` });
-                      newBalances[token.symbol] = Number(formatUnits(bal, 18)).toFixed(4);
-                  } else if (token.address && token.address !== '0x0000000000000000000000000000000000000000') {
-                      // Fetch real ERC20 balance
-                      const bal = await publicClient.readContract({
-                          address: token.address,
-                          abi: [{
-                              "constant": true,
-                              "inputs": [{ "name": "_owner", "type": "address" }],
-                              "name": "balanceOf",
-                              "outputs": [{ "name": "balance", "type": "uint256" }],
-                              "type": "function"
-                          }],
-                          functionName: 'balanceOf',
-                          args: [address as `0x${string}`]
-                      }) as bigint;
-                      newBalances[token.symbol] = Number(formatUnits(bal, token.decimals)).toFixed(4);
-                  }
+                  const balance = await readArcTokenBalance(publicClient, token, address);
+                  newBalances[token.symbol] = balance.toFixed(4);
               } catch (e) {
                   console.error(`Failed to fetch balance for ${token.symbol}`, e);
               }
@@ -86,12 +117,37 @@ export default function SwapToken() {
 
   // Arc App Kit Native Quoting Logic
   useEffect(() => {
+    let cancelled = false;
+
     const fetchQuote = async () => {
         if (!amountIn) {
             setAmountOut('');
+            setQuoteError('');
+            return;
+        }
+
+        if (tokenIn.symbol === tokenOut.symbol) {
+            setAmountOut('');
+            setQuoteError('Choose two different tokens.');
+            return;
+        }
+
+        const parsedAmount = Number(amountIn);
+        if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+            setAmountOut('');
+            setQuoteError('Enter a valid swap amount.');
+            return;
+        }
+
+        const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+        if (!kitKey) {
+            setAmountOut('');
+            setQuoteError('Circle App Kit key is missing. Add NEXT_PUBLIC_KIT_KEY before swapping.');
             return;
         }
         
+        setQuoteLoading(true);
+        setQuoteError('');
         try {
             const { AppKit } = await import('@circle-fin/app-kit');
             const kit = new AppKit();
@@ -100,7 +156,11 @@ export default function SwapToken() {
               tokenIn: tokenIn.symbol,
               amountIn: amountIn,
               tokenOut: tokenOut.symbol,
-              config: { kitKey: process.env.NEXT_PUBLIC_KIT_KEY }
+              config: {
+                kitKey,
+                allowanceStrategy: 'permit',
+                slippageBps: SWAP_SLIPPAGE_BPS
+              }
             };
 
             if (typeof window !== 'undefined' && (window as any).ethereum) {
@@ -112,13 +172,27 @@ export default function SwapToken() {
             }
 
             const estimate: any = await withCircleApiProxy(() => kit.estimateSwap(params));
-            setAmountOut(estimate.estimatedOutput.amount);
+            const quotedAmountOut = extractSwapAmountOut(estimate);
+            if (!quotedAmountOut || Number(quotedAmountOut) <= 0) {
+              throw new Error('No executable quote returned. Try a smaller amount.');
+            }
+            if (cancelled) return;
+            setAmountOut(quotedAmountOut);
         } catch (e) {
             console.error("Quote error", e);
+            if (cancelled) return;
+            setAmountOut('');
+            setQuoteError((e as any)?.shortMessage || (e as any)?.message || 'No quote available for this amount.');
+        } finally {
+            if (!cancelled) setQuoteLoading(false);
         }
     };
     
-    fetchQuote();
+    const quoteTimer = window.setTimeout(fetchQuote, 350);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(quoteTimer);
+    };
   }, [amountIn, tokenIn, tokenOut]);
 
   const handleSwapTokens = () => {
@@ -129,7 +203,11 @@ export default function SwapToken() {
   };
 
   const handleMax = () => {
-      setAmountIn(balances[tokenIn.symbol] || '0.00');
+      const currentBalance = parseFloat(balances[tokenIn.symbol] || '0');
+      const spendable = tokenIn.symbol === 'USDC'
+        ? Math.max(0, currentBalance - ARC_NATIVE_USDC_GAS_RESERVE)
+        : currentBalance;
+      setAmountIn(spendable.toFixed(4));
   };
 
   const selectToken = (token: Token) => {
@@ -150,25 +228,17 @@ export default function SwapToken() {
       const address = localStorage.getItem('walletAddress');
       if (!address) throw new Error("Authentication error. Please connect wallet.");
       if (parseFloat(amountIn) <= 0) throw new Error("Amount must be greater than zero.");
-      
-      const currentBalance = parseFloat(balances[tokenIn.symbol] || '0');
-      if (parseFloat(amountIn) > currentBalance) {
-          throw new Error(`Insufficient ${tokenIn.symbol} balance.`);
+      if (!amountOut || parseFloat(amountOut) <= 0 || quoteError) {
+          throw new Error(quoteError || "No executable quote is available. Try a smaller amount.");
       }
-
+      const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+      if (!kitKey) throw new Error("Circle App Kit key is missing. Add NEXT_PUBLIC_KIT_KEY before swapping.");
+      
       const ethereum = (window as any).ethereum;
       if (!ethereum) throw new Error("No Web3 wallet detected. Please install MetaMask.");
 
-      const arcChain = {
-          id: 5042002,
-          name: 'Arc Testnet',
-          nativeCurrency: { name: 'USDC', symbol: 'USDC', decimals: 18 },
-          rpcUrls: { default: { http: ['https://rpc.testnet.arc.network'] } },
-          blockExplorers: { default: { name: 'ArcScan', url: 'https://testnet.arcscan.app' } }
-      };
-
       const walletClient = createWalletClient({
-        chain: arcChain,
+        chain: ARC_TESTNET_CHAIN,
         transport: custom(ethereum)
       });
       
@@ -177,7 +247,7 @@ export default function SwapToken() {
       } catch (switchError: any) {
         if (switchError.code === 4902 || switchError?.message?.includes('Unrecognized chain')) {
           try {
-            await walletClient.addChain({ chain: arcChain });
+            await walletClient.addChain({ chain: ARC_TESTNET_CHAIN });
             await walletClient.switchChain({ id: 5042002 });
           } catch (addError: any) {
             throw new Error("Failed to add Arc Testnet to your wallet.");
@@ -196,6 +266,35 @@ export default function SwapToken() {
       });
 
       const kit = new AppKit();
+      const publicClient = createPublicClient({
+        chain: ARC_TESTNET_CHAIN,
+        transport: http()
+      });
+
+      const latestTokenInBalance = await readArcTokenBalance(publicClient, tokenIn, address);
+      setBalances((current) => ({
+        ...current,
+        [tokenIn.symbol]: latestTokenInBalance.toFixed(4),
+      }));
+
+      if (parseFloat(amountIn) > latestTokenInBalance) {
+          throw new Error(`Insufficient ${tokenIn.symbol} balance on Arc Testnet. Available: ${latestTokenInBalance.toFixed(4)} ${tokenIn.symbol}.`);
+      }
+      if (tokenIn.symbol === 'USDC' && parseFloat(amountIn) > Math.max(0, latestTokenInBalance - ARC_NATIVE_USDC_GAS_RESERVE)) {
+          throw new Error(`Keep at least ${ARC_NATIVE_USDC_GAS_RESERVE} USDC for Arc network fees. Available to swap: ${Math.max(0, latestTokenInBalance - ARC_NATIVE_USDC_GAS_RESERVE).toFixed(4)} USDC.`);
+      }
+
+      const waitForTokenOutIncrease = async (startingBalance: number) => {
+        for (let attempt = 0; attempt < BALANCE_CONFIRMATION_ATTEMPTS; attempt += 1) {
+          const nextBalance = await readArcTokenBalance(publicClient, tokenOut, address);
+          if (nextBalance > startingBalance) return nextBalance;
+          await new Promise((resolve) => window.setTimeout(resolve, BALANCE_CONFIRMATION_DELAY_MS));
+        }
+
+        return startingBalance;
+      };
+
+      const tokenOutBalanceBefore = await readArcTokenBalance(publicClient, tokenOut, address);
       
       const swapResult = await withCircleApiProxy(() =>
         kit.swap({
@@ -204,20 +303,26 @@ export default function SwapToken() {
           tokenOut: tokenOut.symbol,
           amountIn: amountIn,
           config: {
-            kitKey: process.env.NEXT_PUBLIC_KIT_KEY
+            kitKey,
+            allowanceStrategy: 'permit',
+            slippageBps: SWAP_SLIPPAGE_BPS
           }
         })
       );
 
       const hash = (swapResult as any).txHash as `0x${string}`;
+      if (!hash) throw new Error("Swap submitted but App Kit did not return a transaction hash.");
       
-      // Wait for the transaction to ACTUALLY be mined on the Arc Testnet
-      const publicClient = createPublicClient({
-        chain: arcChain,
-        transport: http()
-      });
+      const minedReceipt = await publicClient.waitForTransactionReceipt({ hash });
+      if (minedReceipt.status !== 'success') {
+        throw new Error("Swap transaction reverted on Arc Testnet.");
+      }
 
-      await publicClient.waitForTransactionReceipt({ hash });
+      const finalAmountOut = extractSwapAmountOut(swapResult) || amountOut;
+      const tokenOutBalanceAfter = await waitForTokenOutIncrease(tokenOutBalanceBefore);
+      if (tokenOutBalanceAfter <= tokenOutBalanceBefore) {
+        throw new Error("A transaction was mined, but no output token balance increase was detected. If your wallet only showed an approval, run the swap again now that allowance is set. Otherwise try a smaller amount or check ArcScan.");
+      }
       
       // Log to Supabase
       const { error } = await supabase.from('transactions').insert({
@@ -238,7 +343,8 @@ export default function SwapToken() {
       updatedBalances[tokenIn.symbol] = deducted > 0 ? deducted.toFixed(4) : '0.00';
       
       // Add Token Out
-      const added = parseFloat(updatedBalances[tokenOut.symbol] || '0') + parseFloat(amountOut);
+      const detectedAmountOut = tokenOutBalanceAfter - tokenOutBalanceBefore;
+      const added = parseFloat(updatedBalances[tokenOut.symbol] || '0') + detectedAmountOut;
       updatedBalances[tokenOut.symbol] = added.toFixed(4);
 
       setBalances(updatedBalances);
@@ -248,7 +354,7 @@ export default function SwapToken() {
       if (tokenIn.symbol === 'USDC') localStorage.setItem('demoBalance', updatedBalances.USDC);
       if (tokenOut.symbol === 'USDC') localStorage.setItem('demoBalance', updatedBalances.USDC);
 
-      setReceipt({ amountIn, tokenIn, amountOut, tokenOut, fee: '$0.00', hash });
+      setReceipt({ amountIn, tokenIn, amountOut: detectedAmountOut.toFixed(4) || finalAmountOut, tokenOut, fee: '$0.00', hash });
     } catch (err: any) {
       console.error(err);
       setErrorMsg(err.shortMessage || err.message || "An unexpected error occurred.");
@@ -348,12 +454,17 @@ export default function SwapToken() {
                     {errorMsg}
                 </div>
             )}
+            {quoteError && !errorMsg && (
+                <div className="mb-6 bg-amber-500/10 text-amber-300 p-4 rounded-2xl text-sm font-medium border border-amber-500/20 shadow-sm backdrop-blur-md">
+                    {quoteError}
+                </div>
+            )}
 
             <div className="mb-6 arc-dark-card rounded-3xl px-4 py-4 text-sm text-arc-text">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <div className="text-xs font-semibold uppercase tracking-[0.2em] text-arc-cyan">Network</div>
-                    <div className="mt-1 font-medium text-arc-textMuted">Arc Testnet swap currently supports only USDC and EURC.</div>
+                    <div className="mt-1 font-medium text-arc-textMuted">Arc Testnet swap supports USDC and EURC. Keep USDC available for network fees.</div>
                   </div>
                   <div className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-arc-cyan shadow-[0_0_10px_rgba(6,182,212,0.2)]">
                     Testnet
@@ -423,7 +534,7 @@ export default function SwapToken() {
                     </div>
                     <div className="flex justify-between items-center mt-4">
                         <div className="text-sm text-arc-textMuted font-medium">
-                            ${amountOut ? (parseFloat(amountOut) * 1.0).toFixed(2) : '0.00'}
+                            {quoteLoading ? 'Finding best route...' : `$${amountOut ? (parseFloat(amountOut) * 1.0).toFixed(2) : '0.00'}`}
                         </div>
                         <div className="text-sm text-arc-textMuted font-medium">
                             Balance: <span className="text-arc-text">{balances[tokenOut.symbol] || '0.00'}</span>
@@ -443,7 +554,7 @@ export default function SwapToken() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-arc-textMuted">Slippage tolerance</span>
-                  <span className="font-semibold text-arc-text">0.50%</span>
+                  <span className="font-semibold text-arc-text">{(SWAP_SLIPPAGE_BPS / 100).toFixed(2)}%</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-arc-textMuted">Network fee estimate</span>
@@ -459,7 +570,7 @@ export default function SwapToken() {
             <div className="mt-8">
                 <button 
                     onClick={handleSwap}
-                    disabled={processing || !amountIn}
+                    disabled={processing || quoteLoading || !amountIn || !amountOut || Boolean(quoteError)}
                     className="w-full py-4 bg-cyan-500 text-black font-bold text-lg rounded-2xl hover:bg-cyan-400 disabled:bg-arc-panelStrong disabled:text-arc-textMuted disabled:border disabled:border-arc-border transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] disabled:shadow-none transform disabled:transform-none hover:-translate-y-0.5"
                 >
                     {processing ? (
@@ -467,8 +578,12 @@ export default function SwapToken() {
                             <RefreshCw className="animate-spin h-5 w-5" />
                             Routing Swap...
                         </div>
+                    ) : quoteLoading ? (
+                        'Fetching quote...'
                     ) : !amountIn ? (
                         'Enter an amount'
+                    ) : quoteError || !amountOut ? (
+                        'No executable quote'
                     ) : (
                         'Review Swap'
                     )}
