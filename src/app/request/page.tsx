@@ -35,7 +35,7 @@ export default function RequestMoney() {
   return (
     <div className="arc-app-shell min-h-screen pb-20 sm:pb-0 font-sans selection:bg-cyan-500/30 text-arc-text">
       <div className="max-w-md mx-auto sm:my-10 overflow-hidden sm:rounded-[2.5rem] bg-arc-panel sm:shadow-2xl shadow-cyan-500/10 border border-arc-border flex flex-col min-h-screen sm:min-h-0 relative">
-        
+
         {/* Header */}
         <div className="arc-header-gradient px-8 py-6 flex items-center justify-between border-b border-arc-border sticky top-0 z-10">
           <div className="flex items-center gap-4">
@@ -51,47 +51,47 @@ export default function RequestMoney() {
         </div>
 
         <div className="p-8 flex-1 flex flex-col items-center justify-center">
-            <h3 className="text-2xl font-extrabold text-arc-text mb-2 tracking-tight">Show this code</h3>
-            <p className="text-arc-textMuted text-center text-sm font-medium mb-10">
-              Ask the sender to scan this QR code with their ARC PAY app to send you funds.
-            </p>
+          <h3 className="text-2xl font-extrabold text-arc-text mb-2 tracking-tight">Show this code</h3>
+          <p className="text-arc-textMuted text-center text-sm font-medium mb-10">
+            Ask the sender to scan this QR code with their ARC PAY app to send you funds.
+          </p>
 
-            {/* QR Code Container */}
-            <div className="bg-white p-8 rounded-[2rem] shadow-xl shadow-cyan-500/10 border border-arc-border mb-10 relative group hover:shadow-cyan-500/20 transition-all duration-300 transform hover:-translate-y-1">
-                <div className="absolute inset-0 bg-cyan-500/10 rounded-[2rem] scale-105 -z-10 group-hover:scale-110 transition-transform duration-500"></div>
-                <QRCodeCanvas 
-                    value={qrData}
-                    size={220}
-                    level="H"
-                    includeMargin={false}
-                    fgColor="#0f172a"
-                />
-            </div>
+          {/* QR Code Container */}
+          <div className="bg-white p-8 rounded-[2rem] shadow-xl shadow-cyan-500/10 border border-arc-border mb-10 relative group hover:shadow-cyan-500/20 transition-all duration-300 transform hover:-translate-y-1">
+            <div className="absolute inset-0 bg-cyan-500/10 rounded-[2rem] scale-105 -z-10 group-hover:scale-110 transition-transform duration-500"></div>
+            <QRCodeCanvas
+              value={qrData}
+              size={220}
+              level="H"
+              includeMargin={false}
+              fgColor="#0f172a"
+            />
+          </div>
 
-            {/* Address Display & Copy */}
-            <div className="w-full">
-              <label className="block text-xs font-bold text-arc-textMuted mb-3 text-center tracking-wider uppercase">Your Arc Address</label>
-              <button 
-                onClick={handleCopy}
-                className="w-full flex items-center justify-between p-5 bg-arc-panelStrong hover:bg-arc-panel border border-arc-border rounded-2xl transition-all shadow-sm group hover:border-arc-cyan/50"
-              >
-                <span className="font-mono text-sm font-medium text-arc-text truncate max-w-[220px]">
-                  {address}
-                </span>
-                {copied ? (
-                  <CheckCircle2 className="w-6 h-6 text-emerald-500" />
-                ) : (
-                  <div className="flex items-center gap-2 text-arc-cyan">
-                    <span className="text-xs font-bold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity uppercase">Copy</span>
-                    <Copy className="w-5 h-5" />
-                  </div>
-                )}
-              </button>
-            </div>
-            
-            <p className="text-center text-xs font-medium text-arc-textMuted mt-8 bg-arc-panelStrong border border-arc-border px-4 py-2 rounded-full">
-              Only accept native USDC on the Arc Testnet.
-            </p>
+          {/* Address Display & Copy */}
+          <div className="w-full">
+            <label className="block text-xs font-bold text-arc-textMuted mb-3 text-center tracking-wider uppercase">Your Arc Address</label>
+            <button
+              onClick={handleCopy}
+              className="w-full flex items-center justify-between p-5 bg-arc-panelStrong hover:bg-arc-panel border border-arc-border rounded-2xl transition-all shadow-sm group hover:border-arc-cyan/50"
+            >
+              <span className="font-mono text-sm font-medium text-arc-text truncate max-w-[220px]">
+                {address}
+              </span>
+              {copied ? (
+                <CheckCircle2 className="w-6 h-6 text-emerald-500" />
+              ) : (
+                <div className="flex items-center gap-2 text-arc-cyan">
+                  <span className="text-xs font-bold tracking-wide opacity-0 group-hover:opacity-100 transition-opacity uppercase">Copy</span>
+                  <Copy className="w-5 h-5" />
+                </div>
+              )}
+            </button>
+          </div>
+
+          <p className="text-center text-xs font-medium text-arc-textMuted mt-8 bg-arc-panelStrong border border-arc-border px-4 py-2 rounded-full">
+            Only accept native USDC on the Arc Testnet.
+          </p>
         </div>
       </div>
     </div>
