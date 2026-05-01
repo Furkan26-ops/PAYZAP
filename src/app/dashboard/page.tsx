@@ -10,6 +10,7 @@ import { createPublicClient, http, formatEther, formatUnits } from 'viem';
 import TokenIcon from '@/components/TokenIcon';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { TOKENS, TOKENS_BY_SYMBOL } from '@/constants/tokens';
+import { supabase } from '@/lib/supabase';
 
 const AnalyticsCharts = dynamic(() => import('@/components/AnalyticsCharts'), { ssr: false });
 const RecentActivityFeed = dynamic(() => import('@/components/RecentActivityFeed'), { ssr: false });
@@ -122,12 +123,28 @@ export default function Dashboard() {
       }
     };
 
-    const storedAddr = localStorage.getItem('walletAddress');
-    if (!storedAddr) {
-      router.push('/');
-    } else {
-      fetchDashboardData();
-    }
+    const initializeDashboard = async () => {
+      // 1. Check if we just returned from Discord OAuth
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      let storedAddr = localStorage.getItem('walletAddress');
+
+      if (session && !storedAddr) {
+        // Mock Backend: User successfully authenticated with Discord!
+        // Here your backend would normally call Circle API to get/create their Developer Wallet.
+        storedAddr = '0x71C7656EC7ab88b098defB751B7401B5f6d897d0'; // Mock Circle Wallet
+        localStorage.setItem('walletAddress', storedAddr);
+        localStorage.setItem('loginMethod', 'discord');
+      }
+
+      if (!storedAddr) {
+        router.push('/');
+      } else {
+        fetchDashboardData();
+      }
+    };
+
+    initializeDashboard();
   }, [router]);
 
   const handleDisconnect = () => {

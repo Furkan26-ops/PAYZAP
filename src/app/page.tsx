@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronRight, ShieldCheck } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,25 @@ export default function Login() {
     } catch (err: any) {
       console.error(err);
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDiscordLogin = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      });
+      if (error) throw error;
+      // Note: Once redirected back to /dashboard, a session will be available.
+      // Your backend would then provision the Circle Developer-Controlled wallet
+      // and map it to this user's Supabase session.
+    } catch (err: any) {
+      console.error('Discord login error:', err);
       setLoading(false);
     }
   };
@@ -66,16 +86,7 @@ export default function Login() {
 
         <div className="flex flex-col gap-3">
           <button 
-            onClick={() => {
-              setLoading(true);
-              // Mock Discord OAuth + Circle API Wallet Creation
-              setTimeout(() => {
-                // Generates a mock Circle Developer-Controlled Wallet address on Arc
-                localStorage.setItem('walletAddress', '0x71C7656EC7ab88b098defB751B7401B5f6d897d0'); 
-                localStorage.setItem('loginMethod', 'discord');
-                router.push('/dashboard');
-              }, 1500);
-            }}
+            onClick={handleDiscordLogin}
             disabled={loading}
             className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl text-base font-bold text-white bg-[#5865F2] hover:bg-[#4752C4] shadow-[0_0_20px_rgba(88,101,242,0.4)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5865F2] disabled:opacity-50 transition-all duration-300 transform hover:-translate-y-1"
           >
