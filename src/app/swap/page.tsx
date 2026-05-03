@@ -204,10 +204,19 @@ export default function SwapToken() {
 
   const handleMax = () => {
       const currentBalance = parseFloat(balances[tokenIn.symbol] || '0');
-      const spendable = tokenIn.symbol === 'USDC'
-        ? Math.max(0, currentBalance - ARC_NATIVE_USDC_GAS_RESERVE)
-        : currentBalance;
-      setAmountIn(spendable.toFixed(4));
+      let spendable = currentBalance;
+      
+      if (tokenIn.symbol === 'USDC') {
+        spendable = Math.max(0, currentBalance - ARC_NATIVE_USDC_GAS_RESERVE);
+      }
+      
+      // Truncate to token decimals to prevent floating point errors causing reverts
+      const decimals = tokenIn.decimals || 6;
+      const factor = Math.pow(10, decimals);
+      const truncated = Math.floor(spendable * factor) / factor;
+      
+      // Convert to string, removing any trailing floating point inaccuracies
+      setAmountIn(truncated.toString());
   };
 
   const selectToken = (token: Token) => {
