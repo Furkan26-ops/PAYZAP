@@ -95,10 +95,10 @@ export default function Dashboard() {
   }, 0), [recentTxs]);
 
   const quickActions = [
-    { href: '/send',    icon: ArrowUpRight,  label: 'Send',    bg: '#EFF6FF', color: '#2563EB' },
-    { href: '/swap',    icon: ArrowDownUp,   label: 'Swap',    bg: '#F5F3FF', color: '#7C3AED' },
-    { href: '/request', icon: ArrowDownLeft, label: 'Receive', bg: '#ECFDF5', color: '#059669' },
-    { href: '/history', icon: RefreshCw,     label: 'History', bg: '#FFFBEB', color: '#B45309' },
+    { href: '/send',    icon: ArrowUpRight,  label: 'Send',    bg: 'var(--blue-soft)',   color: 'var(--blue)' },
+    { href: '/swap',    icon: ArrowDownUp,   label: 'Swap',    bg: 'var(--violet-soft)', color: 'var(--violet)' },
+    { href: '/request', icon: ArrowDownLeft, label: 'Receive', bg: 'var(--green-soft)',  color: 'var(--green)' },
+    { href: '/history', icon: RefreshCw,     label: 'History', bg: 'var(--amber-soft)',  color: 'var(--amber)' },
   ];
 
   const typeBadge = (type: string) =>
@@ -120,11 +120,11 @@ export default function Dashboard() {
             <button className="pz-btn pz-btn-ghost pz-btn-sm w-9 h-9 !p-0 rounded-full">
               <Bell className="w-4 h-4" />
             </button>
-            <div className="flex items-center gap-2.5 bg-white border border-[#E2E8F0] rounded-full pl-1 pr-4 py-1 shadow-sm">
-              <div className="w-7 h-7 rounded-full bg-[#2563EB] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+            <div className="flex items-center gap-2.5 rounded-full pl-1 pr-4 py-1 shadow-sm" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+              <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ background: 'var(--blue)' }}>
                 {address ? address.slice(2, 4).toUpperCase() : 'PZ'}
               </div>
-              <span className="text-sm font-semibold text-[#334155]">{address || '—'}</span>
+              <span className="text-sm font-semibold" style={{ color: 'var(--text-2)' }}>{address || '—'}</span>
             </div>
           </div>
         </div>

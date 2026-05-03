@@ -41,8 +41,8 @@ export default function Sidebar() {
 
       {/* Network badge */}
       <div className="mx-2 mb-6 flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-2">
-        <span className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" />
-        <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wide">Arc Testnet</span>
+        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: 'var(--green)' }} />
+        <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--muted-2)' }}>Arc Testnet</span>
       </div>
 
       {/* Nav */}

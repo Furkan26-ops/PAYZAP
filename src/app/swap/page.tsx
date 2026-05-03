@@ -455,9 +455,9 @@ export default function SwapToken() {
               <span className="pz-chip">Testnet</span>
             </div>
 
-            <div className="space-y-2 relative">
+            <div className="relative">
               {/* Pay panel */}
-              <div className="p-4 rounded-xl" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+              <div className="p-4 rounded-xl mb-2" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
                 <div className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--muted)' }}>Pay</div>
                 <div className="flex items-center gap-3">
                   <input type="number" placeholder="0" value={amountIn} onChange={e => setAmountIn(e.target.value)}
