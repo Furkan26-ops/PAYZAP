@@ -132,24 +132,24 @@ export default function Dashboard() {
         {/* ── Balance + Stats ── */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-5">
           {/* Main balance card */}
-          <div className="lg:col-span-2 pz-card" style={{ background: 'linear-gradient(135deg,#1E3A8A 0%,#2563EB 100%)' }}>
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-200 mb-1">Wallet Balance</p>
+          <div className="lg:col-span-2 pz-card">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] mb-1" style={{ color: 'var(--muted)' }}>Wallet Balance</p>
             <div className="flex items-baseline gap-1 mb-1">
               {loading ? (
-                <RefreshCw className="w-7 h-7 animate-spin text-white/40" />
+                <RefreshCw className="w-7 h-7 animate-spin opacity-40" style={{ color: 'var(--muted)' }} />
               ) : (
-                <><span className="text-2xl font-bold text-blue-200">$</span><span className="text-5xl font-extrabold text-white tracking-tight">{balance}</span></>
+                <><span className="text-2xl font-bold" style={{ color: 'var(--muted)' }}>$</span><span className="text-5xl font-extrabold tracking-tight" style={{ color: 'var(--text)' }}>{balance}</span></>
               )}
             </div>
-            <p className="text-xs text-blue-300 mb-6">in crypto assets</p>
+            <p className="text-xs mb-6" style={{ color: 'var(--muted-2)' }}>in crypto assets</p>
             <div className="flex gap-2.5">
-              <Link href="/send"    className="pz-btn pz-btn-sm" style={{ background:'rgba(255,255,255,0.15)', color:'#fff', backdropFilter:'blur(4px)' }}>
+              <Link href="/send"    className="pz-btn pz-btn-secondary pz-btn-sm">
                 <ArrowUpRight className="w-3.5 h-3.5" /> Send
               </Link>
-              <Link href="/swap"    className="pz-btn pz-btn-sm" style={{ background:'rgba(255,255,255,0.15)', color:'#fff', backdropFilter:'blur(4px)' }}>
+              <Link href="/swap"    className="pz-btn pz-btn-secondary pz-btn-sm">
                 <ArrowDownUp className="w-3.5 h-3.5" /> Swap
               </Link>
-              <Link href="/request" className="pz-btn pz-btn-sm" style={{ background:'rgba(255,255,255,0.15)', color:'#fff', backdropFilter:'blur(4px)' }}>
+              <Link href="/request" className="pz-btn pz-btn-secondary pz-btn-sm">
                 <ArrowDownLeft className="w-3.5 h-3.5" /> Receive
               </Link>
             </div>
