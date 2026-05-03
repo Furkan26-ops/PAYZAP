@@ -43,7 +43,7 @@ export default function RequestMoney() {
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-arc-cyan">ARC PAY</div>
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-arc-cyan">PAYZAP</div>
               <h2 className="text-xl font-bold text-arc-text tracking-tight">Request</h2>
             </div>
           </div>
@@ -53,7 +53,7 @@ export default function RequestMoney() {
         <div className="p-8 flex-1 flex flex-col items-center justify-center">
             <h3 className="text-2xl font-extrabold text-arc-text mb-2 tracking-tight">Show this code</h3>
             <p className="text-arc-textMuted text-center text-sm font-medium mb-10">
-              Ask the sender to scan this QR code with their ARC PAY app to send you funds.
+              Ask the sender to scan this QR code with their PAYZAP app to send you funds.
             </p>
 
             {/* QR Code Container */}

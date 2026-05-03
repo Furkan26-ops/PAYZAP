@@ -195,9 +195,9 @@ export default function Dashboard() {
               <div className="mb-8 flex items-start justify-between gap-4">
                 <div>
                   <div className="mb-3 flex items-center gap-3">
-                    <Image src="/logo.png" alt="Arc Pay Logo" width={44} height={44} className="h-11 w-11 rounded-xl shadow-lg border border-arc-border object-cover" />
+                    <Image src="/logo.png" alt="PAYZAP Logo" width={44} height={44} className="h-11 w-11 rounded-xl shadow-lg border border-arc-border object-cover" />
                     <div>
-                      <div className="text-xs font-semibold uppercase tracking-[0.28em] text-arc-cyan">ARC PAY</div>
+                      <div className="text-xs font-semibold uppercase tracking-[0.28em] text-arc-cyan">PAYZAP</div>
                       <div className="text-sm font-medium text-arc-textMuted">Treasury command center</div>
                     </div>
                   </div>

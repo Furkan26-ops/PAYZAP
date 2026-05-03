@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "ARC PAY | Global Digital Cash",
+  title: "PAYZAP | Global Digital Cash",
   description: "Secure, transparent, and compliant digital asset management for your organization.",
 };
 

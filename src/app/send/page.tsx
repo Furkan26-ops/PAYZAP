@@ -154,7 +154,7 @@ export default function SendMoney() {
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
-            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-arc-cyan">ARC PAY</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-arc-cyan">PAYZAP</div>
             <h2 className="text-xl font-bold text-arc-text tracking-tight">Send</h2>
           </div>
           </div>

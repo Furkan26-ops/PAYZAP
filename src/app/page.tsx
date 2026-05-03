@@ -57,9 +57,9 @@ export default function Login() {
 
       <div className="arc-panel w-full max-w-md rounded-[2rem] px-8 py-10 text-center relative z-10 text-arc-text">
         <div className="mb-8 flex items-center justify-center gap-3">
-          <Image src="/logo.png" alt="Arc Pay Logo" width={64} height={64} className="h-16 w-16 rounded-2xl animate-float shadow-xl border border-arc-border object-cover" />
+          <Image src="/logo.png" alt="PAYZAP Logo" width={64} height={64} className="h-16 w-16 rounded-2xl animate-float shadow-xl border border-arc-border object-cover" />
           <div className="text-left">
-            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-arc-cyan">ARC PAY</div>
+            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-arc-cyan">PAYZAP</div>
             <div className="text-sm font-medium text-arc-textMuted">Treasury Operations Console</div>
           </div>
         </div>
