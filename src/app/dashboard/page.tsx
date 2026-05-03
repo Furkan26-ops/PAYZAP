@@ -178,7 +178,7 @@ export default function Dashboard() {
   const sparkline = [58, 62, 64, 61, 66, 68, 72];
   const actions = [
     { href: '/send', icon: ArrowUpRight, title: 'Send', desc: 'Initiate outflows to recipients.', tone: 'text-rose-400 bg-rose-500/10 border-rose-500/20' },
-    { href: '/swap', icon: ArrowDownUp, title: 'Swap', desc: 'Convert treasury assets on Arc.', tone: 'text-arc-cyan bg-cyan-500/10 border-cyan-500/20' },
+    { href: '/swap', icon: ArrowDownUp, title: 'Swap', desc: 'Instantly swap tokens on Arc.', tone: 'text-arc-cyan bg-cyan-500/10 border-cyan-500/20' },
     { href: '/request', icon: ArrowDownLeft, title: 'Request', desc: 'Generate inbound payment requests.', tone: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' },
     { href: '/history', icon: History, title: 'History', desc: 'Review recorded activity and status.', tone: 'text-blue-400 bg-blue-500/10 border-blue-500/20' },
   ];
@@ -198,7 +198,7 @@ export default function Dashboard() {
                     <Image src="/logo.png" alt="PAYZAP Logo" width={44} height={44} className="h-11 w-11 rounded-xl shadow-lg border border-arc-border object-cover" />
                     <div>
                       <div className="text-xs font-semibold uppercase tracking-[0.28em] text-arc-cyan">PAYZAP</div>
-                      <div className="text-sm font-medium text-arc-textMuted">Treasury command center</div>
+                      <div className="text-sm font-medium text-arc-textMuted">Your Web3 Wallet on Arc</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 rounded-full border border-arc-border bg-arc-panel px-4 py-1.5 w-fit backdrop-blur-md">
@@ -222,7 +222,7 @@ export default function Dashboard() {
                 </div>
               </div>
               
-              <div className="mb-2 text-arc-textMuted text-sm font-medium tracking-wide">Available Treasury Balance</div>
+              <div className="mb-2 text-arc-textMuted text-sm font-medium tracking-wide">Wallet Balance</div>
               <div className="text-6xl font-extrabold tracking-tight flex items-baseline gap-2">
                 {loading ? (
                     <div className="flex items-center gap-4">

@@ -138,14 +138,14 @@ export default function Login() {
           <Image src="/logo.png" alt="PAYZAP Logo" width={64} height={64} className="h-16 w-16 rounded-2xl animate-float shadow-xl border border-arc-border object-cover" />
           <div className="text-left">
             <div className="text-xs font-semibold uppercase tracking-[0.28em] text-arc-cyan">PAYZAP</div>
-            <div className="text-sm font-medium text-arc-textMuted">Treasury Operations Console</div>
+            <div className="text-sm font-medium text-arc-textMuted">Your Web3 Wallet on Arc</div>
           </div>
         </div>
 
         <div className="mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-arc-text">Enterprise Treasury Vault</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight text-arc-text">Your crypto. Your control.</h1>
           <p className="mt-3 text-base leading-7 text-arc-textMuted">
-            Secure, transparent, and compliant digital asset management for your organization.
+            Send, receive, swap, and track your digital assets — all in one place on Arc.
           </p>
         </div>
 
@@ -155,11 +155,11 @@ export default function Login() {
               <ShieldCheck className="h-4 w-4" />
               <span className="text-xs font-semibold uppercase tracking-[0.2em]">Security</span>
             </div>
-            <p className="text-sm text-arc-textMuted">Protected wallet access and controlled treasury actions.</p>
+            <p className="text-sm text-arc-textMuted">Your keys, your assets. Non-custodial and fully secure.</p>
           </div>
           <div className="glass-panel rounded-2xl p-4">
             <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-arc-blue">Network</div>
-            <p className="text-sm text-arc-textMuted">Built for institutional stablecoin workflows on Arc.</p>
+            <p className="text-sm text-arc-textMuted">Send, swap & receive on Arc Network instantly.</p>
           </div>
         </div>
 
