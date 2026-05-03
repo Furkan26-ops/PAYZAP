@@ -2,27 +2,32 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronRight, ShieldCheck } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { ChevronRight, ShieldCheck, Wallet, X, PenLine } from 'lucide-react';
 import Image from 'next/image';
+
+type Step = 'login' | 'verify';
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState<Step>('login');
+  const [connectedAddress, setConnectedAddress] = useState('');
+  const [signError, setSignError] = useState('');
   const router = useRouter();
 
-  const handleWalletLogin = async () => {
+  // Step 1: Connect wallet, then show the verify modal
+  const handleConnectWallet = async () => {
     const ethereum = (window as any).ethereum;
-    
+
     if (typeof ethereum === 'undefined') {
       alert('Please install a Web3 wallet (e.g. MetaMask) to continue!');
       return;
     }
-    
+
     setLoading(true);
     try {
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-      localStorage.setItem('walletAddress', accounts[0]);
-      router.push('/dashboard');
+      setConnectedAddress(accounts[0]);
+      setStep('verify');
     } catch (err: any) {
       console.error(err);
     } finally {
@@ -30,23 +35,34 @@ export default function Login() {
     }
   };
 
-  const handleDiscordLogin = async () => {
+  // Step 2: Ask the wallet to sign a verification message
+  const handleSignMessage = async () => {
+    const ethereum = (window as any).ethereum;
+    setSignError('');
     setLoading(true);
+
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'discord',
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`
-        }
+      const message = `Welcome to PAYZAP!\n\nSign this message to verify you own this wallet.\n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nWallet: ${connectedAddress}\nTimestamp: ${new Date().toISOString()}`;
+
+      await ethereum.request({
+        method: 'personal_sign',
+        params: [message, connectedAddress],
       });
-      if (error) throw error;
-      // Note: Once redirected back to /dashboard, a session will be available.
-      // Your backend would then provision the Circle Developer-Controlled wallet
-      // and map it to this user's Supabase session.
+
+      localStorage.setItem('walletAddress', connectedAddress);
+      router.push('/dashboard');
     } catch (err: any) {
-      console.error('Discord login error:', err);
+      console.error(err);
+      setSignError(err.code === 4001 ? 'You rejected the signature request.' : 'Signing failed. Please try again.');
       setLoading(false);
     }
+  };
+
+  const handleCancelVerify = () => {
+    setStep('login');
+    setConnectedAddress('');
+    setSignError('');
+    setLoading(false);
   };
 
   return (
@@ -55,6 +71,68 @@ export default function Login() {
       <div className="absolute left-[8%] top-[14%] h-28 w-28 rounded-full border border-arc-border bg-arc-panel blur-2xl"></div>
       <div className="absolute right-[10%] bottom-[14%] h-36 w-36 rounded-full border border-arc-cyan/20 bg-arc-cyan/10 blur-3xl"></div>
 
+      {/* ── Verify Modal Overlay ── */}
+      {step === 'verify' && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={handleCancelVerify} />
+
+          {/* Modal */}
+          <div className="relative arc-panel w-full max-w-sm rounded-[2rem] px-8 py-10 text-center z-10 text-arc-text shadow-2xl border border-arc-border">
+            <button
+              onClick={handleCancelVerify}
+              className="absolute top-5 right-5 p-2 rounded-full text-arc-textMuted hover:text-arc-text hover:bg-arc-border/30 transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            {/* Icon */}
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/10 border border-cyan-500/20">
+              <PenLine className="h-8 w-8 text-arc-cyan" />
+            </div>
+
+            <h2 className="text-2xl font-extrabold tracking-tight text-arc-text mb-2">
+              Verify your account
+            </h2>
+            <p className="text-sm leading-6 text-arc-textMuted mb-2">
+              To finish connecting, you must sign a message in your wallet to verify that you are the owner of this account.
+            </p>
+
+            {/* Connected wallet chip */}
+            <div className="my-5 flex items-center justify-center gap-2 rounded-full border border-arc-border bg-arc-panel px-4 py-2 w-fit mx-auto">
+              <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
+              <span className="text-xs font-mono font-medium text-arc-textMuted">
+                {connectedAddress.slice(0, 8)}...{connectedAddress.slice(-6)}
+              </span>
+            </div>
+
+            {signError && (
+              <p className="mb-4 text-sm text-rose-400 font-medium">{signError}</p>
+            )}
+
+            <button
+              id="sign-message-btn"
+              onClick={handleSignMessage}
+              disabled={loading}
+              className="w-full flex justify-center items-center gap-2 py-4 px-6 rounded-2xl text-base font-bold text-white bg-gradient-to-r from-arc-cyan to-arc-blue hover:opacity-90 shadow-[0_0_20px_rgba(6,182,212,0.4)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-arc-cyan disabled:opacity-50 transition-all duration-300 transform hover:-translate-y-1"
+            >
+              {loading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Waiting for signature...
+                </div>
+              ) : (
+                <>
+                  <PenLine className="h-5 w-5" />
+                  Sign message
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Login Card ── */}
       <div className="arc-panel w-full max-w-md rounded-[2rem] px-8 py-10 text-center relative z-10 text-arc-text">
         <div className="mb-8 flex items-center justify-center gap-3">
           <Image src="/logo.png" alt="PAYZAP Logo" width={64} height={64} className="h-16 w-16 rounded-2xl animate-float shadow-xl border border-arc-border object-cover" />
@@ -85,43 +163,26 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3">
-          <button 
-            onClick={handleDiscordLogin}
-            disabled={loading}
-            className="w-full flex justify-center items-center gap-3 py-4 px-6 rounded-2xl text-base font-bold text-white bg-[#5865F2] hover:bg-[#4752C4] shadow-[0_0_20px_rgba(88,101,242,0.4)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5865F2] disabled:opacity-50 transition-all duration-300 transform hover:-translate-y-1"
-          >
-            <svg className="w-5 h-5 fill-current" viewBox="0 0 127.14 96.36">
-              <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.31,60,73.31,53s5-12.74,11.43-12.74S96.3,46,96.19,53,91.08,65.69,84.69,65.69Z"/>
-            </svg>
-            Continue with Discord
-          </button>
+        <button
+          id="connect-wallet-btn"
+          onClick={handleConnectWallet}
+          disabled={loading}
+          className="w-full flex justify-center items-center gap-2 py-4 px-6 rounded-2xl text-base font-bold text-white bg-gradient-to-r from-arc-cyan to-arc-blue hover:opacity-90 shadow-[0_0_20px_rgba(6,182,212,0.4)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-arc-cyan disabled:opacity-50 transition-all duration-300 transform hover:-translate-y-1"
+        >
+          {loading && step === 'login' ? (
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              Connecting...
+            </div>
+          ) : (
+            <>
+              <Wallet className="h-5 w-5" />
+              Connect Wallet
+              <ChevronRight className="h-5 w-5" />
+            </>
+          )}
+        </button>
 
-          <div className="relative flex items-center py-2">
-            <div className="flex-grow border-t border-arc-border"></div>
-            <span className="flex-shrink-0 mx-4 text-arc-textMuted text-xs uppercase tracking-widest font-semibold">OR</span>
-            <div className="flex-grow border-t border-arc-border"></div>
-          </div>
-
-          <button 
-            onClick={handleWalletLogin}
-            disabled={loading}
-            className="w-full flex justify-center items-center gap-2 py-4 px-6 rounded-2xl text-base font-bold text-arc-cyan bg-cyan-500/10 border border-cyan-500/30 hover:bg-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.1)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-arc-cyan disabled:opacity-50 transition-all duration-300 transform hover:-translate-y-1"
-          >
-            {loading ? (
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 border-2 border-arc-cyan/30 border-t-arc-cyan rounded-full animate-spin"></div>
-                Authenticating...
-              </div>
-            ) : (
-              <>
-                Connect Web3 Wallet
-                <ChevronRight className="h-5 w-5" />
-              </>
-            )}
-          </button>
-        </div>
-        
         <p className="mt-8 text-sm text-arc-textMuted font-medium tracking-wide">
           Powered by Arc Network
         </p>
