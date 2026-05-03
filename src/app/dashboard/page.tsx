@@ -165,7 +165,7 @@ export default function Dashboard() {
         {/* ── Top bar ── */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-8">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight mb-1" style={{ color: 'var(--text)' }}>Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-1" style={{ color: 'var(--text)' }}>Dashboard</h1>
             <div className="flex items-center gap-2">
               <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Welcome back to PAYZAP</p>
               <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold tracking-wider uppercase">
@@ -192,23 +192,23 @@ export default function Dashboard() {
           
           {/* Main Balance Card */}
           <div className="pz-card relative overflow-hidden">
-            <div className="flex justify-between items-start mb-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--muted)' }}>Treasury Balance</p>
                 <div className="flex items-baseline gap-1 mb-1">
                   {loading ? (
                     <RefreshCw className="w-7 h-7 animate-spin opacity-40" style={{ color: 'var(--muted)' }} />
                   ) : (
-                    <><span className="text-2xl font-bold" style={{ color: 'var(--text)' }}>$</span><span className="text-5xl font-extrabold tracking-tight" style={{ color: 'var(--text)' }}>{balance}</span></>
+                    <><span className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text)' }}>$</span><span className="text-3xl sm:text-5xl font-extrabold tracking-tight" style={{ color: 'var(--text)' }}>{balance}</span></>
                   )}
                 </div>
                 <p className="text-xs font-medium" style={{ color: 'var(--muted-2)' }}>in crypto assets</p>
               </div>
-              <div className="flex gap-2">
-                <Link href="/send" className="pz-btn pz-btn-primary pz-btn-sm shadow-md hover:shadow-lg">
+              <div className="flex gap-2 mt-2 sm:mt-0">
+                <Link href="/send" className="pz-btn pz-btn-primary pz-btn-sm !px-3 sm:!px-4 shadow-md hover:shadow-lg">
                   <ArrowUpRight className="w-3.5 h-3.5" /> Send
                 </Link>
-                <Link href="/swap" className="pz-btn pz-btn-primary pz-btn-sm shadow-md hover:shadow-lg">
+                <Link href="/swap" className="pz-btn pz-btn-primary pz-btn-sm !px-3 sm:!px-4 shadow-md hover:shadow-lg">
                   <ArrowDownUp className="w-3.5 h-3.5" /> Swap
                 </Link>
               </div>
