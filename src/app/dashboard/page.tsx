@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import { useEffect, useState, useMemo, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
@@ -25,7 +26,7 @@ export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const fetchDashboardData = async (storedAddress: string) => {
       try {
         const client = createPublicClient({
           chain: {
@@ -42,8 +43,6 @@ export default function Dashboard() {
           },
           transport: http()
         });
-
-        const storedAddress = localStorage.getItem('walletAddress') || '0x71C7656EC7ab88b098defB751B7401B5f6d897d0';
         
         // Fetch native token balance (which is USDC on Arc Testnet)
         const nativeBalance = await client.getBalance({ address: storedAddress as `0x${string}` });
@@ -140,7 +139,7 @@ export default function Dashboard() {
       if (!storedAddr) {
         router.push('/');
       } else {
-        fetchDashboardData();
+        fetchDashboardData(storedAddr);
       }
     };
 
@@ -196,7 +195,7 @@ export default function Dashboard() {
               <div className="mb-8 flex items-start justify-between gap-4">
                 <div>
                   <div className="mb-3 flex items-center gap-3">
-                    <div className="arc-brand-mark h-11 w-11 rounded-xl"></div>
+                    <Image src="/logo.png" alt="Arc Pay Logo" width={44} height={44} className="h-11 w-11 rounded-xl shadow-lg border border-arc-border object-cover" />
                     <div>
                       <div className="text-xs font-semibold uppercase tracking-[0.28em] text-arc-cyan">ARC PAY</div>
                       <div className="text-sm font-medium text-arc-textMuted">Treasury command center</div>
