@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Scanner } from '@yudiel/react-qr-scanner';
-import { QrCode, X, CheckCircle2, Send } from 'lucide-react';
+import { QrCode, X, CheckCircle2, ChevronDown } from 'lucide-react';
 import { createWalletClient, custom, parseEther } from 'viem';
 import { supabase } from '@/lib/supabase';
 import Sidebar from '@/components/Sidebar';
+import TokenIcon from '@/components/TokenIcon';
 
 export default function SendMoney() {
   const [recipient,   setRecipient  ] = useState('');
@@ -65,12 +66,12 @@ export default function SendMoney() {
     return (
       <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
         <Sidebar />
-        <main className="pz-shell flex-1 flex items-center justify-center">
+        <main className="pz-shell flex-1 flex items-start justify-center pt-24">
           <div className="pz-card w-full max-w-sm text-center">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style={{ background: 'var(--green-mid)' }}>
-              <CheckCircle2 className="w-8 h-8" style={{ color: 'var(--green)' }} />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style={{ background: '#ECFDF5' }}>
+              <CheckCircle2 className="w-8 h-8" style={{ color: 'var(--success)' }} />
             </div>
-            <h2 className="text-2xl font-extrabold mb-1" style={{ color: 'var(--text)' }}>Sent!</h2>
+            <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--text)' }}>Sent!</h2>
             <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>Your transaction has been submitted to Arc Testnet.</p>
             <div className="p-4 rounded-xl text-sm text-left space-y-3 mb-6" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
               <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Amount</span><span className="font-bold">{receipt.amount} USDC</span></div>
@@ -89,34 +90,26 @@ export default function SendMoney() {
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar />
-      <main className="pz-shell flex-1 flex items-start">
-        <div className="w-full max-w-md">
-          <div className="pz-page-header" style={{ marginBottom: '1.5rem' }}>
-            <div>
-              <h1 className="pz-page-title">Send</h1>
-              <p className="pz-page-subtitle">Secure transfer on Arc Testnet</p>
-            </div>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'var(--blue-soft)' }}>
-              <Send className="w-5 h-5" style={{ color: 'var(--blue)' }} />
-            </div>
-          </div>
-
+      <main className="pz-shell flex-1 flex items-start justify-center pt-16">
+        <div className="w-full max-w-sm">
           <div className="pz-card">
+            <h1 className="text-xl font-bold mb-6" style={{ color: 'var(--text)' }}>Send Funds</h1>
+            
             {errorMsg && (
-              <div className="p-4 rounded-xl text-sm font-medium mb-5" style={{ background: 'var(--red-soft)', border: '1px solid #FECACA', color: 'var(--red)' }}>
+              <div className="p-4 rounded-xl text-sm font-medium mb-5" style={{ background: 'var(--red-soft)', border: '1px solid #FECACA', color: 'var(--danger)' }}>
                 {errorMsg}
               </div>
             )}
 
-            <form onSubmit={handleSend} className="space-y-5">
+            <form onSubmit={handleSend} className="space-y-4">
               {/* Recipient */}
               <div>
-                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text)' }}>Recipient Address</label>
+                <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--text-2)' }}>Recipient Address</label>
                 <div className="relative">
                   <input
-                    type="text" required placeholder="Arc network address (0x…)"
+                    type="text" required placeholder="Arc network address"
                     value={recipient} onChange={e => setRecipient(e.target.value)}
-                    className="pz-input pr-12 font-mono text-xs"
+                    className="pz-input text-sm"
                   />
                   <button type="button" onClick={() => setShowScanner(true)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: 'var(--muted)' }}>
@@ -127,58 +120,48 @@ export default function SendMoney() {
 
               {/* Asset (static) */}
               <div>
-                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text)' }}>Asset</label>
-                <div className="flex items-center gap-3 pz-input">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'var(--blue-mid)' }}>
-                    <span className="text-xs font-bold" style={{ color: 'var(--blue)' }}>$</span>
+                <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--text-2)' }}>Asset</label>
+                <div className="flex items-center justify-between pz-input" style={{ cursor: 'pointer' }}>
+                  <div className="flex items-center gap-2">
+                    <TokenIcon symbol="USDC" logo="/usdc-logo.png" size={20} />
+                    <span className="text-sm font-semibold">USDC</span>
                   </div>
-                  <span className="text-sm font-semibold">USDC</span>
+                  <ChevronDown className="w-4 h-4 text-slate-400" />
                 </div>
               </div>
 
               {/* Amount */}
               <div>
-                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text)' }}>Amount</label>
+                <label className="block text-xs font-semibold mb-1.5" style={{ color: 'var(--text-2)' }}>Amount</label>
                 <input
-                  type="number" required min="0.000001" step="0.000001" placeholder="0.00"
+                  type="number" required min="0.000001" step="0.000001" placeholder="Amount"
                   value={amount} onChange={e => setAmount(e.target.value)}
-                  className="pz-input text-xl font-bold"
+                  className="pz-input text-sm"
                 />
               </div>
 
-              {/* Category */}
-              <div>
-                <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text)' }}>Category</label>
-                <select value={category} onChange={e => setCategory(e.target.value)} className="pz-input">
-                  <option>Food</option>
-                  <option>Utilities</option>
-                  <option>Entertainment</option>
-                  <option>Other</option>
-                </select>
-              </div>
-
               {/* Fee breakdown */}
-              <div className="p-4 rounded-xl text-sm space-y-2" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
-                <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--muted)' }}>Fee Breakdown</p>
-                <div className="flex justify-between" style={{ color: 'var(--muted)' }}>
-                  <span>Amount</span>
-                  <span>{amount ? `$${(parseFloat(amount)||0).toFixed(2)}` : '$0.00'}</span>
+              <div className="text-xs space-y-2 mt-6 mb-6" style={{ color: 'var(--muted)' }}>
+                <div className="flex justify-between">
+                  <span>Fee breakdown</span>
+                  <span className="font-medium text-slate-700">{amount ? `$${(parseFloat(amount)||0).toFixed(2)} USDC` : '0.00 USDC'}</span>
                 </div>
-                <div className="flex justify-between" style={{ color: 'var(--muted)' }}>
-                  <span>Network fee</span><span>$0.00</span>
+                <div className="flex justify-between">
+                  <span>Network Fee</span>
+                  <span className="font-medium text-slate-700">0.15 USDC</span>
                 </div>
-                <hr style={{ borderColor: 'var(--border)' }} />
-                <div className="flex justify-between font-bold" style={{ color: 'var(--text)' }}>
+                <div className="flex justify-between">
+                  <span>Conversion Fee</span>
+                  <span className="font-medium text-slate-700">0.05 USDC</span>
+                </div>
+                <div className="border-t border-slate-200 my-2 pt-2 flex justify-between font-bold" style={{ color: 'var(--text)' }}>
                   <span>Total</span>
-                  <span>{amount ? `$${(parseFloat(amount)||0).toFixed(2)}` : '$0.00'}</span>
+                  <span>{amount ? `${(parseFloat(amount) + 0.20).toFixed(2)} USDC` : '0.20 USDC'}</span>
                 </div>
               </div>
 
               <button type="submit" disabled={processing || !amount || !recipient} className="pz-btn pz-btn-primary pz-btn-lg w-full">
-                {processing
-                  ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Sending…</>
-                  : <><Send className="w-4 h-4" /> Send</>
-                }
+                {processing ? 'Sending…' : 'Send'}
               </button>
             </form>
           </div>

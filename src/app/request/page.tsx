@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Copy, CheckCircle2, QrCode } from 'lucide-react';
+import { Copy, CheckCircle2 } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import Sidebar from '@/components/Sidebar';
 
@@ -28,35 +28,21 @@ export default function RequestMoney() {
     <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar />
       <main className="pz-shell flex-1 flex items-start">
-        <div className="w-full max-w-md">
-          <div className="pz-page-header" style={{ marginBottom: '1.5rem' }}>
-            <div>
-              <h1 className="pz-page-title">Accept</h1>
-              <p className="pz-page-subtitle">Share your QR code or wallet address to receive funds.</p>
-            </div>
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'var(--green-soft)' }}>
-              <QrCode className="w-5 h-5" style={{ color: 'var(--green)' }} />
-            </div>
-          </div>
-
-          <div className="pz-card">
-            <p className="text-sm mb-5" style={{ color: 'var(--muted)' }}>
-              Ask the sender to scan this QR code with their PAYZAP app to send you funds.
+        <div className="w-full max-w-sm">
+          <div className="pz-card text-center flex flex-col items-center">
+            <h1 className="text-xl font-bold mb-2" style={{ color: 'var(--text)' }}>Accept Funds</h1>
+            <p className="text-sm font-medium px-4 mb-6" style={{ color: 'var(--muted)' }}>
+              Use your automatically generated Arc Testnet wallet address.
             </p>
 
             {/* QR Code */}
-            <div className="flex justify-center mb-5">
-              <div className="bg-white p-5 rounded-2xl border shadow-sm" style={{ borderColor: 'var(--border)' }}>
-                <QRCodeCanvas value={`ethereum:${address}`} size={190} level="H" includeMargin={false} fgColor="#0F172A" />
-              </div>
+            <div className="bg-white p-3 rounded-2xl border shadow-sm mb-6 inline-block" style={{ borderColor: 'var(--border)' }}>
+              <QRCodeCanvas value={`ethereum:${address}`} size={160} level="H" includeMargin={false} fgColor="#0F172A" />
             </div>
 
             {/* Address */}
-            <div className="p-4 rounded-xl mb-5" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
-              <p className="text-[11px] font-bold uppercase tracking-widest mb-1.5" style={{ color: 'var(--muted)' }}>
-                Your Arc Wallet Address
-              </p>
-              <p className="text-xs font-mono break-all" style={{ color: 'var(--text-2)' }}>{address}</p>
+            <div className="w-full p-3 rounded-lg mb-4 text-left overflow-hidden" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+              <p className="text-xs font-mono font-medium truncate" style={{ color: 'var(--text)' }}>{address}</p>
             </div>
 
             {/* Copy Button */}
@@ -66,10 +52,6 @@ export default function RequestMoney() {
                 : <><Copy className="w-5 h-5" /> Copy Address</>
               }
             </button>
-
-            <p className="text-xs text-center mt-4" style={{ color: 'var(--muted-2)' }}>
-              Only accept native USDC on the Arc Testnet.
-            </p>
           </div>
         </div>
       </main>

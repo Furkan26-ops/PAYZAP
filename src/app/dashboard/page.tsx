@@ -132,170 +132,138 @@ export default function Dashboard() {
         {/* ── Balance + Stats ── */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-5">
           {/* Main balance card */}
-          <div className="lg:col-span-2 pz-card">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] mb-1" style={{ color: 'var(--muted)' }}>Wallet Balance</p>
-            <div className="flex items-baseline gap-1 mb-1">
-              {loading ? (
-                <RefreshCw className="w-7 h-7 animate-spin opacity-40" style={{ color: 'var(--muted)' }} />
-              ) : (
-                <><span className="text-2xl font-bold" style={{ color: 'var(--muted)' }}>$</span><span className="text-5xl font-extrabold tracking-tight" style={{ color: 'var(--text)' }}>{balance}</span></>
-              )}
+          <div className="lg:col-span-2 pz-card flex flex-col sm:flex-row sm:items-center justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] mb-1" style={{ color: 'var(--muted)' }}>Treasury Balance</p>
+              <div className="flex items-baseline gap-1 mb-1">
+                {loading ? (
+                  <RefreshCw className="w-7 h-7 animate-spin opacity-40" style={{ color: 'var(--muted)' }} />
+                ) : (
+                  <><span className="text-2xl font-bold" style={{ color: 'var(--muted)' }}>$</span><span className="text-4xl font-extrabold tracking-tight" style={{ color: 'var(--text)' }}>{balance}</span></>
+                )}
+              </div>
+              <p className="text-xs" style={{ color: 'var(--muted-2)' }}>in crypto assets</p>
             </div>
-            <p className="text-xs mb-6" style={{ color: 'var(--muted-2)' }}>in crypto assets</p>
-            <div className="flex gap-2.5">
-              <Link href="/send"    className="pz-btn pz-btn-secondary pz-btn-sm">
+            <div className="flex gap-2.5 mt-4 sm:mt-0">
+              <Link href="/send" className="pz-btn pz-btn-primary pz-btn-sm">
                 <ArrowUpRight className="w-3.5 h-3.5" /> Send
               </Link>
-              <Link href="/swap"    className="pz-btn pz-btn-secondary pz-btn-sm">
+              <Link href="/swap" className="pz-btn pz-btn-primary pz-btn-sm">
                 <ArrowDownUp className="w-3.5 h-3.5" /> Swap
               </Link>
-              <Link href="/request" className="pz-btn pz-btn-secondary pz-btn-sm">
-                <ArrowDownLeft className="w-3.5 h-3.5" /> Receive
-              </Link>
-            </div>
-          </div>
-
-          {/* Volume */}
-          <div className="pz-card flex flex-col">
-            <div className="flex items-center justify-between mb-3">
-              <span className="pz-stat-label">Volume</span>
-              <TrendingUp className="w-4 h-4 text-emerald-500" />
-            </div>
-            <div className="pz-stat-value">${totalFlow.toFixed(2)}</div>
-            <span className="pz-chip mt-auto w-fit mt-3">Recent</span>
-          </div>
-
-          {/* Swaps & Transfers */}
-          <div className="pz-card flex flex-col gap-3 justify-between">
-            <div>
-              <span className="pz-stat-label">Swaps</span>
-              <div className="pz-stat-value">{swapCount}</div>
-            </div>
-            <hr className="pz-divider !my-0" />
-            <div>
-              <span className="pz-stat-label">Transfers</span>
-              <div className="pz-stat-value">{sendCount}</div>
             </div>
           </div>
         </div>
 
-        {/* ── Quick Actions ── */}
-        <div className="grid grid-cols-4 gap-4 mb-5">
-          {quickActions.map(({ href, icon: Icon, label, bg, color }) => (
-            <Link key={href} href={href}
-              className="pz-card flex flex-col items-center gap-3 py-5 hover:-translate-y-0.5 hover:shadow-md transition-all cursor-pointer text-center"
-            >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: bg }}>
-                <Icon className="w-5 h-5" style={{ color }} />
-              </div>
-              <span className="text-sm font-semibold" style={{ color: 'var(--text-2)' }}>{label}</span>
-            </Link>
-          ))}
-        </div>
-
-        {/* ── Tokens + Activity ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-          {/* Tokens Held */}
+        {/* ── Charts Row ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
+          {/* Inflow Chart */}
           <div className="pz-card">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold" style={{ color: 'var(--text)' }}>Tokens Held</h3>
-              <button onClick={() => setShowTokensModal(true)}
-                className="flex items-center gap-1 text-xs font-semibold text-[#2563EB] hover:underline">
-                View all <ChevronRight className="w-3 h-3" />
-              </button>
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>Inflow</span>
+              <span className="text-xs font-bold" style={{ color: 'var(--success)' }}>+ 11 Inflow</span>
             </div>
+            <div className="flex items-end justify-between h-24 gap-2 mb-2">
+              {[40, 80, 100, 45, 90, 85, 30].map((h, i) => (
+                <div key={i} className="w-full rounded-t-sm" style={{ background: 'var(--primary)', height: `${h}%` }}></div>
+              ))}
+            </div>
+            <div className="flex justify-between text-[10px] uppercase font-semibold" style={{ color: 'var(--muted-2)' }}>
+              <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
+            </div>
+          </div>
+          {/* Outflow Chart */}
+          <div className="pz-card">
+            <div className="flex justify-between items-center mb-6">
+              <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>Outflow</span>
+              <span className="text-xs font-bold" style={{ color: 'var(--danger)' }}>- Outflow</span>
+            </div>
+            <div className="flex items-end justify-between h-24 gap-2 mb-2">
+              {[80, 50, 20, 100, 30, 40, 10].map((h, i) => (
+                <div key={i} className="w-full rounded-t-sm" style={{ background: 'var(--primary)', height: `${h}%` }}></div>
+              ))}
+            </div>
+            <div className="flex justify-between text-[10px] uppercase font-semibold" style={{ color: 'var(--muted-2)' }}>
+              <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
+            </div>
+          </div>
+        </div>
 
-            {loading ? (
-              <div className="space-y-3">
-                {[1,2,3].map(i => <div key={i} className="h-11 rounded-lg animate-pulse" style={{ background:'var(--border-2)' }} />)}
+        {/* ── Activity Split Row ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="pz-card">
+            <div className="flex justify-between text-xs font-semibold mb-4" style={{ color: 'var(--text)' }}>
+              <span>Recent activity</span>
+              <span>Summary</span>
+            </div>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs">₿</div>
+                  <div>
+                    <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>Oct 1, 2022</div>
+                    <div className="text-[10px]" style={{ color: 'var(--muted)' }}>46 assets</div>
+                  </div>
+                </div>
+                <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>$100,000</span>
               </div>
-            ) : heldTokens.length > 0 ? (
-              <div className="space-y-1">
-                {heldTokens.slice(0, 4).map(token => {
-                  const meta = TOKENS_BY_SYMBOL[token.symbol];
-                  return (
-                    <div key={token.symbol} className="flex items-center justify-between py-2.5 border-b last:border-0" style={{ borderColor: 'var(--border-2)' }}>
-                      <div className="flex items-center gap-3">
-                        <TokenIcon symbol={token.symbol} logo={meta?.logo} size={28} />
-                        <div>
-                          <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>{token.symbol}</div>
-                          <div className="text-xs" style={{ color: 'var(--muted)' }}>{meta?.name || token.symbol}</div>
-                        </div>
-                      </div>
-                      <div className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{token.amount}</div>
-                    </div>
-                  );
-                })}
+              <div className="flex justify-between items-center">
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">S</div>
+                  <div>
+                    <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>BTC cash</div>
+                    <div className="text-[10px]" style={{ color: 'var(--muted)' }}>2 assets</div>
+                  </div>
+                </div>
+                <span className="text-sm font-bold" style={{ color: 'var(--danger)' }}>-$15,000</span>
               </div>
-            ) : (
-              <p className="text-sm text-center py-6" style={{ color: 'var(--muted-2)' }}>No tokens detected.</p>
-            )}
-
-            <div className="mt-4 pt-4 border-t" style={{ borderColor: 'var(--border-2)' }}>
-              <p className="text-xs font-semibold mb-1" style={{ color: 'var(--muted)' }}>Connected Wallet</p>
-              <div className="flex items-center gap-2">
-                <Wallet className="w-3.5 h-3.5 text-[#2563EB]" />
-                <span className="text-xs font-mono" style={{ color: 'var(--text-2)' }}>{address || '—'}</span>
+              <div className="flex justify-between items-center">
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs">Ξ</div>
+                  <div>
+                    <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>Oct 1, 2021</div>
+                    <div className="text-[10px]" style={{ color: 'var(--muted)' }}>18 assets</div>
+                  </div>
+                </div>
+                <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>-$5,000</span>
               </div>
             </div>
           </div>
 
-          {/* Recent Activity */}
-          <div className="pz-card lg:col-span-2">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold" style={{ color: 'var(--text)' }}>Recent Activity</h3>
-              <Link href="/history" className="text-xs font-semibold text-[#2563EB] hover:underline">View all</Link>
+          <div className="pz-card">
+            <div className="flex justify-between text-xs font-semibold mb-4" style={{ color: 'var(--text)' }}>
+              <span>Recent activity</span>
+              <span>Amount</span>
             </div>
-
-            {historyLoading ? (
-              <div className="space-y-3">
-                {[1,2,3,4].map(i => <div key={i} className="h-14 rounded-lg animate-pulse" style={{ background:'var(--border-2)' }} />)}
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center" style={{ borderColor: 'var(--success)' }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--success)' }}></div>
+                  </div>
+                  <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Swap asset</span>
+                </div>
+                <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>$105,000</span>
               </div>
-            ) : recentTxs.length === 0 ? (
-              <div className="text-center py-10" style={{ color: 'var(--muted-2)' }}>
-                <RefreshCw className="w-8 h-8 mx-auto mb-2 opacity-30" />
-                <p className="text-sm">No transactions yet.</p>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center" style={{ borderColor: 'var(--success)' }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--success)' }}></div>
+                  </div>
+                  <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Swap asset</span>
+                </div>
+                <span className="text-sm font-bold" style={{ color: 'var(--success)' }}>-$5,000</span>
               </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="pz-table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Type</th>
-                      <th>Asset</th>
-                      <th>Amount</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentTxs.map(tx => {
-                      const date  = new Date(tx.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                      const token = TOKENS_BY_SYMBOL[tx.tokenSymbol] || TOKENS_BY_SYMBOL.USDC;
-                      return (
-                        <tr key={tx.id}>
-                          <td className="text-xs" style={{ color: 'var(--muted)' }}>{date}</td>
-                          <td><span className={typeBadge(tx.type)}>{tx.type}</span></td>
-                          <td>
-                            <div className="flex items-center gap-2">
-                              <TokenIcon symbol={token.symbol} logo={token.logo} size={18} />
-                              <span className="text-xs font-semibold">{token.symbol}</span>
-                            </div>
-                          </td>
-                          <td className="font-bold text-xs">{tx.amountDisplay}</td>
-                          <td>
-                            <span className={tx.status === 'completed' ? 'pz-badge pz-badge-green' : 'pz-badge pz-badge-amber'}>
-                              {tx.status}
-                            </span>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center" style={{ borderColor: 'var(--success)' }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--success)' }}></div>
+                  </div>
+                  <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Swap asset</span>
+                </div>
+                <span className="text-sm font-bold" style={{ color: 'var(--success)' }}>-$5,000</span>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </main>

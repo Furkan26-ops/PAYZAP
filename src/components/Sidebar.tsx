@@ -36,7 +36,7 @@ export default function Sidebar() {
           height={32}
           className="w-8 h-8 rounded-lg object-cover flex-shrink-0"
         />
-        <span className="text-white font-bold tracking-tight text-[0.9375rem]">Payzap</span>
+        <span className="font-bold tracking-tight text-[1rem]" style={{ color: 'var(--text)' }}>Payzap</span>
       </div>
 
       {/* Network badge */}
