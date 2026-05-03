@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   description: "Secure, transparent, and compliant digital asset management for your organization.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -319,10 +319,4 @@ input[type="number"] {
     padding: 0.75rem 1.5rem;
     font-size: 0.9375rem;
   }
-
-  /* Reduce orb sizes on mobile */
-  .absolute.w-\[600px\].h-\[600px\] {
-    width: 300px !important;
-    height: 300px !important;
-  }
 }

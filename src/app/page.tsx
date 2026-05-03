@@ -59,8 +59,8 @@ export default function Login() {
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 relative bg-white overflow-hidden">
       
       {/* ── Background Orbs ── */}
-      <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-400 rounded-full mix-blend-multiply filter blur-[150px] opacity-20 pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-400 rounded-full mix-blend-multiply filter blur-[150px] opacity-20 pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-blue-400 rounded-full mix-blend-multiply filter blur-[150px] opacity-20 pointer-events-none" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-purple-400 rounded-full mix-blend-multiply filter blur-[150px] opacity-20 pointer-events-none" />
 
       {/* ── Verify Modal (Overlay) ── */}
       {step === 'verify' && (
