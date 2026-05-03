@@ -104,7 +104,7 @@ export default function SwapToken() {
           for (const token of ARC_TESTNET_SWAP_TOKENS) {
               try {
                   const balance = await readArcTokenBalance(publicClient, token, address);
-                  newBalances[token.symbol] = balance.toFixed(4);
+                  newBalances[token.symbol] = balance.toString();
               } catch (e) {
                   console.error(`Failed to fetch balance for ${token.symbol}`, e);
               }
@@ -349,12 +349,12 @@ export default function SwapToken() {
       
       // Deduct Token In
       const deducted = parseFloat(updatedBalances[tokenIn.symbol]) - parseFloat(amountIn);
-      updatedBalances[tokenIn.symbol] = deducted > 0 ? deducted.toFixed(4) : '0.00';
+      updatedBalances[tokenIn.symbol] = deducted > 0 ? deducted.toString() : '0.00';
       
       // Add Token Out
       const detectedAmountOut = tokenOutBalanceAfter - tokenOutBalanceBefore;
       const added = parseFloat(updatedBalances[tokenOut.symbol] || '0') + detectedAmountOut;
-      updatedBalances[tokenOut.symbol] = added.toFixed(4);
+      updatedBalances[tokenOut.symbol] = added.toString();
 
       setBalances(updatedBalances);
       localStorage.setItem('demoBalances', JSON.stringify(updatedBalances));
@@ -439,7 +439,9 @@ export default function SwapToken() {
                         <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>{t.symbol}</div>
                         <div className="text-xs" style={{ color: 'var(--muted)' }}>{t.name}</div>
                       </div>
-                      <div className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{balances[t.symbol] || '0.00'}</div>
+                      <div className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
+                        {balances[t.symbol] ? (Math.floor(parseFloat(balances[t.symbol]) * 10000) / 10000).toFixed(4) : '0.00'}
+                      </div>
                     </button>
                   ))}
                 </div>
@@ -483,7 +485,7 @@ export default function SwapToken() {
                 <div className="flex items-center justify-between text-xs font-medium" style={{ color: 'var(--muted-2)' }}>
                   <span>${amountIn ? (parseFloat(amountIn)*1).toFixed(2) : '0.00'}</span>
                   <div className="flex items-center gap-1">
-                    <span>Balance: {balances[tokenIn.symbol] || '0.00'}</span>
+                    <span>Balance: {balances[tokenIn.symbol] ? (Math.floor(parseFloat(balances[tokenIn.symbol]) * 10000) / 10000).toFixed(4) : '0.00'}</span>
                     <button onClick={handleMax} className="font-bold hover:underline" style={{ color: 'var(--primary)' }}>Max</button>
                   </div>
                 </div>
