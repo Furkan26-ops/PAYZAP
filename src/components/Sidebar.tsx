@@ -4,12 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  LayoutDashboard,
-  ArrowUpRight,
-  ArrowDownUp,
-  ArrowDownLeft,
-  History,
-  LogOut,
+  LayoutDashboard, ArrowUpRight, ArrowDownUp,
+  ArrowDownLeft, History, LogOut,
 } from 'lucide-react';
 
 const navItems = [
@@ -38,13 +34,19 @@ export default function Sidebar() {
           alt="PAYZAP"
           width={32}
           height={32}
-          className="w-8 h-8 rounded-lg object-cover"
+          className="w-8 h-8 rounded-lg object-cover flex-shrink-0"
         />
-        <span className="text-white font-extrabold tracking-tight text-base">Payzap</span>
+        <span className="text-white font-bold tracking-tight text-[0.9375rem]">Payzap</span>
+      </div>
+
+      {/* Network badge */}
+      <div className="mx-2 mb-6 flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-2">
+        <span className="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0" />
+        <span className="text-xs font-semibold text-[#94A3B8] uppercase tracking-wide">Arc Testnet</span>
       </div>
 
       {/* Nav */}
-      <nav className="flex flex-col gap-1 flex-1">
+      <nav className="flex flex-col gap-0.5 flex-1">
         {navItems.map(({ href, icon: Icon, label }) => (
           <Link
             key={href}
@@ -57,11 +59,11 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Logout */}
-      <button
-        onClick={handleLogout}
-        className="pz-sidebar-link w-full mt-4 text-left"
-      >
+      {/* Divider */}
+      <div className="border-t border-white/10 my-4" />
+
+      {/* Sign out */}
+      <button onClick={handleLogout} className="pz-sidebar-link">
         <LogOut className="w-4 h-4 flex-shrink-0" />
         Sign Out
       </button>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Copy, CheckCircle2 } from 'lucide-react';
+import { Copy, CheckCircle2, QrCode } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import Sidebar from '@/components/Sidebar';
 
@@ -12,8 +12,8 @@ export default function RequestMoney() {
   const router = useRouter();
 
   useEffect(() => {
-    const storedAddr = localStorage.getItem('walletAddress');
-    if (!storedAddr) { router.push('/'); } else { setAddress(storedAddr); }
+    const addr = localStorage.getItem('walletAddress');
+    if (!addr) { router.push('/'); } else { setAddress(addr); }
   }, [router]);
 
   const handleCopy = () => {
@@ -24,53 +24,51 @@ export default function RequestMoney() {
 
   if (!address) return null;
 
-  const qrData = `ethereum:${address}`;
-
   return (
-    <div className="flex min-h-screen bg-[#F0F2F5]">
+    <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar />
       <main className="pz-shell flex-1 flex items-start">
         <div className="w-full max-w-md">
-          <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight mb-1">Accept</h1>
-          <p className="text-sm text-[#64748B] mb-8">
-            Your automatically generated Arc wallet address.
-          </p>
+          <div className="pz-page-header" style={{ marginBottom: '1.5rem' }}>
+            <div>
+              <h1 className="pz-page-title">Accept</h1>
+              <p className="pz-page-subtitle">Share your QR code or wallet address to receive funds.</p>
+            </div>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'var(--green-soft)' }}>
+              <QrCode className="w-5 h-5" style={{ color: 'var(--green)' }} />
+            </div>
+          </div>
 
-          <div className="pz-card flex flex-col items-center">
-            <p className="text-sm text-[#64748B] text-center mb-6">
+          <div className="pz-card">
+            <p className="text-sm mb-5" style={{ color: 'var(--muted)' }}>
               Ask the sender to scan this QR code with their PAYZAP app to send you funds.
             </p>
 
             {/* QR Code */}
-            <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-md mb-6">
-              <QRCodeCanvas
-                value={qrData}
-                size={200}
-                level="H"
-                includeMargin={false}
-                fgColor="#0F172A"
-              />
+            <div className="flex justify-center mb-5">
+              <div className="bg-white p-5 rounded-2xl border shadow-sm" style={{ borderColor: 'var(--border)' }}>
+                <QRCodeCanvas value={`ethereum:${address}`} size={190} level="H" includeMargin={false} fgColor="#0F172A" />
+              </div>
             </div>
 
             {/* Address */}
-            <div className="w-full mb-6 p-4 bg-[#F8FAFC] rounded-xl border border-[#E2E8F0]">
-              <p className="text-xs font-mono text-[#64748B] break-all text-center">{address}</p>
+            <div className="p-4 rounded-xl mb-5" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+              <p className="text-[11px] font-bold uppercase tracking-widest mb-1.5" style={{ color: 'var(--muted)' }}>
+                Your Arc Wallet Address
+              </p>
+              <p className="text-xs font-mono break-all" style={{ color: 'var(--text-2)' }}>{address}</p>
             </div>
 
-            {/* Copy button */}
-            <button
-              onClick={handleCopy}
-              className="pz-btn-primary w-full justify-center text-base"
-            >
-              {copied ? (
-                <><CheckCircle2 className="w-5 h-5" /> Copied!</>
-              ) : (
-                <><Copy className="w-5 h-5" /> Copy Address</>
-              )}
+            {/* Copy Button */}
+            <button onClick={handleCopy} className="pz-btn pz-btn-primary pz-btn-lg w-full">
+              {copied
+                ? <><CheckCircle2 className="w-5 h-5" /> Copied!</>
+                : <><Copy className="w-5 h-5" /> Copy Address</>
+              }
             </button>
 
-            <p className="text-xs text-[#94A3B8] mt-4 text-center">
-              Only accept native USDC on Arc Testnet.
+            <p className="text-xs text-center mt-4" style={{ color: 'var(--muted-2)' }}>
+              Only accept native USDC on the Arc Testnet.
             </p>
           </div>
         </div>

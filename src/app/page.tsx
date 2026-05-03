@@ -2,27 +2,24 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronRight, ShieldCheck, Wallet, X, PenLine } from 'lucide-react';
+import { Wallet, X, PenLine, ShieldCheck, Zap, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
 type Step = 'login' | 'verify';
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState<Step>('login');
+  const [loading,          setLoading         ] = useState(false);
+  const [step,             setStep            ] = useState<Step>('login');
   const [connectedAddress, setConnectedAddress] = useState('');
-  const [signError, setSignError] = useState('');
+  const [signError,        setSignError       ] = useState('');
   const router = useRouter();
 
-  // Step 1: Connect wallet, then show the verify modal
   const handleConnectWallet = async () => {
     const ethereum = (window as any).ethereum;
-
     if (typeof ethereum === 'undefined') {
-      alert('Please install a Web3 wallet (e.g. MetaMask) to continue!');
+      alert('Please install MetaMask or another Web3 wallet to continue.');
       return;
     }
-
     setLoading(true);
     try {
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
@@ -35,20 +32,13 @@ export default function Login() {
     }
   };
 
-  // Step 2: Ask the wallet to sign a verification message
   const handleSignMessage = async () => {
     const ethereum = (window as any).ethereum;
     setSignError('');
     setLoading(true);
-
     try {
-      const message = `Welcome to PAYZAP!\n\nSign this message to verify you own this wallet.\n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nWallet: ${connectedAddress}\nTimestamp: ${new Date().toISOString()}`;
-
-      await ethereum.request({
-        method: 'personal_sign',
-        params: [message, connectedAddress],
-      });
-
+      const message = `Welcome to PAYZAP!\n\nSign this message to verify you own this wallet.\nThis will not trigger any transaction or cost any gas.\n\nWallet: ${connectedAddress}\nTimestamp: ${new Date().toISOString()}`;
+      await ethereum.request({ method: 'personal_sign', params: [message, connectedAddress] });
       localStorage.setItem('walletAddress', connectedAddress);
       router.push('/dashboard');
     } catch (err: any) {
@@ -66,66 +56,58 @@ export default function Login() {
   };
 
   return (
-    <div className="arc-hero-bg min-h-screen flex items-center justify-center relative overflow-hidden px-4">
-      <div className="arc-grid absolute inset-0 opacity-20"></div>
-      <div className="absolute left-[8%] top-[14%] h-28 w-28 rounded-full border border-arc-border bg-arc-panel blur-2xl"></div>
-      <div className="absolute right-[10%] bottom-[14%] h-36 w-36 rounded-full border border-arc-cyan/20 bg-arc-cyan/10 blur-3xl"></div>
+    <div className="pz-login-bg">
+      {/* Ambient glows */}
+      <div className="pz-login-glow-1" />
+      <div className="pz-login-glow-2" />
 
-      {/* ── Verify Modal Overlay ── */}
+      {/* ── Verify Modal ── */}
       {step === 'verify' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={handleCancelVerify} />
-
-          {/* Modal */}
-          <div className="relative arc-panel w-full max-w-sm rounded-[2rem] px-8 py-10 text-center z-10 text-arc-text shadow-2xl border border-arc-border">
+        <div className="pz-modal-overlay">
+          <div className="pz-modal-backdrop" onClick={handleCancelVerify} />
+          <div className="pz-modal animate-fade-up">
+            {/* Close */}
             <button
               onClick={handleCancelVerify}
-              className="absolute top-5 right-5 p-2 rounded-full text-arc-textMuted hover:text-arc-text hover:bg-arc-border/30 transition-colors"
+              className="absolute top-4 right-4 p-1.5 rounded-lg text-[#94A3B8] hover:text-[#0F172A] hover:bg-[#F1F5F9] transition-colors"
             >
-              <X className="h-4 w-4" />
+              <X className="w-4 h-4" />
             </button>
 
             {/* Icon */}
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-cyan-500/10 border border-cyan-500/20">
-              <PenLine className="h-8 w-8 text-arc-cyan" />
+            <div className="w-14 h-14 rounded-2xl bg-[#EFF6FF] flex items-center justify-center mb-5 border border-[#DBEAFE]">
+              <PenLine className="w-7 h-7 text-[#2563EB]" />
             </div>
 
-            <h2 className="text-2xl font-extrabold tracking-tight text-arc-text mb-2">
-              Verify your account
-            </h2>
-            <p className="text-sm leading-6 text-arc-textMuted mb-2">
+            <h2 className="text-xl font-bold text-[#0F172A] mb-1.5">Verify your account</h2>
+            <p className="text-sm text-[#64748B] leading-relaxed mb-5">
               To finish connecting, you must sign a message in your wallet to verify that you are the owner of this account.
             </p>
 
-            {/* Connected wallet chip */}
-            <div className="my-5 flex items-center justify-center gap-2 rounded-full border border-arc-border bg-arc-panel px-4 py-2 w-fit mx-auto">
-              <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
-              <span className="text-xs font-mono font-medium text-arc-textMuted">
-                {connectedAddress.slice(0, 8)}...{connectedAddress.slice(-6)}
+            {/* Address chip */}
+            <div className="flex items-center gap-2 bg-[#F8FAFC] border border-[#E2E8F0] rounded-full px-4 py-2 w-fit mb-5">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+              <span className="text-xs font-mono font-semibold text-[#334155]">
+                {connectedAddress.slice(0, 10)}…{connectedAddress.slice(-6)}
               </span>
             </div>
 
             {signError && (
-              <p className="mb-4 text-sm text-rose-400 font-medium">{signError}</p>
+              <div className="mb-4 bg-[#FEF2F2] border border-red-200 text-red-600 text-sm font-medium px-4 py-3 rounded-lg">
+                {signError}
+              </div>
             )}
 
             <button
               id="sign-message-btn"
               onClick={handleSignMessage}
               disabled={loading}
-              className="w-full flex justify-center items-center gap-2 py-4 px-6 rounded-2xl text-base font-bold text-white bg-gradient-to-r from-arc-cyan to-arc-blue hover:opacity-90 shadow-[0_0_20px_rgba(6,182,212,0.4)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-arc-cyan disabled:opacity-50 transition-all duration-300 transform hover:-translate-y-1"
+              className="pz-btn pz-btn-primary pz-btn-lg w-full"
             >
               {loading ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  Waiting for signature...
-                </div>
+                <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Waiting for signature…</>
               ) : (
-                <>
-                  <PenLine className="h-5 w-5" />
-                  Sign message
-                </>
+                <><PenLine className="w-4 h-4" /> Sign message</>
               )}
             </button>
           </div>
@@ -133,58 +115,66 @@ export default function Login() {
       )}
 
       {/* ── Login Card ── */}
-      <div className="arc-panel w-full max-w-md rounded-[2rem] px-8 py-10 text-center relative z-10 text-arc-text">
-        <div className="mb-8 flex items-center justify-center gap-3">
-          <Image src="/logo.png" alt="PAYZAP Logo" width={64} height={64} className="h-16 w-16 rounded-2xl animate-float shadow-xl border border-arc-border object-cover" />
-          <div className="text-left">
-            <div className="text-xs font-semibold uppercase tracking-[0.28em] text-arc-cyan">PAYZAP</div>
-            <div className="text-sm font-medium text-arc-textMuted">Your Web3 Wallet on Arc</div>
+      <div className="pz-login-card animate-fade-up">
+        {/* Logo */}
+        <div className="flex items-center gap-3 mb-8">
+          <Image
+            src="/logo.png"
+            alt="PAYZAP"
+            width={44}
+            height={44}
+            className="w-11 h-11 rounded-xl object-cover flex-shrink-0"
+          />
+          <div>
+            <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#2563EB]">PAYZAP</div>
+            <div className="text-sm text-[#94A3B8] font-medium">Your Web3 Wallet on Arc</div>
           </div>
         </div>
 
-        <div className="mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-arc-text">Your crypto. Your control.</h1>
-          <p className="mt-3 text-base leading-7 text-arc-textMuted">
+        {/* Headline */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-extrabold text-white tracking-tight leading-tight mb-3">
+            Your crypto.<br />Your control.
+          </h1>
+          <p className="text-sm text-[#94A3B8] leading-relaxed">
             Send, receive, swap, and track your digital assets. All in one place on Arc.
           </p>
         </div>
 
-        <div className="mb-8 grid grid-cols-2 gap-3 text-left">
-          <div className="glass-panel rounded-2xl p-4">
-            <div className="mb-2 flex items-center gap-2 text-arc-cyan">
-              <ShieldCheck className="h-4 w-4" />
-              <span className="text-xs font-semibold uppercase tracking-[0.2em]">Security</span>
+        {/* Feature chips */}
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          <div className="pz-login-feature">
+            <div className="flex items-center gap-2 mb-1.5">
+              <ShieldCheck className="w-4 h-4 text-[#2563EB]" />
+              <span className="text-xs font-bold text-white uppercase tracking-[0.12em]">Security</span>
             </div>
-            <p className="text-sm text-arc-textMuted">Your keys, your assets. Non-custodial and fully secure.</p>
+            <p className="text-xs text-[#64748B] leading-relaxed">Your keys, your assets. Non-custodial and fully secure.</p>
           </div>
-          <div className="glass-panel rounded-2xl p-4">
-            <div className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-arc-blue">Network</div>
-            <p className="text-sm text-arc-textMuted">Send, swap & receive on Arc Network instantly.</p>
+          <div className="pz-login-feature">
+            <div className="flex items-center gap-2 mb-1.5">
+              <Zap className="w-4 h-4 text-[#7C3AED]" />
+              <span className="text-xs font-bold text-white uppercase tracking-[0.12em]">Network</span>
+            </div>
+            <p className="text-xs text-[#64748B] leading-relaxed">Send, swap & receive on Arc Network instantly.</p>
           </div>
         </div>
 
+        {/* CTA */}
         <button
           id="connect-wallet-btn"
           onClick={handleConnectWallet}
           disabled={loading}
-          className="w-full flex justify-center items-center gap-2 py-4 px-6 rounded-2xl text-base font-bold text-white bg-gradient-to-r from-arc-cyan to-arc-blue hover:opacity-90 shadow-[0_0_20px_rgba(6,182,212,0.4)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-arc-cyan disabled:opacity-50 transition-all duration-300 transform hover:-translate-y-1"
+          className="pz-btn pz-btn-primary pz-btn-lg w-full"
         >
           {loading && step === 'login' ? (
-            <div className="flex items-center gap-2">
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              Connecting...
-            </div>
+            <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Connecting…</>
           ) : (
-            <>
-              <Wallet className="h-5 w-5" />
-              Connect Wallet
-              <ChevronRight className="h-5 w-5" />
-            </>
+            <><Wallet className="w-4 h-4" /> Connect Wallet <ChevronRight className="w-4 h-4 ml-auto opacity-60" /></>
           )}
         </button>
 
-        <p className="mt-8 text-sm text-arc-textMuted font-medium tracking-wide">
-          Powered by Arc Network
+        <p className="text-center text-xs text-[#475569] mt-6 font-medium">
+          Powered by Arc Network · Non-custodial
         </p>
       </div>
     </div>

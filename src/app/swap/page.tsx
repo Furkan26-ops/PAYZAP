@@ -365,20 +365,20 @@ export default function SwapToken() {
 
   if (receipt) {
     return (
-      <div className="flex min-h-screen bg-[#F0F2F5]">
+      <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
         <Sidebar />
         <main className="pz-shell flex-1 flex items-center justify-center">
           <div className="pz-card w-full max-w-sm text-center">
-            <div className="w-16 h-16 bg-[#DBEAFE] rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-8 h-8 text-blue-600" />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style={{ background: 'var(--blue-mid)' }}>
+              <CheckCircle2 className="w-8 h-8" style={{ color: 'var(--blue)' }} />
             </div>
-            <h2 className="text-2xl font-extrabold text-[#0F172A] mb-1">Swap Confirmed!</h2>
-            <p className="text-sm text-[#64748B] mb-6">Mined on Arc Testnet.</p>
-            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4 text-sm text-left space-y-3 mb-6">
-              <div className="flex justify-between"><span className="text-[#64748B]">Sold</span><span className="font-bold text-[#0F172A]">{receipt.amountIn} {receipt.tokenIn.symbol}</span></div>
-              <div className="flex justify-between"><span className="text-[#64748B]">Bought</span><span className="font-bold text-[#2563EB]">{receipt.amountOut} {receipt.tokenOut.symbol}</span></div>
+            <h2 className="text-2xl font-extrabold mb-1" style={{ color: 'var(--text)' }}>Swap Confirmed!</h2>
+            <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>Mined on Arc Testnet.</p>
+            <div className="p-4 rounded-xl text-sm text-left space-y-3 mb-6" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+              <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Sold</span><span className="font-bold">{receipt.amountIn} {receipt.tokenIn.symbol}</span></div>
+              <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Bought</span><span className="font-bold" style={{ color: 'var(--blue)' }}>{receipt.amountOut} {receipt.tokenOut.symbol}</span></div>
             </div>
-            <button onClick={() => router.push('/dashboard')} className="pz-btn-primary w-full justify-center">
+            <button onClick={() => router.push('/dashboard')} className="pz-btn pz-btn-primary pz-btn-lg w-full">
               Back to Dashboard
             </button>
           </div>
@@ -390,34 +390,47 @@ export default function SwapToken() {
   const priceImpact = amountIn && amountOut ? (Math.max(0, (parseFloat(amountIn) - parseFloat(amountOut || '0')) / Math.max(parseFloat(amountIn), 1)) * 100).toFixed(2) : '0.00';
 
   return (
-    <div className="flex min-h-screen bg-[#F0F2F5]">
+    <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar />
       <main className="pz-shell flex-1 flex items-start">
         <div className="w-full max-w-md">
-          <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight mb-1">Token Exchange</h1>
-          <p className="text-sm text-[#64748B] mb-8">Swap tokens on Arc Testnet</p>
+          <div className="pz-page-header" style={{ marginBottom: '1.5rem' }}>
+            <div>
+              <h1 className="pz-page-title">Token Exchange</h1>
+              <p className="pz-page-subtitle">Swap tokens on Arc Testnet</p>
+            </div>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'var(--violet-soft)' }}>
+              <ArrowDown className="w-5 h-5" style={{ color: 'var(--violet)' }} />
+            </div>
+          </div>
 
           {/* Token Selection Modal */}
           {selectingTarget && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-              <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSelectingTarget(null)} />
-              <div className="relative w-full max-w-sm bg-white rounded-2xl p-6 z-10 shadow-2xl">
+            <div className="pz-modal-overlay">
+              <div className="pz-modal-backdrop" onClick={() => setSelectingTarget(null)} />
+              <div className="pz-modal animate-fade-up">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-[#0F172A]">Select Token</h3>
-                  <button onClick={() => setSelectingTarget(null)} className="p-1.5 rounded-full hover:bg-[#F1F5F9] text-[#64748B]"><X className="w-4 h-4" /></button>
+                  <h3 className="text-base font-bold" style={{ color: 'var(--text)' }}>Select Token</h3>
+                  <button onClick={() => setSelectingTarget(null)} className="p-1.5 rounded-lg hover:bg-[#F1F5F9] transition-colors" style={{ color: 'var(--muted)' }}>
+                    <X className="w-4 h-4" />
+                  </button>
                 </div>
-                <div className="space-y-2 max-h-72 overflow-y-auto">
+                <div className="space-y-1.5 max-h-72 overflow-y-auto">
                   {ARC_TESTNET_SWAP_TOKENS.map(t => (
                     <button key={t.symbol} onClick={() => selectToken(t)}
-                      className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-[#F1F5F9] border border-transparent hover:border-[#E2E8F0] transition-all text-left">
-                      <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#F1F5F9]">
+                      className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-colors"
+                      style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
+                      onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--blue)')}
+                      onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}
+                    >
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: 'var(--border-2)' }}>
                         <TokenIcon symbol={t.symbol} logo={t.logo} size={22} />
                       </div>
                       <div className="flex-1">
-                        <div className="text-sm font-bold text-[#0F172A]">{t.symbol}</div>
-                        <div className="text-xs text-[#64748B]">{t.name}</div>
+                        <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>{t.symbol}</div>
+                        <div className="text-xs" style={{ color: 'var(--muted)' }}>{t.name}</div>
                       </div>
-                      <div className="text-sm font-semibold text-[#0F172A]">{balances[t.symbol] || '0.00'}</div>
+                      <div className="text-sm font-semibold" style={{ color: 'var(--text)' }}>{balances[t.symbol] || '0.00'}</div>
                     </button>
                   ))}
                 </div>
@@ -426,32 +439,41 @@ export default function SwapToken() {
           )}
 
           <div className="pz-card">
-            {errorMsg && (<div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl text-sm font-medium mb-5">{errorMsg}</div>)}
-            {quoteError && !errorMsg && (<div className="bg-amber-50 border border-amber-200 text-amber-700 p-4 rounded-xl text-sm font-medium mb-5">{quoteError}</div>)}
+            {errorMsg && (
+              <div className="p-4 rounded-xl text-sm font-medium mb-5" style={{ background: 'var(--red-soft)', border: '1px solid #FECACA', color: 'var(--red)' }}>
+                {errorMsg}
+              </div>
+            )}
+            {quoteError && !errorMsg && (
+              <div className="p-4 rounded-xl text-sm font-medium mb-5" style={{ background: 'var(--amber-soft)', border: '1px solid #FDE68A', color: '#92400E' }}>
+                {quoteError}
+              </div>
+            )}
 
-            <div className="mb-5 flex items-center justify-between p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-sm">
-              <span className="text-[#64748B] font-medium">Arc Testnet · Keep USDC for fees</span>
+            <div className="mb-5 flex items-center justify-between p-3 rounded-xl text-sm" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+              <span className="font-medium" style={{ color: 'var(--muted)' }}>Arc Testnet · Keep USDC for fees</span>
               <span className="pz-chip">Testnet</span>
             </div>
 
             <div className="space-y-2 relative">
               {/* Pay panel */}
-              <div className="border border-[#E2E8F0] rounded-xl p-4 bg-[#F8FAFC]">
-                <div className="text-xs font-semibold uppercase tracking-wide text-[#64748B] mb-3">Pay</div>
+              <div className="p-4 rounded-xl" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+                <div className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--muted)' }}>Pay</div>
                 <div className="flex items-center gap-3">
                   <input type="number" placeholder="0" value={amountIn} onChange={e => setAmountIn(e.target.value)}
-                    className="flex-1 bg-transparent text-3xl font-extrabold text-[#0F172A] outline-none placeholder:text-[#CBD5E1]" />
+                    className="flex-1 bg-transparent text-3xl font-extrabold outline-none"
+                    style={{ color: 'var(--text)', '--tw-placeholder-color': 'var(--border)' } as any} />
                   <button onClick={() => setSelectingTarget('in')}
-                    className="flex items-center gap-2 bg-white border border-[#E2E8F0] px-3 py-2 rounded-lg font-semibold text-sm hover:border-[#2563EB] transition-all flex-shrink-0">
-                    <TokenIcon symbol={tokenIn.symbol} logo={tokenIn.logo} size={18} />
-                    {tokenIn.symbol} <ChevronDown className="w-3.5 h-3.5 text-[#94A3B8]" />
+                    className="pz-btn pz-btn-ghost pz-btn-sm flex items-center gap-2 flex-shrink-0">
+                    <TokenIcon symbol={tokenIn.symbol} logo={tokenIn.logo} size={16} />
+                    {tokenIn.symbol} <ChevronDown className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <div className="flex items-center justify-between mt-3 text-xs text-[#94A3B8]">
-                  <span>${amountIn ? (parseFloat(amountIn) * 1.0).toFixed(2) : '0.00'}</span>
+                <div className="flex items-center justify-between mt-3 text-xs" style={{ color: 'var(--muted-2)' }}>
+                  <span>${amountIn ? (parseFloat(amountIn)*1).toFixed(2) : '0.00'}</span>
                   <div className="flex items-center gap-2">
                     <span>Balance: {balances[tokenIn.symbol] || '0.00'}</span>
-                    <button onClick={handleMax} className="text-[#2563EB] font-bold">Max</button>
+                    <button onClick={handleMax} className="font-bold" style={{ color: 'var(--blue)' }}>Max</button>
                   </div>
                 </div>
               </div>
@@ -459,45 +481,47 @@ export default function SwapToken() {
               {/* Swap arrow */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                 <button onClick={handleSwapTokens}
-                  className="w-9 h-9 bg-white border-2 border-[#E2E8F0] rounded-full flex items-center justify-center shadow hover:border-[#2563EB] text-[#2563EB] transition-all">
+                  className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md transition-colors"
+                  style={{ border: '2px solid var(--border)', color: 'var(--blue)' }}>
                   <ArrowDown className="w-4 h-4" />
                 </button>
               </div>
 
               {/* Receive panel */}
-              <div className="border border-[#E2E8F0] rounded-xl p-4 bg-[#F8FAFC]">
-                <div className="text-xs font-semibold uppercase tracking-wide text-[#64748B] mb-3">Receive</div>
+              <div className="p-4 rounded-xl" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+                <div className="text-xs font-bold uppercase tracking-wide mb-3" style={{ color: 'var(--muted)' }}>Receive</div>
                 <div className="flex items-center gap-3">
                   <input type="number" placeholder="0" value={amountOut} readOnly
-                    className="flex-1 bg-transparent text-3xl font-extrabold text-[#2563EB] outline-none placeholder:text-[#CBD5E1]" />
+                    className="flex-1 bg-transparent text-3xl font-extrabold outline-none"
+                    style={{ color: 'var(--blue)' }} />
                   <button onClick={() => setSelectingTarget('out')}
-                    className="flex items-center gap-2 bg-white border border-[#E2E8F0] px-3 py-2 rounded-lg font-semibold text-sm hover:border-[#2563EB] transition-all flex-shrink-0">
-                    <TokenIcon symbol={tokenOut.symbol} logo={tokenOut.logo} size={18} />
-                    {tokenOut.symbol} <ChevronDown className="w-3.5 h-3.5 text-[#94A3B8]" />
+                    className="pz-btn pz-btn-ghost pz-btn-sm flex items-center gap-2 flex-shrink-0">
+                    <TokenIcon symbol={tokenOut.symbol} logo={tokenOut.logo} size={16} />
+                    {tokenOut.symbol} <ChevronDown className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <div className="flex items-center justify-between mt-3 text-xs text-[#94A3B8]">
-                  <span>{quoteLoading ? 'Getting quote…' : `$${amountOut ? (parseFloat(amountOut)*1.0).toFixed(2) : '0.00'}`}</span>
+                <div className="flex items-center justify-between mt-3 text-xs" style={{ color: 'var(--muted-2)' }}>
+                  <span>{quoteLoading ? 'Getting quote…' : `$${amountOut ? (parseFloat(amountOut)*1).toFixed(2) : '0.00'}`}</span>
                   <span>Balance: {balances[tokenOut.symbol] || '0.00'}</span>
                 </div>
               </div>
             </div>
 
             {/* Summary */}
-            <div className="mt-5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4 text-sm space-y-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-[#64748B] mb-2">Current exchange rate</p>
-              <div className="flex justify-between"><span className="text-[#64748B]">Slippage</span><span className="font-semibold">{(SWAP_SLIPPAGE_BPS/100).toFixed(2)}%</span></div>
-              <div className="flex justify-between"><span className="text-[#64748B]">Network fee</span><span className="font-semibold">$0.03</span></div>
-              <div className="flex justify-between">
-                <span className="text-[#64748B]">Price impact</span>
-                <span className={`font-semibold ${parseFloat(priceImpact)>1?'text-red-500':'text-emerald-600'}`}>{priceImpact}%</span>
+            <div className="mt-5 p-4 rounded-xl text-sm space-y-2" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+              <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--muted)' }}>Exchange Summary</p>
+              <div className="flex justify-between" style={{ color: 'var(--muted)' }}><span>Slippage</span><span className="font-semibold" style={{ color: 'var(--text)' }}>{(SWAP_SLIPPAGE_BPS/100).toFixed(2)}%</span></div>
+              <div className="flex justify-between" style={{ color: 'var(--muted)' }}><span>Network fee</span><span className="font-semibold" style={{ color: 'var(--text)' }}>$0.03</span></div>
+              <div className="flex justify-between" style={{ color: 'var(--muted)' }}>
+                <span>Price impact</span>
+                <span className="font-semibold" style={{ color: parseFloat(priceImpact) > 1 ? 'var(--red)' : 'var(--green)' }}>{priceImpact}%</span>
               </div>
             </div>
 
             <button onClick={handleSwap}
               disabled={processing || quoteLoading || !amountIn || !amountOut || Boolean(quoteError)}
-              className="pz-btn-primary w-full justify-center mt-5 text-base py-3">
-              {processing ? (<><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Routing Swap…</>) :
+              className="pz-btn pz-btn-primary pz-btn-lg w-full mt-5">
+              {processing ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Routing Swap…</> :
                quoteLoading ? 'Fetching quote…' : !amountIn ? 'Enter an amount' :
                quoteError || !amountOut ? 'No quote available' : 'Execute Swap'}
             </button>
@@ -507,4 +531,3 @@ export default function SwapToken() {
     </div>
   );
 }
-
