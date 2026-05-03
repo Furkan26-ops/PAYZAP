@@ -13,6 +13,41 @@ import TokenIcon from '@/components/TokenIcon';
 import Sidebar from '@/components/Sidebar';
 import { TOKENS, TOKENS_BY_SYMBOL } from '@/constants/tokens';
 import { supabase } from '@/lib/supabase';
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell
+} from 'recharts';
+
+const inflowData = [
+  { month: 'JAN', amount: 4000 },
+  { month: 'FEB', amount: 8000 },
+  { month: 'MAR', amount: 10000 },
+  { month: 'APR', amount: 4500 },
+  { month: 'MAY', amount: 9000 },
+  { month: 'JUN', amount: 8500 },
+  { month: 'JUL', amount: 3000 },
+];
+
+const outflowData = [
+  { month: 'JAN', amount: 8000 },
+  { month: 'FEB', amount: 5000 },
+  { month: 'MAR', amount: 2000 },
+  { month: 'APR', amount: 10000 },
+  { month: 'MAY', amount: 3000 },
+  { month: 'JUN', amount: 4000 },
+  { month: 'JUL', amount: 1000 },
+];
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white shadow-md rounded-lg p-2 border border-slate-100">
+        <p className="text-sm font-bold text-slate-800">${payload[0].value.toLocaleString()}</p>
+        <p className="text-[10px] uppercase font-bold text-slate-400">{label}</p>
+      </div>
+    );
+  }
+  return null;
+};
 
 const ARC_CHAIN = {
   id: 5042002,
@@ -184,33 +219,61 @@ export default function Dashboard() {
           {/* Charts Row */}
           <div className="pz-card">
             <div className="flex justify-between items-center mb-6">
-              <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>Inflow</span>
+              <span className="text-sm font-bold text-slate-900">Inflow</span>
               <span className="text-xs font-bold" style={{ color: 'var(--success)' }}>+ 11 Inflow</span>
             </div>
-            <div className="flex items-end justify-between h-32 gap-3 mb-2 px-2">
-              {[40, 80, 100, 45, 90, 85, 30].map((h, i) => (
-                <div key={i} className="w-full rounded-t-md opacity-90 transition-all hover:opacity-100" 
-                     style={{ background: 'linear-gradient(to top, #60A5FA, #3B82F6)', height: `${h}%` }}></div>
-              ))}
-            </div>
-            <div className="flex justify-between text-[10px] uppercase font-bold px-2" style={{ color: 'var(--muted-2)' }}>
-              <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
+            <div className="h-40 w-full mb-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={inflowData} barSize={32} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+                  <defs>
+                    <linearGradient id="colorInflow" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#60A5FA" />
+                      <stop offset="100%" stopColor="#3B82F6" />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
+                  <XAxis 
+                    dataKey="month" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: '#94A3B8', fontSize: 10, fontWeight: 600 }} 
+                    dy={10} 
+                  />
+                  <YAxis hide />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+                  <Bar dataKey="amount" fill="url(#colorInflow)" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
           <div className="pz-card">
             <div className="flex justify-between items-center mb-6">
-              <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>Outflow</span>
+              <span className="text-sm font-bold text-slate-900">Outflow</span>
               <span className="text-xs font-bold" style={{ color: 'var(--danger)' }}>- Outflow</span>
             </div>
-            <div className="flex items-end justify-between h-32 gap-3 mb-2 px-2">
-              {[80, 50, 20, 100, 30, 40, 10].map((h, i) => (
-                <div key={i} className="w-full rounded-t-md opacity-90 transition-all hover:opacity-100" 
-                     style={{ background: 'linear-gradient(to top, #FCA5A5, #EF4444)', height: `${h}%` }}></div>
-              ))}
-            </div>
-            <div className="flex justify-between text-[10px] uppercase font-bold px-2" style={{ color: 'var(--muted-2)' }}>
-              <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
+            <div className="h-40 w-full mb-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={outflowData} barSize={32} margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+                  <defs>
+                    <linearGradient id="colorOutflow" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#FCA5A5" />
+                      <stop offset="100%" stopColor="#EF4444" />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
+                  <XAxis 
+                    dataKey="month" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    tick={{ fill: '#94A3B8', fontSize: 10, fontWeight: 600 }} 
+                    dy={10} 
+                  />
+                  <YAxis hide />
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: 'transparent' }} />
+                  <Bar dataKey="amount" fill="url(#colorOutflow)" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
