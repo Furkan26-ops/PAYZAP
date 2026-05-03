@@ -17,25 +17,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell
 } from 'recharts';
 
-const inflowData = [
-  { month: 'JAN', amount: 4000 },
-  { month: 'FEB', amount: 8000 },
-  { month: 'MAR', amount: 10000 },
-  { month: 'APR', amount: 4500 },
-  { month: 'MAY', amount: 9000 },
-  { month: 'JUN', amount: 8500 },
-  { month: 'JUL', amount: 3000 },
-];
 
-const outflowData = [
-  { month: 'JAN', amount: 8000 },
-  { month: 'FEB', amount: 5000 },
-  { month: 'MAR', amount: 2000 },
-  { month: 'APR', amount: 10000 },
-  { month: 'MAY', amount: 3000 },
-  { month: 'JUN', amount: 4000 },
-  { month: 'JUL', amount: 1000 },
-];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -71,6 +53,8 @@ export default function Dashboard() {
   const [historyLoading,  setHistoryLoading ] = useState(true);
   const [heldTokens,      setHeldTokens     ] = useState<{ symbol: string; amount: string }[]>([]);
   const [showTokensModal, setShowTokensModal] = useState(false);
+  const [inflowData,      setInflowData     ] = useState<any[]>([]);
+  const [outflowData,     setOutflowData    ] = useState<any[]>([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -114,16 +98,49 @@ export default function Dashboard() {
       } catch (e) { console.error(e); }
       setLoading(false);
 
-      fetch(`/api/history?address=${addr}&limit=6`, { cache: 'no-store' })
-        .then(r => r.json()).then(d => { setRecentTxs(d.items || []); setHistoryLoading(false); })
+      fetch(`/api/history?address=${addr}&limit=100`, { cache: 'no-store' })
+        .then(r => r.json())
+        .then(d => { 
+          const txs = d.items || [];
+          setRecentTxs(txs); 
+
+          const inflows = Array(7).fill(0);
+          const outflows = Array(7).fill(0);
+          const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+          
+          const currentMonth = new Date().getMonth();
+          const labels: string[] = [];
+          for (let i = 6; i >= 0; i--) {
+            labels.push(months[(currentMonth - i + 12) % 12]);
+          }
+
+          txs.forEach((tx: any) => {
+            const d = new Date(tx.timestamp);
+            const m = d.getMonth();
+            const monthName = months[m];
+            const index = labels.indexOf(monthName);
+            
+            if (index !== -1) {
+               // Extract numeric amount from "X.XX USDC" or similar
+               const amountStr = String(tx.amountDisplay || '0').replace(/[^0-9.]/g, '');
+               const amount = parseFloat(amountStr) || 0;
+               if (tx.type === 'receive') inflows[index] += amount;
+               else outflows[index] += amount;
+            }
+          });
+
+          setInflowData(labels.map((month, i) => ({ month, amount: inflows[i] })));
+          setOutflowData(labels.map((month, i) => ({ month, amount: outflows[i] })));
+          setHistoryLoading(false); 
+        })
         .catch(() => setHistoryLoading(false));
     };
 
     init();
   }, [router]);
 
-  const swapCount  = useMemo(() => recentTxs.filter(tx => tx.type === 'swap').length,  [recentTxs]);
-  const sendCount  = useMemo(() => recentTxs.filter(tx => tx.type !== 'swap').length,  [recentTxs]);
+  const inflowCount = useMemo(() => recentTxs.filter(tx => tx.type === 'receive').length, [recentTxs]);
+  const outflowCount = useMemo(() => recentTxs.filter(tx => tx.type !== 'receive').length, [recentTxs]);
   const totalFlow  = useMemo(() => recentTxs.reduce((s, tx) => {
     const n = parseFloat(String(tx.amountDisplay || '0').split(' ')[0].split('->')[0].trim());
     return s + (Number.isFinite(n) ? n : 0);
@@ -199,20 +216,26 @@ export default function Dashboard() {
 
             {/* Quick summary rows (matching mockup) */}
             <div className="space-y-4">
-              {[
-                { icon: '💰', date: 'Oct 1, 2022', val: '$395.77', color: 'var(--text)', bg: '#FEF3C7' },
-                { icon: '💰', date: 'Oct 1, 2022', val: '$100,000', color: 'var(--text)', bg: '#FEF3C7' },
-                { icon: '💸', date: 'BTC cash', val: '-$15,000', color: 'var(--danger)', bg: '#E0E7FF' },
-                { icon: '🪙', date: 'Oct 1, 2021', val: '-$5,000', color: 'var(--text)', bg: '#F1F5F9' },
-              ].map((row, i) => (
-                <div key={i} className="flex justify-between items-center px-2">
-                  <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs" style={{ background: row.bg }}>{row.icon}</div>
-                    <span className="text-sm font-bold text-slate-800">{row.date}</span>
+              {historyLoading ? (
+                 <div className="flex items-center gap-3 px-2 py-4"><RefreshCw className="w-5 h-5 animate-spin opacity-40 text-slate-400" /></div>
+              ) : recentTxs.slice(0, 4).map((tx, i) => {
+                const date = new Date(tx.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const isReceive = tx.type === 'receive';
+                return (
+                  <div key={tx.id || i} className="flex justify-between items-center px-2">
+                    <div className="flex items-center gap-3">
+                      <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs" 
+                           style={{ background: isReceive ? '#D1FAE5' : (tx.type === 'swap' ? '#DBEAFE' : '#FEE2E2') }}>
+                        {isReceive ? '💰' : (tx.type === 'swap' ? '💸' : '🪙')}
+                      </div>
+                      <span className="text-sm font-bold text-slate-800">{isReceive ? 'Received' : (tx.type === 'swap' ? 'Swap' : 'Sent')} {tx.tokenSymbol}</span>
+                    </div>
+                    <span className="text-sm font-bold" style={{ color: isReceive ? 'var(--success)' : 'var(--text)' }}>
+                      {isReceive ? '+' : '-'}{tx.amountDisplay}
+                    </span>
                   </div>
-                  <span className="text-sm font-bold" style={{ color: row.color }}>{row.val}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -220,7 +243,7 @@ export default function Dashboard() {
           <div className="pz-card">
             <div className="flex justify-between items-center mb-6">
               <span className="text-sm font-bold text-slate-900">Inflow</span>
-              <span className="text-xs font-bold" style={{ color: 'var(--success)' }}>+ 11 Inflow</span>
+              <span className="text-xs font-bold" style={{ color: 'var(--success)' }}>+ {inflowCount} Inflow</span>
             </div>
             <div className="h-40 w-full mb-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -250,7 +273,7 @@ export default function Dashboard() {
           <div className="pz-card">
             <div className="flex justify-between items-center mb-6">
               <span className="text-sm font-bold text-slate-900">Outflow</span>
-              <span className="text-xs font-bold" style={{ color: 'var(--danger)' }}>- Outflow</span>
+              <span className="text-xs font-bold" style={{ color: 'var(--danger)' }}>- {outflowCount} Outflow</span>
             </div>
             <div className="h-40 w-full mb-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -284,42 +307,46 @@ export default function Dashboard() {
               <span>Summary</span>
             </div>
             <div className="space-y-6">
-              <div className="flex justify-between items-center">
-                <div className="flex gap-4 items-center">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-green-100 text-green-600 shadow-sm border border-green-200">
-                    <ArrowDownLeft className="w-5 h-5" />
+              {historyLoading ? (
+                 <div className="animate-pulse space-y-4">
+                   {[1,2,3,4].map(i => <div key={i} className="h-14 bg-slate-50 border border-slate-100 rounded-xl" />)}
+                 </div>
+              ) : recentTxs.length === 0 ? (
+                <p className="text-sm text-slate-500 py-4">No recent activity found.</p>
+              ) : recentTxs.slice(0, 10).map((tx, i) => {
+                 const isReceive = tx.type === 'receive';
+                 const isSwap = tx.type === 'swap';
+                 const Icon = isReceive ? ArrowDownLeft : isSwap ? ArrowDownUp : ArrowUpRight;
+                 const bgClass = isReceive ? 'bg-green-100 text-green-600 border-green-200' : isSwap ? 'bg-blue-100 text-blue-600 border-blue-200' : 'bg-red-100 text-red-600 border-red-200';
+                 
+                 return (
+                  <div key={tx.id || i} className="flex justify-between items-center group hover:bg-slate-50 -mx-2 px-2 py-2 rounded-xl transition-colors cursor-pointer">
+                    <div className="flex gap-4 items-center">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm border ${bgClass}`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold text-slate-900 mb-0.5 capitalize">
+                          {isReceive ? `Received ${tx.tokenSymbol}` : isSwap ? `Swap ${tx.tokenSymbol}` : `Sent ${tx.tokenSymbol}`}
+                        </div>
+                        <div className="text-xs font-medium text-slate-500 truncate max-w-[150px]">
+                           {isReceive ? `From ${tx.fromAddress ? tx.fromAddress.slice(0,6)+'...'+tx.fromAddress.slice(-4) : 'External'}` :
+                            isSwap ? 'Arc Testnet Dex' :
+                            `To ${tx.recipient_address ? tx.recipient_address.slice(0,6)+'...'+tx.recipient_address.slice(-4) : 'External'}`}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className={`text-sm font-bold ${isReceive ? 'text-green-600' : 'text-slate-900'}`}>
+                        {isReceive ? '+' : '-'}{tx.amountDisplay}
+                      </div>
+                      <div className="text-[10px] font-medium text-slate-400">
+                        {new Date(tx.timestamp).toLocaleDateString()}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900 mb-0.5">Received USDC</div>
-                    <div className="text-xs font-medium text-slate-500">From 0x1a...f4B</div>
-                  </div>
-                </div>
-                <span className="text-sm font-bold text-slate-900">+$100,000</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex gap-4 items-center">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 shadow-sm border border-blue-200">
-                    <ArrowDownUp className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900 mb-0.5">Swap USDC for EURC</div>
-                    <div className="text-xs font-medium text-slate-500">Arc Testnet Dex</div>
-                  </div>
-                </div>
-                <span className="text-sm font-bold text-slate-900">-$15,000</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex gap-4 items-center">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-600 shadow-sm border border-red-200">
-                    <ArrowUpRight className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900 mb-0.5">Sent USDC</div>
-                    <div className="text-xs font-medium text-slate-500">To 0x89...2Da</div>
-                  </div>
-                </div>
-                <span className="text-sm font-bold text-slate-900">-$5,000</span>
-              </div>
+                 )
+              })}
             </div>
           </div>
         </div>
