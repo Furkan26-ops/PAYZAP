@@ -111,157 +111,151 @@ export default function Dashboard() {
 
       <main className="pz-shell flex-1">
         {/* ── Top bar ── */}
-        <div className="pz-page-header">
+        <div className="flex justify-between items-end mb-8">
           <div>
-            <h1 className="pz-page-title">Dashboard</h1>
-            <p className="pz-page-subtitle">Welcome back to PAYZAP</p>
+            <h1 className="text-3xl font-bold tracking-tight mb-1" style={{ color: 'var(--text)' }}>Dashboard</h1>
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Welcome back to PAYZAP</p>
+              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold tracking-wider uppercase">
+                <RefreshCw className="w-3 h-3" /> Just updated
+              </div>
+            </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="pz-btn pz-btn-ghost pz-btn-sm w-9 h-9 !p-0 rounded-full">
-              <Bell className="w-4 h-4" />
+            <button className="relative pz-btn pz-btn-ghost pz-btn-sm w-10 h-10 !p-0 rounded-full bg-white shadow-sm hover:shadow-md transition-shadow">
+              <Bell className="w-4 h-4 text-slate-600" />
+              <div className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-white"></div>
             </button>
-            <div className="flex items-center gap-2.5 rounded-full pl-1 pr-4 py-1 shadow-sm" style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}>
+            <div className="flex items-center gap-2.5 rounded-full pl-1.5 pr-4 py-1.5 shadow-sm bg-white border border-slate-200">
               <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ background: 'var(--blue)' }}>
                 {address ? address.slice(2, 4).toUpperCase() : 'PZ'}
               </div>
-              <span className="text-sm font-semibold" style={{ color: 'var(--text-2)' }}>{address || '—'}</span>
+              <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>{address || '—'}</span>
             </div>
           </div>
         </div>
 
-        {/* ── Balance + Stats ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-5">
-          {/* Main balance card */}
-          <div className="lg:col-span-2 pz-card flex flex-col sm:flex-row sm:items-center justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] mb-1" style={{ color: 'var(--muted)' }}>Treasury Balance</p>
-              <div className="flex items-baseline gap-1 mb-1">
-                {loading ? (
-                  <RefreshCw className="w-7 h-7 animate-spin opacity-40" style={{ color: 'var(--muted)' }} />
-                ) : (
-                  <><span className="text-2xl font-bold" style={{ color: 'var(--muted)' }}>$</span><span className="text-4xl font-extrabold tracking-tight" style={{ color: 'var(--text)' }}>{balance}</span></>
-                )}
+        {/* ── Vertical Main Feed ── */}
+        <div className="max-w-2xl space-y-6">
+          
+          {/* Main Balance Card */}
+          <div className="pz-card relative overflow-hidden">
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--muted)' }}>Treasury Balance</p>
+                <div className="flex items-baseline gap-1 mb-1">
+                  {loading ? (
+                    <RefreshCw className="w-7 h-7 animate-spin opacity-40" style={{ color: 'var(--muted)' }} />
+                  ) : (
+                    <><span className="text-2xl font-bold" style={{ color: 'var(--text)' }}>$</span><span className="text-5xl font-extrabold tracking-tight" style={{ color: 'var(--text)' }}>{balance}</span></>
+                  )}
+                </div>
+                <p className="text-xs font-medium" style={{ color: 'var(--muted-2)' }}>in crypto assets</p>
               </div>
-              <p className="text-xs" style={{ color: 'var(--muted-2)' }}>in crypto assets</p>
+              <div className="flex gap-2">
+                <Link href="/send" className="pz-btn pz-btn-primary pz-btn-sm shadow-md hover:shadow-lg">
+                  <ArrowUpRight className="w-3.5 h-3.5" /> Send
+                </Link>
+                <Link href="/swap" className="pz-btn pz-btn-primary pz-btn-sm shadow-md hover:shadow-lg">
+                  <ArrowDownUp className="w-3.5 h-3.5" /> Swap
+                </Link>
+              </div>
             </div>
-            <div className="flex gap-2.5 mt-4 sm:mt-0">
-              <Link href="/send" className="pz-btn pz-btn-primary pz-btn-sm">
-                <ArrowUpRight className="w-3.5 h-3.5" /> Send
-              </Link>
-              <Link href="/swap" className="pz-btn pz-btn-primary pz-btn-sm">
-                <ArrowDownUp className="w-3.5 h-3.5" /> Swap
-              </Link>
+
+            {/* Quick summary rows (matching mockup) */}
+            <div className="space-y-4">
+              {[
+                { icon: '💰', date: 'Oct 1, 2022', val: '$395.77', color: 'var(--text)', bg: '#FEF3C7' },
+                { icon: '💰', date: 'Oct 1, 2022', val: '$100,000', color: 'var(--text)', bg: '#FEF3C7' },
+                { icon: '💸', date: 'BTC cash', val: '-$15,000', color: 'var(--danger)', bg: '#E0E7FF' },
+                { icon: '🪙', date: 'Oct 1, 2021', val: '-$5,000', color: 'var(--text)', bg: '#F1F5F9' },
+              ].map((row, i) => (
+                <div key={i} className="flex justify-between items-center px-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs" style={{ background: row.bg }}>{row.icon}</div>
+                    <span className="text-sm font-bold text-slate-800">{row.date}</span>
+                  </div>
+                  <span className="text-sm font-bold" style={{ color: row.color }}>{row.val}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* ── Charts Row ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
-          {/* Inflow Chart */}
+          {/* Charts Row */}
           <div className="pz-card">
             <div className="flex justify-between items-center mb-6">
               <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>Inflow</span>
               <span className="text-xs font-bold" style={{ color: 'var(--success)' }}>+ 11 Inflow</span>
             </div>
-            <div className="flex items-end justify-between h-24 gap-2 mb-2">
+            <div className="flex items-end justify-between h-32 gap-3 mb-2 px-2">
               {[40, 80, 100, 45, 90, 85, 30].map((h, i) => (
-                <div key={i} className="w-full rounded-t-sm" style={{ background: 'var(--primary)', height: `${h}%` }}></div>
+                <div key={i} className="w-full rounded-t-md opacity-90 transition-all hover:opacity-100" 
+                     style={{ background: 'linear-gradient(to top, #60A5FA, #3B82F6)', height: `${h}%` }}></div>
               ))}
             </div>
-            <div className="flex justify-between text-[10px] uppercase font-semibold" style={{ color: 'var(--muted-2)' }}>
+            <div className="flex justify-between text-[10px] uppercase font-bold px-2" style={{ color: 'var(--muted-2)' }}>
               <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
             </div>
           </div>
-          {/* Outflow Chart */}
+
           <div className="pz-card">
             <div className="flex justify-between items-center mb-6">
               <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>Outflow</span>
               <span className="text-xs font-bold" style={{ color: 'var(--danger)' }}>- Outflow</span>
             </div>
-            <div className="flex items-end justify-between h-24 gap-2 mb-2">
+            <div className="flex items-end justify-between h-32 gap-3 mb-2 px-2">
               {[80, 50, 20, 100, 30, 40, 10].map((h, i) => (
-                <div key={i} className="w-full rounded-t-sm" style={{ background: 'var(--primary)', height: `${h}%` }}></div>
+                <div key={i} className="w-full rounded-t-md opacity-90 transition-all hover:opacity-100" 
+                     style={{ background: 'linear-gradient(to top, #FCA5A5, #EF4444)', height: `${h}%` }}></div>
               ))}
             </div>
-            <div className="flex justify-between text-[10px] uppercase font-semibold" style={{ color: 'var(--muted-2)' }}>
+            <div className="flex justify-between text-[10px] uppercase font-bold px-2" style={{ color: 'var(--muted-2)' }}>
               <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span>
             </div>
           </div>
-        </div>
 
-        {/* ── Activity Split Row ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Activity Log */}
           <div className="pz-card">
-            <div className="flex justify-between text-xs font-semibold mb-4" style={{ color: 'var(--text)' }}>
+            <div className="flex justify-between text-xs font-bold mb-6 uppercase tracking-wider" style={{ color: 'var(--muted)' }}>
               <span>Recent activity</span>
               <span>Summary</span>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="flex justify-between items-center">
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs">₿</div>
+                <div className="flex gap-4 items-center">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-green-100 text-green-600 shadow-sm border border-green-200">
+                    <ArrowDownLeft className="w-5 h-5" />
+                  </div>
                   <div>
-                    <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>Oct 1, 2022</div>
-                    <div className="text-[10px]" style={{ color: 'var(--muted)' }}>46 assets</div>
+                    <div className="text-sm font-bold text-slate-900 mb-0.5">Received USDC</div>
+                    <div className="text-xs font-medium text-slate-500">From 0x1a...f4B</div>
                   </div>
                 </div>
-                <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>$100,000</span>
+                <span className="text-sm font-bold text-slate-900">+$100,000</span>
               </div>
               <div className="flex justify-between items-center">
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs">S</div>
+                <div className="flex gap-4 items-center">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 shadow-sm border border-blue-200">
+                    <ArrowDownUp className="w-5 h-5" />
+                  </div>
                   <div>
-                    <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>BTC cash</div>
-                    <div className="text-[10px]" style={{ color: 'var(--muted)' }}>2 assets</div>
+                    <div className="text-sm font-bold text-slate-900 mb-0.5">Swap USDC for EURC</div>
+                    <div className="text-xs font-medium text-slate-500">Arc Testnet Dex</div>
                   </div>
                 </div>
-                <span className="text-sm font-bold" style={{ color: 'var(--danger)' }}>-$15,000</span>
+                <span className="text-sm font-bold text-slate-900">-$15,000</span>
               </div>
               <div className="flex justify-between items-center">
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-xs">Ξ</div>
+                <div className="flex gap-4 items-center">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-red-100 text-red-600 shadow-sm border border-red-200">
+                    <ArrowUpRight className="w-5 h-5" />
+                  </div>
                   <div>
-                    <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>Oct 1, 2021</div>
-                    <div className="text-[10px]" style={{ color: 'var(--muted)' }}>18 assets</div>
+                    <div className="text-sm font-bold text-slate-900 mb-0.5">Sent USDC</div>
+                    <div className="text-xs font-medium text-slate-500">To 0x89...2Da</div>
                   </div>
                 </div>
-                <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>-$5,000</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="pz-card">
-            <div className="flex justify-between text-xs font-semibold mb-4" style={{ color: 'var(--text)' }}>
-              <span>Recent activity</span>
-              <span>Amount</span>
-            </div>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center" style={{ borderColor: 'var(--success)' }}>
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--success)' }}></div>
-                  </div>
-                  <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Swap asset</span>
-                </div>
-                <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>$105,000</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center" style={{ borderColor: 'var(--success)' }}>
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--success)' }}></div>
-                  </div>
-                  <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Swap asset</span>
-                </div>
-                <span className="text-sm font-bold" style={{ color: 'var(--success)' }}>-$5,000</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 rounded-full border-2 flex items-center justify-center" style={{ borderColor: 'var(--success)' }}>
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--success)' }}></div>
-                  </div>
-                  <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>Swap asset</span>
-                </div>
-                <span className="text-sm font-bold" style={{ color: 'var(--success)' }}>-$5,000</span>
+                <span className="text-sm font-bold text-slate-900">-$5,000</span>
               </div>
             </div>
           </div>
