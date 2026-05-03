@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useState, useMemo, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { History, ArrowDownLeft, ArrowUpRight, Zap, RefreshCw, LogOut, ArrowDownUp, TrendingUp, Activity, Clock3, CheckCircle2 } from 'lucide-react';
+import { History, ArrowDownLeft, ArrowUpRight, Zap, RefreshCw, LogOut, ArrowDownUp, TrendingUp, Activity, Clock3, CheckCircle2, X, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 
 import { createPublicClient, http, formatEther, formatUnits } from 'viem';
@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [recentTxs, setRecentTxs] = useState<any[]>([]);
   const [historyLoading, setHistoryLoading] = useState(true);
   const [heldTokens, setHeldTokens] = useState<Array<{ symbol: string; amount: string }>>([]);
+  const [showTokensModal, setShowTokensModal] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -253,24 +254,30 @@ export default function Dashboard() {
                 </div>
               </div>
               
-              {/* Assets Tracking Row */}
-              <div className="mt-4 glass-panel rounded-2xl p-4">
+              {/* Tokens Held Row */}
+              <button
+                onClick={() => setShowTokensModal(true)}
+                className="mt-4 w-full glass-panel rounded-2xl p-4 text-left hover:border-arc-cyan/40 transition-all duration-200 group"
+              >
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <div className="text-[11px] uppercase tracking-[0.18em] text-arc-textMuted">Assets Held</div>
+                    <div className="text-[11px] uppercase tracking-[0.18em] text-arc-textMuted">Tokens Held</div>
                     <div className="mt-1 text-lg font-semibold text-arc-text">
-                      {loading ? '--' : heldTokenCount} tracked {heldTokenCount === 1 ? 'token' : 'tokens'}
+                      {loading ? '--' : heldTokenCount} {heldTokenCount === 1 ? 'token' : 'tokens'}
                     </div>
                   </div>
-                  <div className="flex -space-x-2">
-                    {heldTokenPreview.map((token) => {
-                      const meta = TOKENS_BY_SYMBOL[token.symbol];
-                      return (
-                        <div key={token.symbol} className="rounded-full border-2 border-black bg-arc-bg p-0.5">
-                          <TokenIcon symbol={token.symbol} logo={meta?.logo} size={22} />
-                        </div>
-                      );
-                    })}
+                  <div className="flex items-center gap-2">
+                    <div className="flex -space-x-2">
+                      {heldTokenPreview.map((token) => {
+                        const meta = TOKENS_BY_SYMBOL[token.symbol];
+                        return (
+                          <div key={token.symbol} className="rounded-full border-2 border-black bg-arc-bg p-0.5">
+                            <TokenIcon symbol={token.symbol} logo={meta?.logo} size={22} />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-arc-textMuted group-hover:text-arc-cyan transition-colors" />
                   </div>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -282,7 +289,47 @@ export default function Dashboard() {
                     <div className="text-xs text-arc-textMuted">No tracked token balances detected yet.</div>
                   )}
                 </div>
-              </div>
+              </button>
+
+              {/* Tokens Modal */}
+              {showTokensModal && (
+                <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-4">
+                  <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowTokensModal(false)} />
+                  <div className="relative w-full max-w-sm arc-panel rounded-[2rem] p-6 z-10 shadow-2xl">
+                    <div className="flex items-center justify-between mb-6">
+                      <div>
+                        <div className="text-[11px] uppercase tracking-[0.18em] text-arc-textMuted">Your Wallet</div>
+                        <h3 className="text-xl font-extrabold text-arc-text tracking-tight">Tokens Held</h3>
+                      </div>
+                      <button
+                        onClick={() => setShowTokensModal(false)}
+                        className="p-2 rounded-full text-arc-textMuted hover:text-arc-text hover:bg-arc-border/30 transition-colors"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+                      {heldTokens.length > 0 ? heldTokens.map((token) => {
+                        const meta = TOKENS_BY_SYMBOL[token.symbol];
+                        return (
+                          <div key={token.symbol} className="flex items-center justify-between glass-panel rounded-2xl px-4 py-3">
+                            <div className="flex items-center gap-3">
+                              <TokenIcon symbol={token.symbol} logo={meta?.logo} size={32} />
+                              <div>
+                                <div className="text-sm font-bold text-arc-text">{token.symbol}</div>
+                                <div className="text-xs text-arc-textMuted">{meta?.name || token.symbol}</div>
+                              </div>
+                            </div>
+                            <div className="text-sm font-semibold text-arc-text">{token.amount}</div>
+                          </div>
+                        );
+                      }) : (
+                        <div className="text-center text-arc-textMuted text-sm py-8">No tokens detected in your wallet.</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
           </div>
         </div>
 
