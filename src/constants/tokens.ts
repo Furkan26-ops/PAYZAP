@@ -11,8 +11,8 @@ export const TOKENS: Token[] = [
   { 
     symbol: 'USDC', 
     name: 'USD Coin (Native)', 
-    address: '0x3600000000000000000000000000000000000000', // Official Arc USDC Contract
-    decimals: 6,
+    address: '0x0000000000000000000000000000000000000000', 
+    decimals: 18,
     color: 'bg-indigo-100 text-indigo-600', 
     logo: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png'
   },
