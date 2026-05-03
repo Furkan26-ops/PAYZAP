@@ -27,7 +27,7 @@ export default function RequestMoney() {
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar />
-      <main className="pz-shell flex-1 flex items-start">
+      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start">
         <div className="w-full max-w-sm">
           <div className="pz-card text-center flex flex-col items-center">
             <h1 className="text-xl font-bold mb-2" style={{ color: 'var(--text)' }}>Accept Funds</h1>

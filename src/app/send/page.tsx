@@ -191,7 +191,7 @@ export default function SendMoney() {
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar />
-      <main className="pz-shell flex-1 flex items-start justify-center pt-16">
+      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start pt-16">
         <div className="w-full max-w-sm">
           <div className="pz-card">
             <div className="flex items-center gap-3 mb-6">

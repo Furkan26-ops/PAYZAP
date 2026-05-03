@@ -54,9 +54,9 @@ export default function HistoryPage() {
                     <th className="py-3 px-4 text-xs font-semibold" style={{ color: 'var(--muted)' }}>Date</th>
                     <th className="py-3 px-4 text-xs font-semibold" style={{ color: 'var(--muted)' }}>Type</th>
                     <th className="py-3 px-4 text-xs font-semibold" style={{ color: 'var(--muted)' }}>Asset</th>
-                    <th className="py-3 px-4 text-xs font-semibold" style={{ color: 'var(--muted)' }}>Amount</th>
-                    <th className="py-3 px-4 text-xs font-semibold" style={{ color: 'var(--muted)' }}>Status</th>
-                    <th className="py-3 px-4"></th>
+                    <th className="py-3 px-4 text-xs font-semibold text-right" style={{ color: 'var(--muted)' }}>Amount</th>
+                    <th className="py-3 px-4 text-xs font-semibold hidden sm:table-cell" style={{ color: 'var(--muted)' }}>Status</th>
+                    <th className="py-3 px-4 hidden sm:table-cell"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -74,11 +74,11 @@ export default function HistoryPage() {
                             <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>{token.symbol}</span>
                           </div>
                         </td>
-                        <td className="py-3 px-4 text-sm font-medium" style={{ color: 'var(--text)' }}>{tx.amountDisplay}</td>
-                        <td className="py-3 px-4 text-sm font-medium" style={{ color: isSuccess ? 'var(--success)' : 'var(--danger)' }}>
+                        <td className="py-3 px-4 text-sm font-medium text-right" style={{ color: 'var(--text)' }}>{tx.amountDisplay}</td>
+                        <td className="py-3 px-4 text-sm font-medium hidden sm:table-cell" style={{ color: isSuccess ? 'var(--success)' : 'var(--danger)' }}>
                           {isSuccess ? 'Confirmed' : 'Failed'}
                         </td>
-                        <td className="py-3 px-4 text-right">
+                        <td className="py-3 px-4 text-right hidden sm:table-cell">
                           <button className="p-1 text-slate-400 hover:text-slate-600 rounded">
                             <MoreHorizontal className="w-5 h-5" />
                           </button>
