@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ArrowDown, CheckCircle2, Settings, ChevronDown, RefreshCw, X } from 'lucide-react';
+import { ArrowDown, CheckCircle2, Settings, ChevronDown, RefreshCw, X } from 'lucide-react';
 import Link from 'next/link';
 import { createWalletClient, custom, createPublicClient, http, formatUnits } from 'viem';
 import { supabase } from '@/lib/supabase';
 import { withCircleApiProxy } from '@/lib/circleProxyFetch';
 import TokenIcon from '@/components/TokenIcon';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import Sidebar from '@/components/Sidebar';
 
 // Constants & SDK Imports
 import { ARC_TESTNET_SWAP_TOKENS, TOKENS, Token } from '@/constants/tokens';
@@ -364,233 +364,147 @@ export default function SwapToken() {
   };
 
   if (receipt) {
-      return (
-          <div className="min-h-screen bg-arc-bg pb-20 sm:pb-0 flex items-center justify-center selection:bg-cyan-500/30 font-sans text-arc-text">
-             <div className="max-w-md w-full bg-arc-panel backdrop-blur-2xl sm:rounded-[2.5rem] sm:shadow-2xl shadow-cyan-500/10 p-10 text-center border border-arc-border relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-cyan-500/10 to-transparent -z-10"></div>
-                <div className="w-20 h-20 bg-cyan-500/20 text-arc-cyan rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner border border-cyan-400/30">
-                    <CheckCircle2 className="w-10 h-10" />
-                </div>
-                <h2 className="text-3xl font-extrabold text-arc-text mb-2 tracking-tight">Swap Confirmed</h2>
-                <p className="text-arc-textMuted mb-8 font-medium">Your transaction has been mined on Arc Testnet.</p>
-                
-                <div className="bg-arc-panelStrong border border-arc-border p-5 rounded-3xl text-left space-y-4 mb-10 shadow-inner">
-                    <div className="flex justify-between items-center">
-                        <span className="text-arc-textMuted text-sm font-medium">Sold</span>
-                        <span className="font-bold text-arc-text text-lg">{receipt.amountIn} <span className="text-sm font-medium text-arc-textMuted">{receipt.tokenIn.symbol}</span></span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-arc-textMuted text-sm font-medium">Bought</span>
-                        <span className="font-bold text-arc-cyan text-lg">{receipt.amountOut} <span className="text-sm font-medium text-cyan-500/50">{receipt.tokenOut.symbol}</span></span>
-                    </div>
-                </div>
-                <button onClick={() => router.push('/dashboard')} className="w-full py-4 px-6 bg-cyan-500 text-black rounded-2xl font-bold hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all duration-300 transform hover:-translate-y-0.5">
-                    Return to Dashboard
-                </button>
-             </div>
+    return (
+      <div className="flex min-h-screen bg-[#F0F2F5]">
+        <Sidebar />
+        <main className="pz-shell flex-1 flex items-center justify-center">
+          <div className="pz-card w-full max-w-sm text-center">
+            <div className="w-16 h-16 bg-[#DBEAFE] rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="w-8 h-8 text-blue-600" />
+            </div>
+            <h2 className="text-2xl font-extrabold text-[#0F172A] mb-1">Swap Confirmed!</h2>
+            <p className="text-sm text-[#64748B] mb-6">Mined on Arc Testnet.</p>
+            <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4 text-sm text-left space-y-3 mb-6">
+              <div className="flex justify-between"><span className="text-[#64748B]">Sold</span><span className="font-bold text-[#0F172A]">{receipt.amountIn} {receipt.tokenIn.symbol}</span></div>
+              <div className="flex justify-between"><span className="text-[#64748B]">Bought</span><span className="font-bold text-[#2563EB]">{receipt.amountOut} {receipt.tokenOut.symbol}</span></div>
+            </div>
+            <button onClick={() => router.push('/dashboard')} className="pz-btn-primary w-full justify-center">
+              Back to Dashboard
+            </button>
           </div>
-      );
+        </main>
+      </div>
+    );
   }
 
   const priceImpact = amountIn && amountOut ? (Math.max(0, (parseFloat(amountIn) - parseFloat(amountOut || '0')) / Math.max(parseFloat(amountIn), 1)) * 100).toFixed(2) : '0.00';
 
   return (
-    <div className="arc-app-shell min-h-screen pb-20 sm:pb-0 font-sans selection:bg-cyan-500/30 text-arc-text">
-      <div className="max-w-md mx-auto sm:my-10 overflow-hidden sm:rounded-[2.5rem] flex flex-col min-h-screen sm:min-h-0 relative bg-arc-panel backdrop-blur-3xl border border-arc-border shadow-2xl">
-        
-        {/* Token Selection Modal */}
-        {selectingTarget && (
-            <div className="absolute inset-0 z-50 bg-arc-bg/90 backdrop-blur-2xl flex flex-col sm:rounded-[2.5rem]">
-                <div className="px-6 py-6 flex items-center justify-between border-b border-arc-border text-arc-text">
-                    <h3 className="text-xl font-bold text-arc-text">Select Token</h3>
-                    <button onClick={() => setSelectingTarget(null)} className="p-2 bg-arc-panelStrong border border-arc-border rounded-full text-arc-text hover:bg-arc-panel transition-colors">
-                        <X className="w-5 h-5" />
+    <div className="flex min-h-screen bg-[#F0F2F5]">
+      <Sidebar />
+      <main className="pz-shell flex-1 flex items-start">
+        <div className="w-full max-w-md">
+          <h1 className="text-2xl font-extrabold text-[#0F172A] tracking-tight mb-1">Token Exchange</h1>
+          <p className="text-sm text-[#64748B] mb-8">Swap tokens on Arc Testnet</p>
+
+          {/* Token Selection Modal */}
+          {selectingTarget && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setSelectingTarget(null)} />
+              <div className="relative w-full max-w-sm bg-white rounded-2xl p-6 z-10 shadow-2xl">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-[#0F172A]">Select Token</h3>
+                  <button onClick={() => setSelectingTarget(null)} className="p-1.5 rounded-full hover:bg-[#F1F5F9] text-[#64748B]"><X className="w-4 h-4" /></button>
+                </div>
+                <div className="space-y-2 max-h-72 overflow-y-auto">
+                  {ARC_TESTNET_SWAP_TOKENS.map(t => (
+                    <button key={t.symbol} onClick={() => selectToken(t)}
+                      className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-[#F1F5F9] border border-transparent hover:border-[#E2E8F0] transition-all text-left">
+                      <div className="w-9 h-9 flex items-center justify-center rounded-full bg-[#F1F5F9]">
+                        <TokenIcon symbol={t.symbol} logo={t.logo} size={22} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-bold text-[#0F172A]">{t.symbol}</div>
+                        <div className="text-xs text-[#64748B]">{t.name}</div>
+                      </div>
+                      <div className="text-sm font-semibold text-[#0F172A]">{balances[t.symbol] || '0.00'}</div>
                     </button>
+                  ))}
                 </div>
-                <div className="flex-1 overflow-y-auto p-4 space-y-2">
-                    {ARC_TESTNET_SWAP_TOKENS.map(t => (
-                        <button 
-                            key={t.symbol} 
-                            onClick={() => selectToken(t)}
-                            className="w-full flex items-center gap-4 p-4 rounded-2xl bg-arc-panel hover:bg-arc-panelStrong border border-arc-border hover:border-cyan-500/30 transition-all text-left group"
-                        >
-                            <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-arc-bg border border-arc-border text-xl shadow-sm">
-                                <TokenIcon symbol={t.symbol} logo={t.logo} size={28} />
-                            </div>
-                            <div className="flex-1">
-                                <div className="font-bold text-arc-text text-lg group-hover:text-arc-cyan transition-colors">{t.symbol}</div>
-                                <div className="text-sm text-arc-textMuted font-medium">{t.name}</div>
-                            </div>
-                            <div className="text-right">
-                                <div className="font-bold text-arc-text">{balances[t.symbol] || '0.00'}</div>
-                            </div>
-                        </button>
-                    ))}
-                </div>
-            </div>
-        )}
-
-        <div className="arc-header-gradient px-8 py-6 flex items-center justify-between sticky top-0 z-10 border-b border-arc-border">
-          <div className="flex items-center gap-4">
-              <Link href="/dashboard" className="p-3 -ml-3 rounded-full hover:bg-arc-panel text-arc-text hover:text-arc-text transition-colors">
-                <ArrowLeft className="w-5 h-5" />
-              </Link>
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.24em] text-arc-cyan">PAYZAP</div>
-                <h2 className="text-xl font-bold tracking-tight text-arc-text">Swap</h2>
               </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <button className="p-2 -mr-2 text-arc-textMuted hover:text-arc-cyan hover:bg-arc-panelStrong rounded-full transition-colors">
-               <Settings className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
+            </div>
+          )}
 
-        <div className="p-6 flex-1 bg-transparent">
-            {errorMsg && (
-                <div className="mb-6 bg-rose-500/10 text-rose-400 p-4 rounded-2xl text-sm font-medium border border-rose-500/20 shadow-sm backdrop-blur-md">
-                    {errorMsg}
-                </div>
-            )}
-            {quoteError && !errorMsg && (
-                <div className="mb-6 bg-amber-500/10 text-amber-300 p-4 rounded-2xl text-sm font-medium border border-amber-500/20 shadow-sm backdrop-blur-md">
-                    {quoteError}
-                </div>
-            )}
+          <div className="pz-card">
+            {errorMsg && (<div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl text-sm font-medium mb-5">{errorMsg}</div>)}
+            {quoteError && !errorMsg && (<div className="bg-amber-50 border border-amber-200 text-amber-700 p-4 rounded-xl text-sm font-medium mb-5">{quoteError}</div>)}
 
-            <div className="mb-6 arc-dark-card rounded-3xl px-4 py-4 text-sm text-arc-text">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.2em] text-arc-cyan">Network</div>
-                    <div className="mt-1 font-medium text-arc-textMuted">Arc Testnet swap supports USDC and EURC. Keep USDC available for network fees.</div>
-                  </div>
-                  <div className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-arc-cyan shadow-[0_0_10px_rgba(6,182,212,0.2)]">
-                    Testnet
-                  </div>
-                </div>
+            <div className="mb-5 flex items-center justify-between p-3 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-sm">
+              <span className="text-[#64748B] font-medium">Arc Testnet · Keep USDC for fees</span>
+              <span className="pz-chip">Testnet</span>
             </div>
 
             <div className="space-y-2 relative">
-                
-                <div className="rounded-3xl p-5 border border-arc-border hover:border-cyan-400/30 transition-colors focus-within:border-cyan-400/50 focus-within:shadow-[0_0_15px_rgba(6,182,212,0.15)] bg-arc-panelStrong shadow-inner">
-                    <div className="text-sm text-arc-textMuted font-semibold mb-3 tracking-wide">YOU PAY</div>
-                    <div className="flex justify-between items-center gap-4">
-                        <input 
-                            type="number"
-                            placeholder="0"
-                            value={amountIn}
-                            onChange={(e) => setAmountIn(e.target.value)}
-                            className="w-full bg-transparent text-4xl text-arc-text outline-none placeholder:text-gray-600 font-extrabold tracking-tight"
-                        />
-                        <button 
-                            onClick={() => setSelectingTarget('in')}
-                            className="flex items-center gap-2 bg-arc-panelStrong border border-arc-border px-3 py-2 rounded-2xl font-bold hover:bg-arc-panel transition-all flex-shrink-0 text-arc-text"
-                        >
-                            <div className="bg-arc-bg rounded-full border border-arc-border p-0.5"><TokenIcon symbol={tokenIn.symbol} logo={tokenIn.logo} size={20} /></div>
-                            {tokenIn.symbol}
-                            <ChevronDown className="w-4 h-4 opacity-70" />
-                        </button>
-                    </div>
-                    <div className="flex justify-between items-center mt-4">
-                        <div className="text-sm text-arc-textMuted font-medium">
-                            ${amountIn ? (parseFloat(amountIn) * 1.0).toFixed(2) : '0.00'}
-                        </div>
-                        <div className="flex items-center gap-3 text-sm font-medium">
-                            <span className="text-arc-textMuted">Balance: <span className="text-arc-text">{balances[tokenIn.symbol] || '0.00'}</span></span>
-                            <button onClick={handleMax} className="text-arc-cyan hover:text-cyan-300 font-bold uppercase text-[10px] tracking-wider bg-cyan-500/10 border border-cyan-500/20 px-2 py-1 rounded-md transition-colors">Max</button>
-                        </div>
-                    </div>
+              {/* Pay panel */}
+              <div className="border border-[#E2E8F0] rounded-xl p-4 bg-[#F8FAFC]">
+                <div className="text-xs font-semibold uppercase tracking-wide text-[#64748B] mb-3">Pay</div>
+                <div className="flex items-center gap-3">
+                  <input type="number" placeholder="0" value={amountIn} onChange={e => setAmountIn(e.target.value)}
+                    className="flex-1 bg-transparent text-3xl font-extrabold text-[#0F172A] outline-none placeholder:text-[#CBD5E1]" />
+                  <button onClick={() => setSelectingTarget('in')}
+                    className="flex items-center gap-2 bg-white border border-[#E2E8F0] px-3 py-2 rounded-lg font-semibold text-sm hover:border-[#2563EB] transition-all flex-shrink-0">
+                    <TokenIcon symbol={tokenIn.symbol} logo={tokenIn.logo} size={18} />
+                    {tokenIn.symbol} <ChevronDown className="w-3.5 h-3.5 text-[#94A3B8]" />
+                  </button>
                 </div>
-
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
-                    <button 
-                        onClick={handleSwapTokens}
-                        className="p-3 bg-arc-bg border-4 border-[#0f1418] rounded-2xl hover:bg-arc-panel hover:border-cyan-500/30 text-arc-cyan transition-all shadow-[0_0_10px_rgba(0,0,0,0.5)] group"
-                    >
-                        <ArrowDown className="w-5 h-5 group-hover:rotate-180 transition-transform duration-300" />
-                    </button>
-                </div>
-
-                <div className="rounded-3xl p-5 border border-arc-border hover:border-cyan-400/30 transition-colors bg-arc-panelStrong shadow-inner">
-                    <div className="text-sm text-arc-textMuted font-semibold mb-3 tracking-wide">YOU RECEIVE</div>
-                    <div className="flex justify-between items-center gap-4">
-                        <input 
-                            type="number"
-                            placeholder="0"
-                            value={amountOut}
-                            readOnly
-                            className="w-full bg-transparent text-4xl text-arc-cyan outline-none placeholder:text-gray-600 font-extrabold tracking-tight"
-                        />
-                        <button 
-                            onClick={() => setSelectingTarget('out')}
-                            className="flex items-center gap-2 bg-arc-panelStrong border border-arc-border px-3 py-2 rounded-2xl font-bold hover:bg-arc-panel transition-all flex-shrink-0 text-arc-text"
-                        >
-                            <div className="bg-arc-bg rounded-full border border-arc-border p-0.5"><TokenIcon symbol={tokenOut.symbol} logo={tokenOut.logo} size={20} /></div>
-                            {tokenOut.symbol}
-                            <ChevronDown className="w-4 h-4 opacity-70" />
-                        </button>
-                    </div>
-                    <div className="flex justify-between items-center mt-4">
-                        <div className="text-sm text-arc-textMuted font-medium">
-                            {quoteLoading ? 'Finding best route...' : `$${amountOut ? (parseFloat(amountOut) * 1.0).toFixed(2) : '0.00'}`}
-                        </div>
-                        <div className="text-sm text-arc-textMuted font-medium">
-                            Balance: <span className="text-arc-text">{balances[tokenOut.symbol] || '0.00'}</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div className="mt-6 glass-panel rounded-3xl p-5 text-sm border-t-2 border-t-cyan-500/20">
-              <div className="mb-4 flex items-center justify-between">
-                <div>
-                  <div className="text-base font-bold text-arc-text">Execution Summary</div>
-                  <div className="text-xs uppercase tracking-[0.16em] text-arc-textMuted">Pre-trade context</div>
+                <div className="flex items-center justify-between mt-3 text-xs text-[#94A3B8]">
+                  <span>${amountIn ? (parseFloat(amountIn) * 1.0).toFixed(2) : '0.00'}</span>
+                  <div className="flex items-center gap-2">
+                    <span>Balance: {balances[tokenIn.symbol] || '0.00'}</span>
+                    <button onClick={handleMax} className="text-[#2563EB] font-bold">Max</button>
+                  </div>
                 </div>
               </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-arc-textMuted">Slippage tolerance</span>
-                  <span className="font-semibold text-arc-text">{(SWAP_SLIPPAGE_BPS / 100).toFixed(2)}%</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-arc-textMuted">Network fee estimate</span>
-                  <span className="font-semibold text-arc-text">$0.03</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-arc-textMuted">Price impact</span>
-                  <span className={`font-semibold ${parseFloat(priceImpact) > 1 ? 'text-rose-400' : 'text-emerald-400'}`}>{priceImpact}%</span>
-                </div>
-              </div>
-            </div>
 
-            <div className="mt-8">
-                <button 
-                    onClick={handleSwap}
-                    disabled={processing || quoteLoading || !amountIn || !amountOut || Boolean(quoteError)}
-                    className="w-full py-4 bg-cyan-500 text-black font-bold text-lg rounded-2xl hover:bg-cyan-400 disabled:bg-arc-panelStrong disabled:text-arc-textMuted disabled:border disabled:border-arc-border transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.3)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] disabled:shadow-none transform disabled:transform-none hover:-translate-y-0.5"
-                >
-                    {processing ? (
-                        <div className="flex items-center justify-center gap-3">
-                            <RefreshCw className="animate-spin h-5 w-5" />
-                            Routing Swap...
-                        </div>
-                    ) : quoteLoading ? (
-                        'Fetching quote...'
-                    ) : !amountIn ? (
-                        'Enter an amount'
-                    ) : quoteError || !amountOut ? (
-                        'No executable quote'
-                    ) : (
-                        'Review Swap'
-                    )}
+              {/* Swap arrow */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                <button onClick={handleSwapTokens}
+                  className="w-9 h-9 bg-white border-2 border-[#E2E8F0] rounded-full flex items-center justify-center shadow hover:border-[#2563EB] text-[#2563EB] transition-all">
+                  <ArrowDown className="w-4 h-4" />
                 </button>
+              </div>
+
+              {/* Receive panel */}
+              <div className="border border-[#E2E8F0] rounded-xl p-4 bg-[#F8FAFC]">
+                <div className="text-xs font-semibold uppercase tracking-wide text-[#64748B] mb-3">Receive</div>
+                <div className="flex items-center gap-3">
+                  <input type="number" placeholder="0" value={amountOut} readOnly
+                    className="flex-1 bg-transparent text-3xl font-extrabold text-[#2563EB] outline-none placeholder:text-[#CBD5E1]" />
+                  <button onClick={() => setSelectingTarget('out')}
+                    className="flex items-center gap-2 bg-white border border-[#E2E8F0] px-3 py-2 rounded-lg font-semibold text-sm hover:border-[#2563EB] transition-all flex-shrink-0">
+                    <TokenIcon symbol={tokenOut.symbol} logo={tokenOut.logo} size={18} />
+                    {tokenOut.symbol} <ChevronDown className="w-3.5 h-3.5 text-[#94A3B8]" />
+                  </button>
+                </div>
+                <div className="flex items-center justify-between mt-3 text-xs text-[#94A3B8]">
+                  <span>{quoteLoading ? 'Getting quote…' : `$${amountOut ? (parseFloat(amountOut)*1.0).toFixed(2) : '0.00'}`}</span>
+                  <span>Balance: {balances[tokenOut.symbol] || '0.00'}</span>
+                </div>
+              </div>
             </div>
+
+            {/* Summary */}
+            <div className="mt-5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4 text-sm space-y-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#64748B] mb-2">Current exchange rate</p>
+              <div className="flex justify-between"><span className="text-[#64748B]">Slippage</span><span className="font-semibold">{(SWAP_SLIPPAGE_BPS/100).toFixed(2)}%</span></div>
+              <div className="flex justify-between"><span className="text-[#64748B]">Network fee</span><span className="font-semibold">$0.03</span></div>
+              <div className="flex justify-between">
+                <span className="text-[#64748B]">Price impact</span>
+                <span className={`font-semibold ${parseFloat(priceImpact)>1?'text-red-500':'text-emerald-600'}`}>{priceImpact}%</span>
+              </div>
+            </div>
+
+            <button onClick={handleSwap}
+              disabled={processing || quoteLoading || !amountIn || !amountOut || Boolean(quoteError)}
+              className="pz-btn-primary w-full justify-center mt-5 text-base py-3">
+              {processing ? (<><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Routing Swap…</>) :
+               quoteLoading ? 'Fetching quote…' : !amountIn ? 'Enter an amount' :
+               quoteError || !amountOut ? 'No quote available' : 'Execute Swap'}
+            </button>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
+
