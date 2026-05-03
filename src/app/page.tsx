@@ -145,7 +145,7 @@ export default function Login() {
         <div className="mb-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-arc-text">Your crypto. Your control.</h1>
           <p className="mt-3 text-base leading-7 text-arc-textMuted">
-            Send, receive, swap, and track your digital assets — all in one place on Arc.
+            Send, receive, swap, and track your digital assets. All in one place on Arc.
           </p>
         </div>
 
