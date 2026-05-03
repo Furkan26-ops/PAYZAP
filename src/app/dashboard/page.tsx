@@ -163,17 +163,17 @@ export default function Dashboard() {
 
       <main className="pz-shell flex-1">
         {/* ── Top bar ── */}
-        <div className="flex justify-between items-end mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-8">
           <div>
             <h1 className="text-3xl font-bold tracking-tight mb-1" style={{ color: 'var(--text)' }}>Dashboard</h1>
             <div className="flex items-center gap-2">
               <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Welcome back to PAYZAP</p>
-              <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold tracking-wider uppercase">
+              <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold tracking-wider uppercase">
                 <RefreshCw className="w-3 h-3" /> Just updated
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between w-full sm:w-auto gap-3">
             <button className="relative pz-btn pz-btn-ghost pz-btn-sm w-10 h-10 !p-0 rounded-full bg-white shadow-sm hover:shadow-md transition-shadow">
               <Bell className="w-4 h-4 text-slate-600" />
               <div className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-white"></div>

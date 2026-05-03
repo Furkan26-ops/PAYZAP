@@ -240,12 +240,89 @@ input[type="number"] {
 }
 .animate-fade-up { animation: fadeUp 0.3s ease forwards; }
 
+
+
 @media (max-width: 768px) {
   .pz-sidebar {
-    width: 100%; min-height: auto;
-    position: relative; flex-direction: row;
-    padding: 1rem; overflow-x: auto;
-    border-right: none; border-bottom: 1px solid var(--border);
+    width: 100%;
+    height: 72px;
+    min-height: auto;
+    position: fixed;
+    left: 0; bottom: 0; top: auto;
+    flex-direction: row;
+    padding: 0 1rem;
+    border-right: none;
+    border-top: 1px solid var(--border);
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    z-index: 100;
   }
-  .pz-shell { margin-left: 0; padding: 1.5rem 1rem; }
+  
+  .pz-sidebar .mb-8, .pz-sidebar .mb-6, .pz-sidebar .my-4, .pz-sidebar button:last-child {
+    display: none; /* Hide logo, network badge, and logout from bottom nav */
+  }
+
+  .pz-sidebar nav {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  .pz-sidebar-link {
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    font-size: 10px;
+    align-items: center;
+    border-radius: 0;
+    width: auto;
+    background: transparent !important;
+    transform: none !important;
+  }
+  
+  .pz-sidebar-link svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .pz-sidebar-link.active {
+    color: var(--primary);
+  }
+
+  .pz-shell {
+    margin-left: 0;
+    padding: 1.5rem 1.25rem;
+    padding-bottom: 90px; /* Space for bottom nav */
+  }
+
+  .pz-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .pz-page-title {
+    font-size: 1.25rem;
+  }
+
+  .pz-card {
+    padding: 1.25rem;
+    border-radius: 1.25rem;
+  }
+
+  .pz-btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  /* Reduce orb sizes on mobile */
+  .absolute.w-\[600px\].h-\[600px\] {
+    width: 300px !important;
+    height: 300px !important;
+  }
 }
