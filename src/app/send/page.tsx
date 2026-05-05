@@ -149,6 +149,14 @@ export default function SendMoney() {
         });
       }
 
+      // Wait for transaction to be mined
+      const publicClient = createPublicClient({ chain: ARC_TESTNET_CHAIN, transport: http() });
+      const txReceipt = await publicClient.waitForTransactionReceipt({ hash });
+      
+      if (txReceipt.status !== 'success') {
+        throw new Error('Transaction failed or reverted on the blockchain.');
+      }
+
       // Record transaction
       await supabase.from('transactions').insert({
         wallet_address: fromAddress.toLowerCase(),
