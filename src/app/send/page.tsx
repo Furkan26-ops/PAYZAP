@@ -21,6 +21,8 @@ const ARC_TESTNET_CHAIN = {
   blockExplorers: { default: { name: 'ArcScan', url: 'https://testnet.arcscan.app' } }
 };
 
+const ARC_NATIVE_USDC_GAS_RESERVE = 0.05;
+
 const ERC20_ABI = [
   {
     constant: true,
@@ -87,6 +89,21 @@ export default function SendMoney() {
     fetchBalances();
   }, []);
 
+  const handleMax = () => {
+    const currentBalance = parseFloat(balances[selectedToken.symbol] || '0');
+    let spendable = currentBalance;
+    
+    if (selectedToken.symbol === 'USDC') {
+      spendable = Math.max(0, currentBalance - ARC_NATIVE_USDC_GAS_RESERVE);
+    }
+    
+    const decimals = selectedToken.decimals || 6;
+    const factor = Math.pow(10, decimals);
+    const truncated = Math.floor(spendable * factor) / factor;
+    
+    setAmount(truncated.toString());
+  };
+
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     setProcessing(true);
@@ -96,7 +113,11 @@ export default function SendMoney() {
       if (!address) throw new Error('Authentication error. Please connect wallet again.');
       
       const currentBalance = parseFloat(balances[selectedToken.symbol] || '0');
-      if (parseFloat(amount) > currentBalance) throw new Error(`Insufficient ${selectedToken.symbol} balance.`);
+      const inputAmount = parseFloat(amount);
+      if (inputAmount > currentBalance) throw new Error(`Insufficient ${selectedToken.symbol} balance.`);
+      if (selectedToken.symbol === 'USDC' && inputAmount > Math.max(0, currentBalance - ARC_NATIVE_USDC_GAS_RESERVE)) {
+          throw new Error(`Keep at least ${ARC_NATIVE_USDC_GAS_RESERVE} USDC for network fees. Max spendable: ${Math.max(0, currentBalance - ARC_NATIVE_USDC_GAS_RESERVE).toFixed(4)} USDC.`);
+      }
 
       const ethereum = (window as any).ethereum;
       if (!ethereum) throw new Error('No Web3 wallet detected. Please install MetaMask.');
@@ -244,7 +265,7 @@ export default function SendMoney() {
               <div>
                 <div className="flex justify-between items-end mb-2">
                   <label className="block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Amount</label>
-                  <button type="button" onClick={() => setAmount(balances[selectedToken.symbol] || '0')}
+                  <button type="button" onClick={handleMax}
                     className="text-[10px] font-bold text-blue-600 hover:underline">MAX</button>
                 </div>
                 <div className="relative">
