@@ -24,6 +24,12 @@ const ARC_TESTNET_CHAIN = {
   blockExplorers: { default: { name: 'ArcScan', url: 'https://testnet.arcscan.app' } }
 };
 
+const NETWORKS = [
+  { id: 'Arc_Testnet', name: 'Arc Testnet', icon: '⚡' },
+  { id: 'Ethereum_Sepolia', name: 'Ethereum Sepolia', icon: '⟠' },
+  { id: 'Solana_Devnet', name: 'Solana Devnet', icon: '☀️' },
+];
+
 const ARC_NATIVE_USDC_GAS_RESERVE = 0.05;
 const SWAP_SLIPPAGE_BPS = 300;
 const BALANCE_CONFIRMATION_ATTEMPTS = 6;
@@ -67,6 +73,8 @@ async function readArcTokenBalance(
 }
 
 export default function SwapToken() {
+  const [networkIn, setNetworkIn] = useState(NETWORKS[0]);
+  const [networkOut, setNetworkOut] = useState(NETWORKS[0]);
   const [tokenIn, setTokenIn] = useState<Token>(ARC_TESTNET_SWAP_TOKENS[0]);
   const [tokenOut, setTokenOut] = useState<Token>(ARC_TESTNET_SWAP_TOKENS[1]);
   const [amountIn, setAmountIn] = useState('');
@@ -80,15 +88,17 @@ export default function SwapToken() {
       USDC: '0.00', EURC: '0.00', ARC: '0.00', WBTC: '0.00', WETH: '0.00'
   });
   
-  // Token Selection State
+  // Selection State
   const [selectingTarget, setSelectingTarget] = useState<'in' | 'out' | null>(null);
+  const [selectingNetwork, setSelectingNetwork] = useState<'in' | 'out' | null>(null);
   
   const router = useRouter();
 
+  const isBridge = networkIn.id !== networkOut.id;
+
   // Load Real On-Chain Balances
   useEffect(() => {
-      const address = localStorage.getItem('walletAddress');
-      if (!address) return;
+      if (networkIn.id !== 'Arc_Testnet') return; // Only fetch Arc balances for now in this prototype
 
       const fetchBalances = async () => {
           const publicClient = createPublicClient({ chain: ARC_TESTNET_CHAIN, transport: http() });
@@ -113,7 +123,7 @@ export default function SwapToken() {
       };
       
       fetchBalances();
-  }, []);
+  }, [networkIn.id]);
 
   // Arc App Kit Native Quoting Logic
   useEffect(() => {
@@ -124,6 +134,17 @@ export default function SwapToken() {
             setAmountOut('');
             setQuoteError('');
             return;
+        }
+
+        if (isBridge) {
+          if (tokenIn.symbol !== 'USDC' || tokenOut.symbol !== 'USDC') {
+            setAmountOut('');
+            setQuoteError('Only USDC can be bridged across networks.');
+            return;
+          }
+          setAmountOut(amountIn);
+          setQuoteError('');
+          return;
         }
 
         if (tokenIn.symbol === tokenOut.symbol) {
@@ -193,7 +214,7 @@ export default function SwapToken() {
       cancelled = true;
       window.clearTimeout(quoteTimer);
     };
-  }, [amountIn, tokenIn, tokenOut]);
+  }, [amountIn, tokenIn, tokenOut, isBridge]);
 
   const handleSwapTokens = () => {
     const temp = tokenIn;
@@ -230,7 +251,7 @@ export default function SwapToken() {
       setSelectingTarget(null);
   };
 
-  const handleSwap = async () => {
+  const handleExecute = async () => {
     setProcessing(true);
     setErrorMsg('');
     try {
@@ -246,6 +267,44 @@ export default function SwapToken() {
       const ethereum = (window as any).ethereum;
       if (!ethereum) throw new Error("No Web3 wallet detected. Please install MetaMask.");
 
+      const { AppKit } = await import('@circle-fin/app-kit');
+      const { createViemAdapterFromProvider } = await import('@circle-fin/adapter-viem-v2');
+
+      const adapter = await createViemAdapterFromProvider({
+        provider: ethereum
+      });
+
+      const kit = new AppKit();
+
+      if (isBridge) {
+        // Cross-chain bridge logic
+        const bridgeResult = await withCircleApiProxy(() =>
+          kit.bridge({
+            from: { adapter, chain: networkIn.id },
+            to: { chain: networkOut.id }, // Destination doesn't always need adapter for the bridge call if we just want it to go to same address
+            amount: amountIn,
+            // kit.bridge defaults to USDC
+          })
+        );
+        
+        const hash = (bridgeResult as any).txHash as `0x${string}`;
+        if (!hash) throw new Error("Bridge submitted but App Kit did not return a transaction hash.");
+
+        setReceipt({ 
+          amountIn, 
+          tokenIn, 
+          amountOut: amountIn, 
+          tokenOut, 
+          fee: '$0.00', 
+          hash,
+          isBridge: true,
+          fromNet: networkIn.name,
+          toNet: networkOut.name
+        });
+        return;
+      }
+
+      // Local Swap Logic (only on Arc Testnet)
       const walletClient = createWalletClient({
         chain: ARC_TESTNET_CHAIN,
         transport: custom(ethereum)
@@ -266,15 +325,6 @@ export default function SwapToken() {
         }
       }
 
-      // Initialize Arc App Kit
-      const { AppKit } = await import('@circle-fin/app-kit');
-      const { createViemAdapterFromProvider } = await import('@circle-fin/adapter-viem-v2');
-
-      const adapter = await createViemAdapterFromProvider({
-        provider: ethereum
-      });
-
-      const kit = new AppKit();
       const publicClient = createPublicClient({
         chain: ARC_TESTNET_CHAIN,
         transport: http()
@@ -381,11 +431,18 @@ export default function SwapToken() {
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style={{ background: 'var(--blue-mid)' }}>
               <CheckCircle2 className="w-8 h-8" style={{ color: 'var(--blue)' }} />
             </div>
-            <h2 className="text-2xl font-extrabold mb-1" style={{ color: 'var(--text)' }}>Swap Confirmed!</h2>
-            <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>Mined on Arc Testnet.</p>
+            <h2 className="text-2xl font-extrabold mb-1" style={{ color: 'var(--text)' }}>
+              {receipt.isBridge ? 'Bridge Initiated!' : 'Swap Confirmed!'}
+            </h2>
+            <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>
+              {receipt.isBridge ? `Moving USDC from ${receipt.fromNet} to ${receipt.toNet}.` : 'Mined on Arc Testnet.'}
+            </p>
             <div className="p-4 rounded-xl text-sm text-left space-y-3 mb-6" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
-              <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Sold</span><span className="font-bold">{receipt.amountIn} {receipt.tokenIn.symbol}</span></div>
-              <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Bought</span><span className="font-bold" style={{ color: 'var(--blue)' }}>{receipt.amountOut} {receipt.tokenOut.symbol}</span></div>
+              <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>{receipt.isBridge ? 'Sending' : 'Sold'}</span><span className="font-bold">{receipt.amountIn} {receipt.tokenIn.symbol}</span></div>
+              <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>{receipt.isBridge ? 'Receiving' : 'Bought'}</span><span className="font-bold" style={{ color: 'var(--blue)' }}>{receipt.amountOut} {receipt.tokenOut.symbol}</span></div>
+              {receipt.isBridge && (
+                 <div className="flex justify-between pt-2 border-t border-slate-100"><span style={{ color: 'var(--muted)' }}>Network</span><span className="font-bold">{receipt.fromNet} → {receipt.toNet}</span></div>
+              )}
             </div>
             <button onClick={() => router.push('/dashboard')} className="pz-btn pz-btn-primary pz-btn-lg w-full">
               Back to Dashboard
@@ -412,6 +469,41 @@ export default function SwapToken() {
               <ArrowDown className="w-5 h-5" style={{ color: 'var(--violet)' }} />
             </div>
           </div>
+
+          {/* Network Selection Modal */}
+          {selectingNetwork && (
+            <div className="pz-modal-overlay">
+              <div className="pz-modal-backdrop" onClick={() => setSelectingNetwork(null)} />
+              <div className="pz-modal animate-fade-up">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-base font-bold" style={{ color: 'var(--text)' }}>Select Network</h3>
+                  <button onClick={() => setSelectingNetwork(null)} className="p-1.5 rounded-lg hover:bg-[#F1F5F9] transition-colors" style={{ color: 'var(--muted)' }}>
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="space-y-1.5">
+                  {NETWORKS.map(n => (
+                    <button key={n.id} onClick={() => {
+                      if (selectingNetwork === 'in') setNetworkIn(n);
+                      else setNetworkOut(n);
+                      setSelectingNetwork(null);
+                    }}
+                      className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-colors"
+                      style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}
+                    >
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center bg-white border border-slate-200 text-lg">
+                        {n.icon}
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>{n.name}</div>
+                        <div className="text-[10px] text-slate-500 font-medium">{n.id === 'Arc_Testnet' ? 'Native Chain' : 'External Chain via CCTP'}</div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Token Selection Modal */}
           {selectingTarget && (
@@ -461,15 +553,29 @@ export default function SwapToken() {
               </div>
             )}
 
-            <div className="mb-5 flex items-center justify-between p-3 rounded-xl text-sm" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
-              <span className="font-medium" style={{ color: 'var(--muted)' }}>Arc Testnet · Keep USDC for fees</span>
-              <span className="pz-chip">Testnet</span>
+            <div className="mb-5 flex flex-col gap-3 p-3 rounded-xl text-sm" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
+              <div className="flex items-center justify-between">
+                <span className="font-medium" style={{ color: 'var(--muted)' }}>
+                  {isBridge ? 'Cross-Chain Bridge' : 'Local Swap on Arc Testnet'}
+                </span>
+                <span className="pz-chip">{isBridge ? 'Bridge' : 'Swap'}</span>
+              </div>
+              {isBridge && (
+                <p className="text-[10px] text-slate-500 font-medium">
+                  Moving USDC from {networkIn.name} to {networkOut.name} via Circle CCTP.
+                </p>
+              )}
             </div>
 
             <div className="relative">
               {/* Pay panel */}
               <div className="p-4 rounded-2xl mb-2 border transition-all" style={{ background: 'var(--surface)', borderColor: 'var(--border)' }}>
-                <div className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--muted)' }}>Pay</div>
+                <div className="flex justify-between items-center mb-2">
+                  <div className="text-xs font-bold uppercase tracking-wide" style={{ color: 'var(--muted)' }}>Pay</div>
+                  <button onClick={() => setSelectingNetwork('in')} className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-50 border border-slate-200 text-[10px] font-bold text-slate-600">
+                    {networkIn.icon} {networkIn.name} <ChevronDown className="w-3 h-3" />
+                  </button>
+                </div>
                 <div className="flex items-center justify-between gap-4 mb-2">
                   <input type="number" placeholder="0" value={amountIn} onChange={e => setAmountIn(e.target.value)}
                     className="flex-1 bg-transparent text-4xl font-semibold outline-none w-full"
@@ -493,7 +599,11 @@ export default function SwapToken() {
 
               {/* Swap arrow */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                <button onClick={handleSwapTokens}
+                <button onClick={() => {
+                  const tn = networkIn; setNetworkIn(networkOut); setNetworkOut(tn);
+                  const tt = tokenIn; setTokenIn(tokenOut); setTokenOut(tt);
+                  setAmountIn(amountOut);
+                }}
                   className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm transition-transform hover:scale-105 active:scale-95"
                   style={{ border: '4px solid var(--surface-2)', color: 'var(--primary)' }}>
                   <ArrowDown className="w-4 h-4" />
@@ -502,7 +612,12 @@ export default function SwapToken() {
 
               {/* Receive panel */}
               <div className="p-4 rounded-2xl border transition-all" style={{ background: 'var(--surface-2)', borderColor: 'var(--border)' }}>
-                <div className="text-xs font-bold uppercase tracking-wide mb-2" style={{ color: 'var(--muted)' }}>Receive</div>
+                <div className="flex justify-between items-center mb-2">
+                  <div className="text-xs font-bold uppercase tracking-wide" style={{ color: 'var(--muted)' }}>Receive</div>
+                  <button onClick={() => setSelectingNetwork('out')} className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-white border border-slate-200 text-[10px] font-bold text-slate-600">
+                    {networkOut.icon} {networkOut.name} <ChevronDown className="w-3 h-3" />
+                  </button>
+                </div>
                 <div className="flex items-center justify-between gap-4 mb-2">
                   <input type="number" placeholder="0" value={amountOut} readOnly
                     className="flex-1 bg-transparent text-4xl font-semibold outline-none w-full"
