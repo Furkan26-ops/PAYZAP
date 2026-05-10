@@ -85,44 +85,46 @@ export default function SwapToken() {
   const [quoteError, setQuoteError] = useState('');
   const [receipt, setReceipt] = useState<any>(null);
   const [balances, setBalances] = useState<Record<string, string>>({
-      USDC: '0.00', EURC: '0.00', ARC: '0.00', WBTC: '0.00', WETH: '0.00'
+    USDC: '0.00', EURC: '0.00', ARC: '0.00', WBTC: '0.00', WETH: '0.00'
   });
-  
+
   // Selection State
   const [selectingTarget, setSelectingTarget] = useState<'in' | 'out' | null>(null);
   const [selectingNetwork, setSelectingNetwork] = useState<'in' | 'out' | null>(null);
-  
+
   const router = useRouter();
 
   const isBridge = networkIn.id !== networkOut.id;
 
   // Load Real On-Chain Balances
   useEffect(() => {
-      if (networkIn.id !== 'Arc_Testnet') return; // Only fetch Arc balances for now in this prototype
+    if (networkIn.id !== 'Arc_Testnet') return; // Only fetch Arc balances for now in this prototype
 
-      const fetchBalances = async () => {
-          const publicClient = createPublicClient({ chain: ARC_TESTNET_CHAIN, transport: http() });
-          
-          const newBalances: Record<string, string> = {
-              USDC: '0.00',
-              EURC: '0.00',
-              USYC: '0.00',
-              USDT: '0.00',
-              XYLO: '0.00'
-          };
-          
-          for (const token of ARC_TESTNET_SWAP_TOKENS) {
-              try {
-                  const balance = await readArcTokenBalance(publicClient, token, address);
-                  newBalances[token.symbol] = balance.toString();
-              } catch (e) {
-                  console.error(`Failed to fetch balance for ${token.symbol}`, e);
-              }
-          }
-          setBalances(newBalances);
+    const fetchBalances = async () => {
+      const address = localStorage.getItem('walletAddress');
+      if (!address) return;
+      const publicClient = createPublicClient({ chain: ARC_TESTNET_CHAIN, transport: http() });
+
+      const newBalances: Record<string, string> = {
+        USDC: '0.00',
+        EURC: '0.00',
+        USYC: '0.00',
+        USDT: '0.00',
+        XYLO: '0.00'
       };
-      
-      fetchBalances();
+
+      for (const token of ARC_TESTNET_SWAP_TOKENS) {
+        try {
+          const balance = await readArcTokenBalance(publicClient, token, address);
+          newBalances[token.symbol] = balance.toString();
+        } catch (e) {
+          console.error(`Failed to fetch balance for ${token.symbol}`, e);
+        }
+      }
+      setBalances(newBalances);
+    };
+
+    fetchBalances();
   }, [networkIn.id]);
 
   // Arc App Kit Native Quoting Logic
@@ -130,85 +132,85 @@ export default function SwapToken() {
     let cancelled = false;
 
     const fetchQuote = async () => {
-        if (!amountIn) {
-            setAmountOut('');
-            setQuoteError('');
-            return;
-        }
+      if (!amountIn) {
+        setAmountOut('');
+        setQuoteError('');
+        return;
+      }
 
-        if (isBridge) {
-          if (tokenIn.symbol !== 'USDC' || tokenOut.symbol !== 'USDC') {
-            setAmountOut('');
-            setQuoteError('Only USDC can be bridged across networks.');
-            return;
-          }
-          setAmountOut(amountIn);
-          setQuoteError('');
+      if (isBridge) {
+        if (tokenIn.symbol !== 'USDC' || tokenOut.symbol !== 'USDC') {
+          setAmountOut('');
+          setQuoteError('Only USDC can be bridged across networks.');
           return;
         }
-
-        if (tokenIn.symbol === tokenOut.symbol) {
-            setAmountOut('');
-            setQuoteError('Choose two different tokens.');
-            return;
-        }
-
-        const parsedAmount = Number(amountIn);
-        if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
-            setAmountOut('');
-            setQuoteError('Enter a valid swap amount.');
-            return;
-        }
-
-        const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
-        if (!kitKey) {
-            setAmountOut('');
-            setQuoteError('Circle App Kit key is missing. Add NEXT_PUBLIC_KIT_KEY before swapping.');
-            return;
-        }
-        
-        setQuoteLoading(true);
+        setAmountOut(amountIn);
         setQuoteError('');
-        try {
-            const { AppKit } = await import('@circle-fin/app-kit');
-            const kit = new AppKit();
-            
-            const params: any = {
-              tokenIn: tokenIn.symbol,
-              amountIn: amountIn,
-              tokenOut: tokenOut.symbol,
-              config: {
-                kitKey,
-                allowanceStrategy: 'permit',
-                slippageBps: SWAP_SLIPPAGE_BPS
-              }
-            };
+        return;
+      }
 
-            if (typeof window !== 'undefined' && (window as any).ethereum) {
-                const { createViemAdapterFromProvider } = await import('@circle-fin/adapter-viem-v2');
-                const adapter = await createViemAdapterFromProvider({ provider: (window as any).ethereum });
-                params.from = { adapter, chain: "Arc_Testnet" };
-            } else {
-                params.from = { chain: "Arc_Testnet" };
-            }
+      if (tokenIn.symbol === tokenOut.symbol) {
+        setAmountOut('');
+        setQuoteError('Choose two different tokens.');
+        return;
+      }
 
-            const estimate: any = await withCircleApiProxy(() => kit.estimateSwap(params));
-            const quotedAmountOut = extractSwapAmountOut(estimate);
-            if (!quotedAmountOut || Number(quotedAmountOut) <= 0) {
-              throw new Error('No executable quote returned. Try a smaller amount.');
-            }
-            if (cancelled) return;
-            setAmountOut(quotedAmountOut);
-        } catch (e) {
-            console.error("Quote error", e);
-            if (cancelled) return;
-            setAmountOut('');
-            setQuoteError((e as any)?.shortMessage || (e as any)?.message || 'No quote available for this amount.');
-        } finally {
-            if (!cancelled) setQuoteLoading(false);
+      const parsedAmount = Number(amountIn);
+      if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+        setAmountOut('');
+        setQuoteError('Enter a valid swap amount.');
+        return;
+      }
+
+      const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+      if (!kitKey) {
+        setAmountOut('');
+        setQuoteError('Circle App Kit key is missing. Add NEXT_PUBLIC_KIT_KEY before swapping.');
+        return;
+      }
+
+      setQuoteLoading(true);
+      setQuoteError('');
+      try {
+        const { AppKit } = await import('@circle-fin/app-kit');
+        const kit = new AppKit();
+
+        const params: any = {
+          tokenIn: tokenIn.symbol,
+          amountIn: amountIn,
+          tokenOut: tokenOut.symbol,
+          config: {
+            kitKey,
+            allowanceStrategy: 'permit',
+            slippageBps: SWAP_SLIPPAGE_BPS
+          }
+        };
+
+        if (typeof window !== 'undefined' && (window as any).ethereum) {
+          const { createViemAdapterFromProvider } = await import('@circle-fin/adapter-viem-v2');
+          const adapter = await createViemAdapterFromProvider({ provider: (window as any).ethereum });
+          params.from = { adapter, chain: "Arc_Testnet" };
+        } else {
+          params.from = { chain: "Arc_Testnet" };
         }
+
+        const estimate: any = await withCircleApiProxy(() => kit.estimateSwap(params));
+        const quotedAmountOut = extractSwapAmountOut(estimate);
+        if (!quotedAmountOut || Number(quotedAmountOut) <= 0) {
+          throw new Error('No executable quote returned. Try a smaller amount.');
+        }
+        if (cancelled) return;
+        setAmountOut(quotedAmountOut);
+      } catch (e) {
+        console.error("Quote error", e);
+        if (cancelled) return;
+        setAmountOut('');
+        setQuoteError((e as any)?.shortMessage || (e as any)?.message || 'No quote available for this amount.');
+      } finally {
+        if (!cancelled) setQuoteLoading(false);
+      }
     };
-    
+
     const quoteTimer = window.setTimeout(fetchQuote, 350);
     return () => {
       cancelled = true;
@@ -224,31 +226,31 @@ export default function SwapToken() {
   };
 
   const handleMax = () => {
-      const currentBalance = parseFloat(balances[tokenIn.symbol] || '0');
-      let spendable = currentBalance;
-      
-      if (tokenIn.symbol === 'USDC') {
-        spendable = Math.max(0, currentBalance - ARC_NATIVE_USDC_GAS_RESERVE);
-      }
-      
-      // Truncate to token decimals to prevent floating point errors causing reverts
-      const decimals = tokenIn.decimals || 6;
-      const factor = Math.pow(10, decimals);
-      const truncated = Math.floor(spendable * factor) / factor;
-      
-      // Convert to string, removing any trailing floating point inaccuracies
-      setAmountIn(truncated.toString());
+    const currentBalance = parseFloat(balances[tokenIn.symbol] || '0');
+    let spendable = currentBalance;
+
+    if (tokenIn.symbol === 'USDC') {
+      spendable = Math.max(0, currentBalance - ARC_NATIVE_USDC_GAS_RESERVE);
+    }
+
+    // Truncate to token decimals to prevent floating point errors causing reverts
+    const decimals = tokenIn.decimals || 6;
+    const factor = Math.pow(10, decimals);
+    const truncated = Math.floor(spendable * factor) / factor;
+
+    // Convert to string, removing any trailing floating point inaccuracies
+    setAmountIn(truncated.toString());
   };
 
   const selectToken = (token: Token) => {
-      if (selectingTarget === 'in') {
-          if (token.symbol === tokenOut.symbol) handleSwapTokens();
-          else setTokenIn(token);
-      } else if (selectingTarget === 'out') {
-          if (token.symbol === tokenIn.symbol) handleSwapTokens();
-          else setTokenOut(token);
-      }
-      setSelectingTarget(null);
+    if (selectingTarget === 'in') {
+      if (token.symbol === tokenOut.symbol) handleSwapTokens();
+      else setTokenIn(token);
+    } else if (selectingTarget === 'out') {
+      if (token.symbol === tokenIn.symbol) handleSwapTokens();
+      else setTokenOut(token);
+    }
+    setSelectingTarget(null);
   };
 
   const handleExecute = async () => {
@@ -259,11 +261,11 @@ export default function SwapToken() {
       if (!address) throw new Error("Authentication error. Please connect wallet.");
       if (parseFloat(amountIn) <= 0) throw new Error("Amount must be greater than zero.");
       if (!amountOut || parseFloat(amountOut) <= 0 || quoteError) {
-          throw new Error(quoteError || "No executable quote is available. Try a smaller amount.");
+        throw new Error(quoteError || "No executable quote is available. Try a smaller amount.");
       }
       const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
       if (!kitKey) throw new Error("Circle App Kit key is missing. Add NEXT_PUBLIC_KIT_KEY before swapping.");
-      
+
       const ethereum = (window as any).ethereum;
       if (!ethereum) throw new Error("No Web3 wallet detected. Please install MetaMask.");
 
@@ -286,16 +288,16 @@ export default function SwapToken() {
             // kit.bridge defaults to USDC
           })
         );
-        
+
         const hash = (bridgeResult as any).txHash as `0x${string}`;
         if (!hash) throw new Error("Bridge submitted but App Kit did not return a transaction hash.");
 
-        setReceipt({ 
-          amountIn, 
-          tokenIn, 
-          amountOut: amountIn, 
-          tokenOut, 
-          fee: '$0.00', 
+        setReceipt({
+          amountIn,
+          tokenIn,
+          amountOut: amountIn,
+          tokenOut,
+          fee: '$0.00',
           hash,
           isBridge: true,
           fromNet: networkIn.name,
@@ -309,7 +311,7 @@ export default function SwapToken() {
         chain: ARC_TESTNET_CHAIN,
         transport: custom(ethereum)
       });
-      
+
       try {
         await walletClient.switchChain({ id: 5042002 });
       } catch (switchError: any) {
@@ -337,10 +339,10 @@ export default function SwapToken() {
       }));
 
       if (parseFloat(amountIn) > latestTokenInBalance) {
-          throw new Error(`Insufficient ${tokenIn.symbol} balance on Arc Testnet. Available: ${latestTokenInBalance.toFixed(4)} ${tokenIn.symbol}.`);
+        throw new Error(`Insufficient ${tokenIn.symbol} balance on Arc Testnet. Available: ${latestTokenInBalance.toFixed(4)} ${tokenIn.symbol}.`);
       }
       if (tokenIn.symbol === 'USDC' && parseFloat(amountIn) > Math.max(0, latestTokenInBalance - ARC_NATIVE_USDC_GAS_RESERVE)) {
-          throw new Error(`Keep at least ${ARC_NATIVE_USDC_GAS_RESERVE} USDC for Arc network fees. Available to swap: ${Math.max(0, latestTokenInBalance - ARC_NATIVE_USDC_GAS_RESERVE).toFixed(4)} USDC.`);
+        throw new Error(`Keep at least ${ARC_NATIVE_USDC_GAS_RESERVE} USDC for Arc network fees. Available to swap: ${Math.max(0, latestTokenInBalance - ARC_NATIVE_USDC_GAS_RESERVE).toFixed(4)} USDC.`);
       }
 
       const waitForTokenOutIncrease = async (startingBalance: number) => {
@@ -354,7 +356,7 @@ export default function SwapToken() {
       };
 
       const tokenOutBalanceBefore = await readArcTokenBalance(publicClient, tokenOut, address);
-      
+
       const swapResult = await withCircleApiProxy(() =>
         kit.swap({
           from: { adapter, chain: "Arc_Testnet" },
@@ -371,7 +373,7 @@ export default function SwapToken() {
 
       const hash = (swapResult as any).txHash as `0x${string}`;
       if (!hash) throw new Error("Swap submitted but App Kit did not return a transaction hash.");
-      
+
       const minedReceipt = await publicClient.waitForTransactionReceipt({ hash });
       if (minedReceipt.status !== 'success') {
         throw new Error("Swap transaction reverted on Arc Testnet.");
@@ -382,25 +384,25 @@ export default function SwapToken() {
       if (tokenOutBalanceAfter <= tokenOutBalanceBefore) {
         throw new Error("A transaction was mined, but no output token balance increase was detected. If your wallet only showed an approval, run the swap again now that allowance is set. Otherwise try a smaller amount or check ArcScan.");
       }
-      
+
       // Log to Supabase
       const { error } = await supabase.from('transactions').insert({
         wallet_address: address.toLowerCase(),
         tx_hash: hash,
         transaction_type: 'swap',
-        amount_usdc: tokenIn.symbol === 'USDC' ? parseFloat(amountIn) : 0, 
+        amount_usdc: tokenIn.symbol === 'USDC' ? parseFloat(amountIn) : 0,
         token_received: tokenOut.symbol
       });
-      
+
       if (error) console.error("Supabase Log Error:", error);
 
       // Update multi-token balances
       const updatedBalances = { ...balances };
-      
+
       // Deduct Token In
       const deducted = parseFloat(updatedBalances[tokenIn.symbol]) - parseFloat(amountIn);
       updatedBalances[tokenIn.symbol] = deducted > 0 ? deducted.toString() : '0.00';
-      
+
       // Add Token Out
       const detectedAmountOut = tokenOutBalanceAfter - tokenOutBalanceBefore;
       const added = parseFloat(updatedBalances[tokenOut.symbol] || '0') + detectedAmountOut;
@@ -408,7 +410,7 @@ export default function SwapToken() {
 
       setBalances(updatedBalances);
       localStorage.setItem('demoBalances', JSON.stringify(updatedBalances));
-      
+
       // Keep legacy sync
       if (tokenIn.symbol === 'USDC') localStorage.setItem('demoBalance', updatedBalances.USDC);
       if (tokenOut.symbol === 'USDC') localStorage.setItem('demoBalance', updatedBalances.USDC);
@@ -441,7 +443,7 @@ export default function SwapToken() {
               <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>{receipt.isBridge ? 'Sending' : 'Sold'}</span><span className="font-bold">{receipt.amountIn} {receipt.tokenIn.symbol}</span></div>
               <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>{receipt.isBridge ? 'Receiving' : 'Bought'}</span><span className="font-bold" style={{ color: 'var(--blue)' }}>{receipt.amountOut} {receipt.tokenOut.symbol}</span></div>
               {receipt.isBridge && (
-                 <div className="flex justify-between pt-2 border-t border-slate-100"><span style={{ color: 'var(--muted)' }}>Network</span><span className="font-bold">{receipt.fromNet} → {receipt.toNet}</span></div>
+                <div className="flex justify-between pt-2 border-t border-slate-100"><span style={{ color: 'var(--muted)' }}>Network</span><span className="font-bold">{receipt.fromNet} → {receipt.toNet}</span></div>
               )}
             </div>
             <button onClick={() => router.push('/dashboard')} className="pz-btn pz-btn-primary pz-btn-lg w-full">
@@ -589,7 +591,7 @@ export default function SwapToken() {
                   </button>
                 </div>
                 <div className="flex items-center justify-between text-xs font-medium" style={{ color: 'var(--muted-2)' }}>
-                  <span>${amountIn ? (parseFloat(amountIn)*1).toFixed(2) : '0.00'}</span>
+                  <span>${amountIn ? (parseFloat(amountIn) * 1).toFixed(2) : '0.00'}</span>
                   <div className="flex items-center gap-1">
                     <span>Balance: {balances[tokenIn.symbol] ? (Math.floor(parseFloat(balances[tokenIn.symbol]) * 10000) / 10000).toFixed(4) : '0.00'}</span>
                     <button onClick={handleMax} className="font-bold hover:underline" style={{ color: 'var(--primary)' }}>Max</button>
@@ -631,7 +633,7 @@ export default function SwapToken() {
                   </button>
                 </div>
                 <div className="flex items-center justify-between text-xs font-medium" style={{ color: 'var(--muted-2)' }}>
-                  <span>{quoteLoading ? 'Getting quote…' : `$${amountOut ? (parseFloat(amountOut)*1).toFixed(2) : '0.00'}`}</span>
+                  <span>{quoteLoading ? 'Getting quote…' : `$${amountOut ? (parseFloat(amountOut) * 1).toFixed(2) : '0.00'}`}</span>
                   <span>Balance: {balances[tokenOut.symbol] || '0.00'}</span>
                 </div>
               </div>
@@ -645,7 +647,7 @@ export default function SwapToken() {
                   <Settings className="w-4 h-4" />
                 </button>
               </div>
-              <div className="flex justify-between font-medium" style={{ color: 'var(--muted)' }}><span>Slippage</span><span className="font-bold" style={{ color: 'var(--text)' }}>{(SWAP_SLIPPAGE_BPS/100).toFixed(2)}%</span></div>
+              <div className="flex justify-between font-medium" style={{ color: 'var(--muted)' }}><span>Slippage</span><span className="font-bold" style={{ color: 'var(--text)' }}>{(SWAP_SLIPPAGE_BPS / 100).toFixed(2)}%</span></div>
               <div className="flex justify-between font-medium" style={{ color: 'var(--muted)' }}><span>Network fee</span><span className="font-bold" style={{ color: 'var(--text)' }}>$0.03</span></div>
               <div className="flex justify-between font-medium" style={{ color: 'var(--muted)' }}>
                 <span>Price impact</span>
@@ -653,12 +655,12 @@ export default function SwapToken() {
               </div>
             </div>
 
-            <button onClick={handleSwap}
+            <button onClick={handleExecute}
               disabled={processing || quoteLoading || !amountIn || !amountOut || Boolean(quoteError)}
               className="pz-btn pz-btn-primary pz-btn-lg w-full mt-5">
               {processing ? <><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Routing Swap…</> :
-               quoteLoading ? 'Fetching quote…' : !amountIn ? 'Enter an amount' :
-               quoteError || !amountOut ? 'No quote available' : 'Execute Swap'}
+                quoteLoading ? 'Fetching quote…' : !amountIn ? 'Enter an amount' :
+                  quoteError || !amountOut ? 'No quote available' : 'Execute Swap'}
             </button>
           </div>
         </div>
