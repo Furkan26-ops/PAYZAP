@@ -219,15 +219,12 @@ export default function Dashboard() {
               {historyLoading ? (
                  <div className="flex items-center gap-3 px-2 py-4"><RefreshCw className="w-5 h-5 animate-spin opacity-40 text-slate-400" /></div>
               ) : recentTxs.slice(0, 4).map((tx, i) => {
-                const date = new Date(tx.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                 const isReceive = tx.type === 'receive';
+                const token = TOKENS_BY_SYMBOL[tx.tokenSymbol];
                 return (
                   <div key={tx.id || i} className="flex justify-between items-center px-2">
                     <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs" 
-                           style={{ background: isReceive ? '#D1FAE5' : (tx.type === 'swap' ? '#DBEAFE' : '#FEE2E2') }}>
-                        {isReceive ? '💰' : (tx.type === 'swap' ? '💸' : '🪙')}
-                      </div>
+                      <TokenIcon symbol={tx.tokenSymbol} logo={token?.logo} size={28} />
                       <span className="text-sm font-bold text-slate-800">{isReceive ? 'Received' : (tx.type === 'swap' ? 'Swap' : 'Sent')} {tx.tokenSymbol}</span>
                     </div>
                     <span className="text-sm font-bold" style={{ color: isReceive ? 'var(--success)' : 'var(--text)' }}>
@@ -316,14 +313,13 @@ export default function Dashboard() {
               ) : recentTxs.slice(0, 10).map((tx, i) => {
                  const isReceive = tx.type === 'receive';
                  const isSwap = tx.type === 'swap';
-                 const Icon = isReceive ? ArrowDownLeft : isSwap ? ArrowDownUp : ArrowUpRight;
-                 const bgClass = isReceive ? 'bg-green-100 text-green-600 border-green-200' : isSwap ? 'bg-blue-100 text-blue-600 border-blue-200' : 'bg-red-100 text-red-600 border-red-200';
+                 const token = TOKENS_BY_SYMBOL[tx.tokenSymbol];
                  
                  return (
                   <div key={tx.id || i} className="flex justify-between items-center group hover:bg-slate-50 -mx-2 px-2 py-2 rounded-xl transition-colors cursor-pointer">
                     <div className="flex gap-4 items-center">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-sm border ${bgClass}`}>
-                        <Icon className="w-5 h-5" />
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-100 bg-white">
+                        <TokenIcon symbol={tx.tokenSymbol} logo={token?.logo} size={28} />
                       </div>
                       <div>
                         <div className="text-sm font-bold text-slate-900 mb-0.5 capitalize">
