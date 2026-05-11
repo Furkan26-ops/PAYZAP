@@ -139,7 +139,7 @@ export default function SwapToken() {
         return;
       }
 
-      if (tokenIn.symbol === tokenOut.symbol) {
+      if (!isBridge && tokenIn.symbol === tokenOut.symbol) {
         setAmountOut('');
         setQuoteError('Choose two different tokens.');
         return;
@@ -214,11 +214,19 @@ export default function SwapToken() {
 
   const selectTokenAndNetwork = (token: Token, network: any) => {
     if (selectingTarget === 'in') {
-      setTokenIn(token);
-      setNetworkIn(network);
+      if (token.symbol === tokenOut.symbol && network.id === networkOut.id) {
+        handleSwitchDirection();
+      } else {
+        setTokenIn(token);
+        setNetworkIn(network);
+      }
     } else {
-      setTokenOut(token);
-      setNetworkOut(network);
+      if (token.symbol === tokenIn.symbol && network.id === networkIn.id) {
+        handleSwitchDirection();
+      } else {
+        setTokenOut(token);
+        setNetworkOut(network);
+      }
     }
     setSelectingTarget(null);
   };
