@@ -78,6 +78,8 @@ export default function SwapToken() {
   const [amountIn, setAmountIn] = useState('');
   const [amountOut, setAmountOut] = useState('');
   const [processing, setProcessing] = useState(false);
+  const [bridgeStep, setBridgeStep] = useState<'idle' | 'approve' | 'burn' | 'attest' | 'mint'>('idle');
+  const [bridgeEstimate, setBridgeEstimate] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState('');
@@ -136,8 +138,27 @@ export default function SwapToken() {
         }
         setAmountOut(amountIn);
         setQuoteError('');
+        
+        // Fetch Bridge Estimate
+        try {
+          const { AppKit } = await import('@circle-fin/app-kit');
+          const kit = new AppKit();
+          const { createViemAdapterFromProvider } = await import('@circle-fin/adapter-viem-v2');
+          const adapter = await createViemAdapterFromProvider({ provider: (window as any).ethereum });
+          
+          const estimate = await withCircleApiProxy(() => kit.bridge.estimateCosts({
+            from: { adapter, chain: networkIn.id },
+            to: { adapter, chain: networkOut.id },
+            amount: amountIn
+          }));
+          if (!cancelled) setBridgeEstimate(estimate);
+        } catch (e) {
+          console.error("Bridge estimate error", e);
+        }
         return;
       }
+      
+      setBridgeEstimate(null);
 
       if (!isBridge && tokenIn.symbol === tokenOut.symbol) {
         setAmountOut('');
@@ -233,6 +254,7 @@ export default function SwapToken() {
 
   const handleExecute = async () => {
     setProcessing(true);
+    setBridgeStep('approve');
     setErrorMsg('');
     try {
       const address = localStorage.getItem('walletAddress');
@@ -244,15 +266,31 @@ export default function SwapToken() {
       const kit = new AppKit();
       const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
 
+      // Event Listeners for UX progress
+      kit.on('approve', () => setBridgeStep('approve'));
+      kit.on('burn', () => setBridgeStep('burn'));
+      kit.on('fetchAttestation', () => setBridgeStep('attest'));
+      kit.on('mint', () => setBridgeStep('mint'));
+
       if (isBridge) {
         const bridgeResult = await withCircleApiProxy(() =>
           kit.bridge({
             from: { adapter, chain: networkIn.id },
-            to: { chain: networkOut.id },
+            to: { adapter, chain: networkOut.id, useForwarder: true },
             amount: amountIn,
           })
         );
-        setReceipt({ amountIn, tokenIn, amountOut: amountIn, tokenOut, hash: (bridgeResult as any).txHash, isBridge: true, fromNet: networkIn.name, toNet: networkOut.name });
+        setReceipt({ 
+          amountIn, 
+          tokenIn, 
+          amountOut: amountIn, 
+          tokenOut, 
+          hash: (bridgeResult as any).txHash || (bridgeResult as any).burnTxHash, 
+          isBridge: true, 
+          fromNet: networkIn.name, 
+          toNet: networkOut.name,
+          isForwarded: true
+        });
       } else {
         const swapResult = await withCircleApiProxy(() =>
           kit.swap({
@@ -269,6 +307,7 @@ export default function SwapToken() {
       setErrorMsg(err.message || "Execution failed.");
     } finally {
       setProcessing(false);
+      setBridgeStep('idle');
     }
   };
 
@@ -285,11 +324,21 @@ export default function SwapToken() {
               {receipt.isBridge ? 'Bridge Initiated' : 'Swap Confirmed'}
             </h2>
             <p className="text-sm text-slate-500 mb-8 leading-relaxed">
-              {receipt.isBridge ? `Moving funds to ${receipt.toNet}` : 'Your transaction was successfully submitted to the network.'}
+              {receipt.isBridge 
+                ? `Moving funds to ${receipt.toNet}. Bridging typically takes 3-5 minutes to finalize.` 
+                : 'Your transaction was successfully submitted to the network.'}
             </p>
             <div className="bg-slate-50 rounded-2xl p-4 text-left space-y-3 mb-8 border border-slate-100">
               <div className="flex justify-between text-sm"><span className="text-slate-500">Sent</span><span className="font-semibold text-slate-900">{receipt.amountIn} {receipt.tokenIn.symbol}</span></div>
               <div className="flex justify-between text-sm"><span className="text-slate-500">Received</span><span className="font-semibold text-blue-600">{receipt.amountOut} {receipt.tokenOut.symbol}</span></div>
+              {receipt.isBridge && (
+                 <div className="flex justify-between text-[10px] pt-2 border-t border-slate-200">
+                    <span className="text-slate-400">Transaction</span>
+                    <a href={`https://testnet.arcscan.app/tx/${receipt.hash}`} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline truncate max-w-[120px]">
+                      {receipt.hash}
+                    </a>
+                 </div>
+              )}
             </div>
             <button onClick={() => router.push('/dashboard')} className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-blue-100 active:scale-95">
               Back to Dashboard
@@ -399,6 +448,39 @@ export default function SwapToken() {
               </div>
             </div>
 
+            {/* Exchange Summary */}
+            <div className="mt-6 p-4 rounded-[24px] bg-[#F5F6FC] border border-slate-100 space-y-3 transition-all animate-fade-in">
+              <div className="flex justify-between items-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                <span>Summary</span>
+                <Settings className="w-3.5 h-3.5" />
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-slate-500">{isBridge ? 'Estimated Time' : 'Max Slippage'}</span>
+                <span className="text-sm font-bold text-slate-800">
+                  {isBridge ? '10-15 mins' : `${(SWAP_SLIPPAGE_BPS / 100).toFixed(2)}%`}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-slate-500">{isBridge ? 'Bridge Fee' : 'Network Fee'}</span>
+                <span className="text-sm font-bold text-slate-800">
+                  {isBridge 
+                    ? (bridgeEstimate ? `${parseFloat(bridgeEstimate.total).toFixed(4)} ${tokenIn.symbol}` : 'Estimating...') 
+                    : '$0.03'}
+                </span>
+              </div>
+
+              {!isBridge && (
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-slate-500">Price Impact</span>
+                  <span className="text-sm font-bold text-green-500">
+                    {amountIn && amountOut ? (Math.max(0, (parseFloat(amountIn) - parseFloat(amountOut)) / parseFloat(amountIn)) * 100).toFixed(2) : '0.00'}%
+                  </span>
+                </div>
+              )}
+            </div>
+
             {/* Main Action Button */}
             <button
               onClick={handleExecute}
@@ -409,7 +491,17 @@ export default function SwapToken() {
                   : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-100 active:scale-[0.98]'
               }`}
             >
-              {processing ? <RefreshCw className="w-5 h-5 animate-spin mx-auto" /> : 
+              {processing ? (
+                <div className="flex items-center justify-center gap-3">
+                  <RefreshCw className="w-5 h-5 animate-spin" />
+                  <span>
+                    {bridgeStep === 'approve' ? 'Approving...' :
+                     bridgeStep === 'burn' ? 'Burning...' :
+                     bridgeStep === 'attest' ? 'Attesting...' :
+                     bridgeStep === 'mint' ? 'Minting...' : 'Processing...'}
+                  </span>
+                </div>
+              ) : 
                isInvalidBridge ? 'Unsupported Bridge' : 
                !amountIn ? 'Enter Amount' : 
                isBridge ? 'Bridge' : 'Swap'}
