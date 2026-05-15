@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase';
 import { withCircleApiProxy } from '@/lib/circleProxyFetch';
 import TokenIcon from '@/components/TokenIcon';
 import Sidebar from '@/components/Sidebar';
+import UserProfile from '@/components/UserProfile';
 
 // Constants & SDK Imports
 import { ARC_TESTNET_SWAP_TOKENS, TOKENS, Token } from '@/constants/tokens';
@@ -352,7 +353,10 @@ export default function SwapToken() {
   return (
     <div className="flex min-h-screen bg-[#F8FAFC]">
       <Sidebar />
-      <main className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12">
+      <main className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 relative">
+        <div className="absolute top-8 right-8 hidden sm:block">
+          <UserProfile />
+        </div>
         
         {/* Uniswap-style Exchange Card */}
         <div className="w-full max-w-[480px] bg-white rounded-[32px] p-2 shadow-[0_8px_32px_rgba(0,0,0,0.08)] relative">

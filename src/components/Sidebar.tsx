@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, ArrowUpRight, ArrowDownUp,
-  ArrowDownLeft, History, LogOut,
+  ArrowDownLeft, History,
 } from 'lucide-react';
 
 const navItems = [
@@ -58,15 +58,6 @@ export default function Sidebar() {
           </Link>
         ))}
       </nav>
-
-      {/* Divider */}
-      <div className="border-t border-white/10 my-4" />
-
-      {/* Sign out */}
-      <button onClick={handleLogout} className="pz-sidebar-link">
-        <LogOut className="w-4 h-4 flex-shrink-0" />
-        Sign Out
-      </button>
     </aside>
   );
 }

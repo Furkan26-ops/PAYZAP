@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Copy, CheckCircle2 } from 'lucide-react';
 import { QRCodeCanvas } from 'qrcode.react';
 import Sidebar from '@/components/Sidebar';
+import UserProfile from '@/components/UserProfile';
 
 export default function RequestMoney() {
   const [address, setAddress] = useState('');
@@ -27,7 +28,10 @@ export default function RequestMoney() {
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar />
-      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start">
+      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start relative">
+        <div className="absolute top-8 right-8 hidden sm:block">
+          <UserProfile />
+        </div>
         <div className="w-full max-w-sm">
           <div className="pz-card text-center flex flex-col items-center">
             <h1 className="text-xl font-bold mb-2" style={{ color: 'var(--text)' }}>Accept Funds</h1>

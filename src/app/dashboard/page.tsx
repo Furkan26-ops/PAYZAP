@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { createPublicClient, http, formatEther, formatUnits } from 'viem';
 import TokenIcon from '@/components/TokenIcon';
 import Sidebar from '@/components/Sidebar';
+import UserProfile from '@/components/UserProfile';
 import { TOKENS, TOKENS_BY_SYMBOL } from '@/constants/tokens';
 import { supabase } from '@/lib/supabase';
 import {
@@ -178,12 +179,7 @@ export default function Dashboard() {
               <Bell className="w-4 h-4 text-slate-600" />
               <div className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-white"></div>
             </button>
-            <div className="flex items-center gap-2.5 rounded-full pl-1.5 pr-4 py-1.5 shadow-sm bg-white border border-slate-200">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style={{ background: 'var(--blue)' }}>
-                {address ? address.slice(2, 4).toUpperCase() : 'PZ'}
-              </div>
-              <span className="text-sm font-bold" style={{ color: 'var(--text)' }}>{address || '—'}</span>
-            </div>
+            <UserProfile />
           </div>
         </div>
 

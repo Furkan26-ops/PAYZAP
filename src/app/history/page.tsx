@@ -6,6 +6,7 @@ import { Download, MoreHorizontal } from 'lucide-react';
 import TokenIcon from '@/components/TokenIcon';
 import { TOKENS_BY_SYMBOL } from '@/constants/tokens';
 import Sidebar from '@/components/Sidebar';
+import UserProfile from '@/components/UserProfile';
 
 export default function HistoryPage() {
   const [txs,     setTxs    ] = useState<any[]>([]);
@@ -30,11 +31,14 @@ export default function HistoryPage() {
     <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar />
       <main className="pz-shell flex-1">
-        <div className="pz-page-header">
+        <div className="pz-page-header flex justify-between items-center mb-8">
           <h1 className="pz-page-title">Transaction History</h1>
-          <button className="pz-btn pz-btn-primary pz-btn-sm flex items-center gap-2">
-            <Download className="w-4 h-4" /> Export Data
-          </button>
+          <div className="flex items-center gap-4">
+            <button className="pz-btn pz-btn-primary pz-btn-sm flex items-center gap-2">
+              <Download className="w-4 h-4" /> Export Data
+            </button>
+            <UserProfile />
+          </div>
         </div>
 
         <div className="pz-card">

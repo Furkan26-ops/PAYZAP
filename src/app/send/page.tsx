@@ -7,6 +7,7 @@ import { QrCode, X, CheckCircle2, ChevronDown, ArrowUpRight, Search } from 'luci
 import { createWalletClient, custom, parseUnits, createPublicClient, http, formatUnits } from 'viem';
 import { supabase } from '@/lib/supabase';
 import Sidebar from '@/components/Sidebar';
+import UserProfile from '@/components/UserProfile';
 import TokenIcon from '@/components/TokenIcon';
 import { TOKENS, Token } from '@/constants/tokens';
 
@@ -206,7 +207,10 @@ export default function SendMoney() {
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
       <Sidebar />
-      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start pt-16">
+      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start pt-16 relative">
+        <div className="absolute top-8 right-8 hidden sm:block">
+          <UserProfile />
+        </div>
         <div className="w-full max-w-sm">
           <div className="pz-card">
             <div className="flex items-center gap-3 mb-6">
