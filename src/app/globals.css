@@ -29,42 +29,38 @@
   --danger: #EF4444;
   --warning: #F59E0B;
 
-  /* Arc Theme Variables (Light Mode) */
-  --arc-bg: #F8FAFC;
+  /* Arc Theme Variables (Light Mode) - Clean White Theme */
+  --arc-bg: #FFFFFF;
   --arc-panel: #FFFFFF;
-  --arc-panel-strong: #F1F5F9;
-  --arc-border: rgba(226, 232, 240, 0.8);
+  --arc-panel-strong: #F8FAFC;
+  --arc-border: #E2E8F0;
   --arc-text: #0F172A;
   --arc-text-muted: #64748B;
-  --arc-cyan: #0891b2;
-  --arc-blue: #2563eb;
+  --arc-cyan: #2563EB; /* Using a stronger blue for clarity on white */
+  --arc-blue: #1D4ED8;
 }
 
 .dark {
-  --bg: #020617;
-  --surface: #0F172A;
-  --surface-2: #1E293B;
+  --bg: #0F172A;
+  --surface: #1E293B;
+  --surface-2: #334155;
   --border: rgba(255, 255, 255, 0.1);
-  --border-2: #0F172A;
+  --border-2: #1E293B;
 
   --text: #F8FAFC;
   --text-2: #E2E8F0;
   --muted: #94A3B8;
   --muted-2: #64748B;
 
-  /* Arc Theme Variables (Dark Mode) */
-  --arc-bg: #020617;
-  --arc-panel: rgba(15, 23, 42, 0.6);
-  --arc-panel-strong: rgba(30, 41, 59, 0.7);
+  /* Arc Theme Variables (Dark Mode) - Deep Slate */
+  --arc-bg: #0F172A;
+  --arc-panel: #1E293B;
+  --arc-panel-strong: #334155;
   --arc-border: rgba(255, 255, 255, 0.1);
   --arc-text: #F8FAFC;
   --arc-text-muted: #94A3B8;
-  --arc-cyan: #22d3ee;
-  --arc-blue: #3b82f6;
-}
-
-.glass-panel {
-  @apply bg-arc-panel backdrop-blur-md border border-arc-border shadow-lg;
+  --arc-cyan: #38BDF8;
+  --arc-blue: #60A5FA;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -217,14 +213,18 @@ input[type="number"] {
   padding: 0.35rem 0.875rem; border-radius: 999px;
   letter-spacing: 0.02em;
 }
-.pz-badge-blue   { background: var(--primary-soft); color: var(--primary); }
-.pz-badge-green  { background: #ECFDF5; color: var(--success); }
-.pz-badge-amber  { background: #FFFBEB; color: var(--warning); }
-.pz-badge-red    { background: #FEF2F2; color: var(--danger); }
+.pz-badge-blue   { background: #EFF6FF; color: #2563EB; }
+.pz-badge-green  { background: #ECFDF5; color: #10B981; }
+.pz-badge-amber  { background: #FFFBEB; color: #F59E0B; }
+.pz-badge-red    { background: #FEF2F2; color: #EF4444; }
+.pz-badge-violet { background: #F5F3FF; color: #7C3AED; }
 
 /* ═══════════════════════════════════════
-   TABLE
+   GLASS PANEL ENHANCEMENT
 ═══════════════════════════════════════ */
+.glass-panel {
+  @apply bg-white border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] dark:bg-slate-800/50 dark:border-slate-700/50 dark:backdrop-blur-md;
+}
 .pz-table { width: 100%; border-collapse: collapse; }
 .pz-table th {
   text-align: left; padding: 1rem;
