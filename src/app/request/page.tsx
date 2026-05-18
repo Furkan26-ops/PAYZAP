@@ -26,34 +26,34 @@ export default function RequestMoney() {
   if (!address) return null;
 
   return (
-    <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
+    <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
-      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start relative">
+      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start relative pt-16">
         <div className="absolute top-8 right-8 hidden sm:block">
           <UserProfile />
         </div>
         <div className="w-full max-w-sm">
-          <div className="pz-card text-center flex flex-col items-center">
-            <h1 className="text-xl font-bold mb-2" style={{ color: 'var(--text)' }}>Accept Funds</h1>
-            <p className="text-sm font-medium px-4 mb-6" style={{ color: 'var(--muted)' }}>
-              Use your automatically generated Arc Testnet wallet address.
+          <div className="glass-panel text-center flex flex-col items-center rounded-3xl p-8">
+            <h1 className="text-xl font-bold mb-2 text-arc-text">Accept Funds</h1>
+            <p className="text-sm font-medium px-4 mb-8 text-arc-textMuted leading-relaxed">
+              Scan this QR code or share your wallet address to receive Arc Testnet assets.
             </p>
 
             {/* QR Code */}
-            <div className="bg-white p-3 rounded-2xl border shadow-sm mb-6 inline-block" style={{ borderColor: 'var(--border)' }}>
-              <QRCodeCanvas value={`ethereum:${address}`} size={160} level="H" includeMargin={false} fgColor="#0F172A" />
+            <div className="bg-white p-4 rounded-3xl shadow-xl shadow-black/10 mb-8 inline-block border border-arc-border">
+              <QRCodeCanvas value={`ethereum:${address}`} size={180} level="H" includeMargin={false} fgColor="#0F172A" />
             </div>
 
             {/* Address */}
-            <div className="w-full p-3 rounded-lg mb-4 text-left overflow-hidden" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
-              <p className="text-xs font-mono font-medium truncate" style={{ color: 'var(--text)' }}>{address}</p>
+            <div className="w-full p-4 rounded-2xl mb-6 text-left overflow-hidden bg-arc-panelStrong border border-arc-border">
+              <p className="text-xs font-mono font-bold truncate text-arc-text tracking-tight">{address}</p>
             </div>
 
             {/* Copy Button */}
-            <button onClick={handleCopy} className="pz-btn pz-btn-primary pz-btn-lg w-full">
+            <button onClick={handleCopy} className="pz-btn pz-btn-primary pz-btn-lg w-full !rounded-2xl shadow-lg shadow-arc-blue/20">
               {copied
-                ? <><CheckCircle2 className="w-5 h-5" /> Copied!</>
-                : <><Copy className="w-5 h-5" /> Copy Address</>
+                ? <><CheckCircle2 className="w-5 h-5" /> Copied Address</>
+                : <><Copy className="w-5 h-5" /> Copy Wallet Address</>
               }
             </button>
           </div>

@@ -6,7 +6,7 @@
 
 :root {
   /* Core Colors */
-  --bg: #F8FAFC; /* Clean, modern light slate */
+  --bg: #F8FAFC; 
   --surface: #FFFFFF;
   --surface-2: #F1F5F9;
   --border: #E2E8F0;
@@ -28,6 +28,43 @@
   --success: #10B981;
   --danger: #EF4444;
   --warning: #F59E0B;
+
+  /* Arc Theme Variables (Light Mode) */
+  --arc-bg: #F8FAFC;
+  --arc-panel: #FFFFFF;
+  --arc-panel-strong: #F1F5F9;
+  --arc-border: rgba(226, 232, 240, 0.8);
+  --arc-text: #0F172A;
+  --arc-text-muted: #64748B;
+  --arc-cyan: #0891b2;
+  --arc-blue: #2563eb;
+}
+
+.dark {
+  --bg: #020617;
+  --surface: #0F172A;
+  --surface-2: #1E293B;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-2: #0F172A;
+
+  --text: #F8FAFC;
+  --text-2: #E2E8F0;
+  --muted: #94A3B8;
+  --muted-2: #64748B;
+
+  /* Arc Theme Variables (Dark Mode) */
+  --arc-bg: #020617;
+  --arc-panel: rgba(15, 23, 42, 0.6);
+  --arc-panel-strong: rgba(30, 41, 59, 0.7);
+  --arc-border: rgba(255, 255, 255, 0.1);
+  --arc-text: #F8FAFC;
+  --arc-text-muted: #94A3B8;
+  --arc-cyan: #22d3ee;
+  --arc-blue: #3b82f6;
+}
+
+.glass-panel {
+  @apply bg-arc-panel backdrop-blur-md border border-arc-border shadow-lg;
 }
 
 *, *::before, *::after { box-sizing: border-box; }

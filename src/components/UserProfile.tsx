@@ -52,25 +52,25 @@ export default function UserProfile() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2.5 rounded-full pl-1.5 pr-4 py-1.5 shadow-sm bg-white border border-slate-200 hover:border-slate-300 transition-all group"
+        className="flex items-center gap-2.5 rounded-full pl-1.5 pr-4 py-1.5 shadow-sm bg-arc-panel border border-arc-border hover:border-arc-cyan/50 transition-all group"
       >
-        <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 bg-blue-600 group-hover:bg-blue-700 transition-colors shadow-sm">
+        <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 bg-arc-blue group-hover:bg-arc-cyan transition-colors shadow-sm">
           {avatarText}
         </div>
-        <span className="text-sm font-bold text-slate-700 tracking-tight">{identifier}</span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="text-sm font-bold text-arc-text tracking-tight">{identifier}</span>
+        <ChevronDown className={`w-4 h-4 text-arc-textMuted transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-52 bg-white rounded-2xl border border-slate-100 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)] py-2 z-50 animate-in fade-in zoom-in-95 duration-200 origin-top-right">
-          <div className="px-4 py-2 border-b border-slate-50 mb-1">
-             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-0.5">Account</p>
-             <p className="text-xs font-bold text-slate-600 truncate">{identifier}</p>
+        <div className="absolute top-full right-0 mt-2 w-52 bg-arc-panel backdrop-blur-xl rounded-2xl border border-arc-border shadow-2xl py-2 z-50 animate-in fade-in zoom-in-95 duration-200 origin-top-right">
+          <div className="px-4 py-2 border-b border-arc-border mb-1">
+             <p className="text-[10px] font-bold text-arc-textMuted uppercase tracking-widest mb-0.5">Account</p>
+             <p className="text-xs font-bold text-arc-text truncate">{identifier}</p>
           </div>
           
           <button
             onClick={handleSignOut}
-            className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm font-bold text-slate-600 hover:text-red-600 hover:bg-red-50 transition-colors"
+            className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm font-bold text-arc-textMuted hover:text-red-500 hover:bg-red-500/10 transition-colors"
           >
             <LogOut className="w-4 h-4" />
             Sign Out

@@ -63,12 +63,12 @@ export default function AnalyticsCharts({ flowSegments, sparkline }: { flowSegme
           <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible" preserveAspectRatio="none">
             <polyline
               fill="none"
-              stroke="#06b6d4" // text-arc-cyan equivalent
+              stroke="var(--arc-cyan)" 
               strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
               points={points}
-              className="drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]"
+              className="drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]"
             />
             <polyline
               fill="url(#gradient)"
@@ -77,8 +77,8 @@ export default function AnalyticsCharts({ flowSegments, sparkline }: { flowSegme
             />
             <defs>
               <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.2" />
-                <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+                <stop offset="0%" stopColor="var(--arc-cyan)" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="var(--arc-cyan)" stopOpacity="0" />
               </linearGradient>
             </defs>
           </svg>

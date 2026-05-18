@@ -28,11 +28,11 @@ export default function HistoryPage() {
   }, [router]);
 
   return (
-    <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
+    <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
       <main className="pz-shell flex-1">
         <div className="pz-page-header flex justify-between items-center mb-8">
-          <h1 className="pz-page-title">Transaction History</h1>
+          <h1 className="text-2xl font-bold text-arc-text">Transaction History</h1>
           <div className="flex items-center gap-4">
             <button className="pz-btn pz-btn-primary pz-btn-sm flex items-center gap-2">
               <Download className="w-4 h-4" /> Export Data
@@ -41,25 +41,25 @@ export default function HistoryPage() {
           </div>
         </div>
 
-        <div className="pz-card">
+        <div className="glass-panel rounded-3xl p-6">
           {loading ? (
-            <div className="text-center py-10" style={{ color: 'var(--muted-2)' }}>
+            <div className="text-center py-10 text-arc-textMuted">
               Loading transactions…
             </div>
           ) : txs.length === 0 ? (
-            <div className="text-center py-10" style={{ color: 'var(--muted-2)' }}>
+            <div className="text-center py-10 text-arc-textMuted">
               No transactions found.
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b" style={{ borderColor: 'var(--border)' }}>
-                    <th className="py-3 px-4 text-xs font-semibold" style={{ color: 'var(--muted)' }}>Date</th>
-                    <th className="py-3 px-4 text-xs font-semibold" style={{ color: 'var(--muted)' }}>Type</th>
-                    <th className="py-3 px-4 text-xs font-semibold" style={{ color: 'var(--muted)' }}>Asset</th>
-                    <th className="py-3 px-4 text-xs font-semibold text-right" style={{ color: 'var(--muted)' }}>Amount</th>
-                    <th className="py-3 px-4 text-xs font-semibold hidden sm:table-cell" style={{ color: 'var(--muted)' }}>Status</th>
+                  <tr className="border-b border-arc-border">
+                    <th className="py-3 px-4 text-xs font-semibold text-arc-textMuted">Date</th>
+                    <th className="py-3 px-4 text-xs font-semibold text-arc-textMuted">Type</th>
+                    <th className="py-3 px-4 text-xs font-semibold text-arc-textMuted">Asset</th>
+                    <th className="py-3 px-4 text-xs font-semibold text-right text-arc-textMuted">Amount</th>
+                    <th className="py-3 px-4 text-xs font-semibold hidden sm:table-cell text-arc-textMuted">Status</th>
                     <th className="py-3 px-4 hidden sm:table-cell"></th>
                   </tr>
                 </thead>
@@ -69,21 +69,23 @@ export default function HistoryPage() {
                     const token = TOKENS_BY_SYMBOL[tx.tokenSymbol] || TOKENS_BY_SYMBOL.USDC;
                     const isSuccess = tx.status === 'completed';
                     return (
-                      <tr key={tx.id} className="border-b last:border-0 hover:bg-slate-50 transition-colors" style={{ borderColor: 'var(--border-2)' }}>
-                        <td className="py-3 px-4 text-sm font-medium" style={{ color: 'var(--text)' }}>{date}</td>
-                        <td className="py-3 px-4 text-sm capitalize" style={{ color: 'var(--text)' }}>{tx.type}</td>
+                      <tr key={tx.id} className="border-b border-arc-border/50 last:border-0 hover:bg-arc-panelStrong/30 transition-colors">
+                        <td className="py-3 px-4 text-sm font-medium text-arc-text">{date}</td>
+                        <td className="py-3 px-4 text-sm capitalize text-arc-text">{tx.type}</td>
                         <td className="py-3 px-4">
                           <div className="flex items-center gap-2">
                             <TokenIcon symbol={token.symbol} logo={token.logo} size={20} />
-                            <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>{token.symbol}</span>
+                            <span className="text-sm font-medium text-arc-text">{token.symbol}</span>
                           </div>
                         </td>
-                        <td className="py-3 px-4 text-sm font-medium text-right" style={{ color: 'var(--text)' }}>{tx.amountDisplay}</td>
-                        <td className="py-3 px-4 text-sm font-medium hidden sm:table-cell" style={{ color: isSuccess ? 'var(--success)' : 'var(--danger)' }}>
-                          {isSuccess ? 'Confirmed' : 'Failed'}
+                        <td className="py-3 px-4 text-sm font-medium text-right text-arc-text">{tx.amountDisplay}</td>
+                        <td className="py-3 px-4 text-sm font-medium hidden sm:table-cell">
+                          <span className={isSuccess ? 'text-emerald-500' : 'text-red-500'}>
+                            {isSuccess ? 'Confirmed' : 'Failed'}
+                          </span>
                         </td>
                         <td className="py-3 px-4 text-right hidden sm:table-cell">
-                          <button className="p-1 text-slate-400 hover:text-slate-600 rounded">
+                          <button className="p-1 text-arc-textMuted hover:text-arc-text rounded">
                             <MoreHorizontal className="w-5 h-5" />
                           </button>
                         </td>
@@ -92,11 +94,6 @@ export default function HistoryPage() {
                   })}
                 </tbody>
               </table>
-              <div className="mt-4 flex justify-end">
-                <button className="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center gap-1">
-                  Export Data &lt; &gt;
-                </button>
-              </div>
             </div>
           )}
         </div>

@@ -159,25 +159,25 @@ export default function Dashboard() {
     type === 'receive' ? 'pz-badge pz-badge-green' : 'pz-badge pz-badge-blue';
 
   return (
-    <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
+    <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
 
       <main className="pz-shell flex-1">
         {/* ── Top bar ── */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-8">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-1" style={{ color: 'var(--text)' }}>Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mb-1 text-arc-text">Dashboard</h1>
             <div className="flex items-center gap-2">
-              <p className="text-sm font-medium" style={{ color: 'var(--muted)' }}>Welcome back to PAYZAP</p>
-              <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px] font-bold tracking-wider uppercase">
+              <p className="text-sm font-medium text-arc-textMuted">Welcome back to PAYZAP</p>
+              <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-arc-panelStrong text-arc-textMuted text-[10px] font-bold tracking-wider uppercase">
                 <RefreshCw className="w-3 h-3" /> Just updated
               </div>
             </div>
           </div>
           <div className="flex items-center justify-between w-full sm:w-auto gap-3">
-            <button className="relative pz-btn pz-btn-ghost pz-btn-sm w-10 h-10 !p-0 rounded-full bg-white shadow-sm hover:shadow-md transition-shadow">
-              <Bell className="w-4 h-4 text-slate-600" />
-              <div className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-white"></div>
+            <button className="relative pz-btn pz-btn-ghost pz-btn-sm w-10 h-10 !p-0 rounded-full bg-arc-panel shadow-sm hover:shadow-md transition-shadow border-arc-border">
+              <Bell className="w-4 h-4 text-arc-text" />
+              <div className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 border border-arc-bg"></div>
             </button>
             <UserProfile />
           </div>
@@ -187,18 +187,18 @@ export default function Dashboard() {
         <div className="max-w-2xl space-y-6">
           
           {/* Main Balance Card */}
-          <div className="pz-card relative overflow-hidden">
+          <div className="glass-panel rounded-3xl p-8 relative overflow-hidden">
             <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-widest mb-2" style={{ color: 'var(--muted)' }}>Treasury Balance</p>
+                <p className="text-[11px] font-bold uppercase tracking-widest mb-2 text-arc-textMuted">Treasury Balance</p>
                 <div className="flex items-baseline gap-1 mb-1">
                   {loading ? (
-                    <RefreshCw className="w-7 h-7 animate-spin opacity-40" style={{ color: 'var(--muted)' }} />
+                    <RefreshCw className="w-7 h-7 animate-spin opacity-40 text-arc-textMuted" />
                   ) : (
-                    <><span className="text-xl sm:text-2xl font-bold" style={{ color: 'var(--text)' }}>$</span><span className="text-3xl sm:text-5xl font-extrabold tracking-tight" style={{ color: 'var(--text)' }}>{balance}</span></>
+                    <><span className="text-xl sm:text-2xl font-bold text-arc-text">$</span><span className="text-3xl sm:text-5xl font-extrabold tracking-tight text-arc-text">{balance}</span></>
                   )}
                 </div>
-                <p className="text-xs font-medium" style={{ color: 'var(--muted-2)' }}>in crypto assets</p>
+                <p className="text-xs font-medium text-arc-textMuted">in crypto assets</p>
               </div>
               <div className="flex gap-2 mt-2 sm:mt-0">
                 <Link href="/send" className="pz-btn pz-btn-primary pz-btn-sm !px-3 sm:!px-4 shadow-md hover:shadow-lg">
@@ -213,7 +213,7 @@ export default function Dashboard() {
             {/* Quick summary rows (matching mockup) */}
             <div className="space-y-4">
               {historyLoading ? (
-                 <div className="flex items-center gap-3 px-2 py-4"><RefreshCw className="w-5 h-5 animate-spin opacity-40 text-slate-400" /></div>
+                 <div className="flex items-center gap-3 px-2 py-4"><RefreshCw className="w-5 h-5 animate-spin opacity-40 text-arc-textMuted" /></div>
               ) : recentTxs.slice(0, 4).map((tx, i) => {
                 const isReceive = tx.type === 'receive';
                 const token = TOKENS_BY_SYMBOL[tx.tokenSymbol];
@@ -221,9 +221,9 @@ export default function Dashboard() {
                   <div key={tx.id || i} className="flex justify-between items-center px-2">
                     <div className="flex items-center gap-3">
                       <TokenIcon symbol={tx.tokenSymbol} logo={token?.logo} size={28} />
-                      <span className="text-sm font-bold text-slate-800">{isReceive ? 'Received' : (tx.type === 'swap' ? 'Swap' : 'Sent')} {tx.tokenSymbol}</span>
+                      <span className="text-sm font-bold text-arc-text">{isReceive ? 'Received' : (tx.type === 'swap' ? 'Swap' : 'Sent')} {tx.tokenSymbol}</span>
                     </div>
-                    <span className="text-sm font-bold" style={{ color: isReceive ? 'var(--success)' : 'var(--text)' }}>
+                    <span className="text-sm font-bold" style={{ color: isReceive ? 'var(--success)' : 'var(--arc-text)' }}>
                       {isReceive ? '+' : '-'}{tx.amountDisplay}
                     </span>
                   </div>
@@ -233,10 +233,10 @@ export default function Dashboard() {
           </div>
 
           {/* Charts Row */}
-          <div className="pz-card">
+          <div className="glass-panel rounded-3xl p-6">
             <div className="flex justify-between items-center mb-6">
-              <span className="text-sm font-bold text-slate-900">Inflow</span>
-              <span className="text-xs font-bold" style={{ color: 'var(--success)' }}>+ {inflowCount} Inflow</span>
+              <span className="text-sm font-bold text-arc-text">Inflow</span>
+              <span className="text-xs font-bold text-emerald-500">+ {inflowCount} Inflow</span>
             </div>
             <div className="h-40 w-full mb-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -247,12 +247,12 @@ export default function Dashboard() {
                       <stop offset="100%" stopColor="#3B82F6" />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--arc-border)" />
                   <XAxis 
                     dataKey="month" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#94A3B8', fontSize: 10, fontWeight: 600 }} 
+                    tick={{ fill: 'var(--arc-text-muted)', fontSize: 10, fontWeight: 600 }} 
                     dy={10} 
                   />
                   <YAxis hide />
@@ -263,10 +263,10 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="pz-card">
+          <div className="glass-panel rounded-3xl p-6">
             <div className="flex justify-between items-center mb-6">
-              <span className="text-sm font-bold text-slate-900">Outflow</span>
-              <span className="text-xs font-bold" style={{ color: 'var(--danger)' }}>- {outflowCount} Outflow</span>
+              <span className="text-sm font-bold text-arc-text">Outflow</span>
+              <span className="text-xs font-bold text-red-500">- {outflowCount} Outflow</span>
             </div>
             <div className="h-40 w-full mb-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -277,12 +277,12 @@ export default function Dashboard() {
                       <stop offset="100%" stopColor="#EF4444" />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--arc-border)" />
                   <XAxis 
                     dataKey="month" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#94A3B8', fontSize: 10, fontWeight: 600 }} 
+                    tick={{ fill: 'var(--arc-text-muted)', fontSize: 10, fontWeight: 600 }} 
                     dy={10} 
                   />
                   <YAxis hide />
@@ -294,34 +294,34 @@ export default function Dashboard() {
           </div>
 
           {/* Activity Log */}
-          <div className="pz-card">
-            <div className="flex justify-between text-xs font-bold mb-6 uppercase tracking-wider" style={{ color: 'var(--muted)' }}>
+          <div className="glass-panel rounded-3xl p-6">
+            <div className="flex justify-between text-xs font-bold mb-6 uppercase tracking-wider text-arc-textMuted">
               <span>Recent activity</span>
               <span>Summary</span>
             </div>
             <div className="space-y-6">
               {historyLoading ? (
                  <div className="animate-pulse space-y-4">
-                   {[1,2,3,4].map(i => <div key={i} className="h-14 bg-slate-50 border border-slate-100 rounded-xl" />)}
+                   {[1,2,3,4].map(i => <div key={i} className="h-14 bg-arc-panelStrong/50 border border-arc-border rounded-xl" />)}
                  </div>
               ) : recentTxs.length === 0 ? (
-                <p className="text-sm text-slate-500 py-4">No recent activity found.</p>
+                <p className="text-sm text-arc-textMuted py-4">No recent activity found.</p>
               ) : recentTxs.slice(0, 10).map((tx, i) => {
                  const isReceive = tx.type === 'receive';
                  const isSwap = tx.type === 'swap';
                  const token = TOKENS_BY_SYMBOL[tx.tokenSymbol];
                  
                  return (
-                  <div key={tx.id || i} className="flex justify-between items-center group hover:bg-slate-50 -mx-2 px-2 py-2 rounded-xl transition-colors cursor-pointer">
+                  <div key={tx.id || i} className="flex justify-between items-center group hover:bg-arc-panelStrong/50 -mx-2 px-2 py-2 rounded-xl transition-colors cursor-pointer">
                     <div className="flex gap-4 items-center">
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-slate-100 bg-white">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-sm border border-arc-border bg-arc-panel">
                         <TokenIcon symbol={tx.tokenSymbol} logo={token?.logo} size={28} />
                       </div>
                       <div>
-                        <div className="text-sm font-bold text-slate-900 mb-0.5 capitalize">
+                        <div className="text-sm font-bold text-arc-text mb-0.5 capitalize">
                           {isReceive ? `Received ${tx.tokenSymbol}` : isSwap ? `Swap ${tx.tokenSymbol}` : `Sent ${tx.tokenSymbol}`}
                         </div>
-                        <div className="text-xs font-medium text-slate-500 truncate max-w-[150px]">
+                        <div className="text-xs font-medium text-arc-textMuted truncate max-w-[150px]">
                            {isReceive ? `From ${tx.fromAddress ? tx.fromAddress.slice(0,6)+'...'+tx.fromAddress.slice(-4) : 'External'}` :
                             isSwap ? 'Arc Testnet Dex' :
                             `To ${tx.recipient_address ? tx.recipient_address.slice(0,6)+'...'+tx.recipient_address.slice(-4) : 'External'}`}
@@ -329,10 +329,10 @@ export default function Dashboard() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className={`text-sm font-bold ${isReceive ? 'text-green-600' : 'text-slate-900'}`}>
+                      <div className={`text-sm font-bold ${isReceive ? 'text-emerald-500' : 'text-arc-text'}`}>
                         {isReceive ? '+' : '-'}{tx.amountDisplay}
                       </div>
-                      <div className="text-[10px] font-medium text-slate-400">
+                      <div className="text-[10px] font-medium text-arc-textMuted">
                         {new Date(tx.timestamp).toLocaleDateString()}
                       </div>
                     </div>
@@ -347,12 +347,12 @@ export default function Dashboard() {
       {/* Tokens Modal */}
       {showTokensModal && (
         <div className="pz-modal-overlay">
-          <div className="pz-modal-backdrop" onClick={() => setShowTokensModal(false)} />
-          <div className="pz-modal animate-fade-up">
+          <div className="pz-modal-backdrop bg-black/40 backdrop-blur-sm" onClick={() => setShowTokensModal(false)} />
+          <div className="pz-modal glass-panel animate-fade-up border-arc-border">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold" style={{ color: 'var(--text)' }}>All Tokens Held</h3>
+              <h3 className="text-lg font-bold text-arc-text">All Tokens Held</h3>
               <button onClick={() => setShowTokensModal(false)}
-                className="p-1.5 rounded-lg hover:bg-[#F1F5F9] text-[#64748B] transition-colors">
+                className="p-1.5 rounded-lg hover:bg-arc-panelStrong text-arc-textMuted transition-colors">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -360,18 +360,18 @@ export default function Dashboard() {
               {heldTokens.length > 0 ? heldTokens.map(token => {
                 const meta = TOKENS_BY_SYMBOL[token.symbol];
                 return (
-                  <div key={token.symbol} className="flex items-center justify-between p-3 border rounded-xl" style={{ borderColor: 'var(--border)' }}>
+                  <div key={token.symbol} className="flex items-center justify-between p-3 border border-arc-border rounded-xl">
                     <div className="flex items-center gap-3">
                       <TokenIcon symbol={token.symbol} logo={meta?.logo} size={28} />
                       <div>
-                        <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>{token.symbol}</div>
-                        <div className="text-xs" style={{ color: 'var(--muted)' }}>{meta?.name || token.symbol}</div>
+                        <div className="text-sm font-bold text-arc-text">{token.symbol}</div>
+                        <div className="text-xs text-arc-textMuted">{meta?.name || token.symbol}</div>
                       </div>
                     </div>
-                    <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>{token.amount}</div>
+                    <div className="text-sm font-bold text-arc-text">{token.amount}</div>
                   </div>
                 );
-              }) : <p className="text-center text-sm py-8" style={{ color: 'var(--muted-2)' }}>No tokens detected.</p>}
+              }) : <p className="text-center text-sm py-8 text-arc-textMuted">No tokens detected.</p>}
             </div>
           </div>
         </div>

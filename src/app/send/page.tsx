@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Scanner } from '@yudiel/react-qr-scanner';
-import { QrCode, X, CheckCircle2, ChevronDown, ArrowUpRight, Search } from 'lucide-react';
+import { QrCode, X, CheckCircle2, ChevronDown, ArrowUpRight, Search, RefreshCw } from 'lucide-react';
 import { createWalletClient, custom, parseUnits, createPublicClient, http, formatUnits } from 'viem';
 import { supabase } from '@/lib/supabase';
 import Sidebar from '@/components/Sidebar';
@@ -131,7 +131,6 @@ export default function SendMoney() {
       let hash: `0x${string}`;
 
       if (selectedToken.symbol === 'USDC') {
-        // Native token transfer
         hash = await walletClient.sendTransaction({
           chain: ARC_TESTNET_CHAIN,
           account: fromAddress,
@@ -139,7 +138,6 @@ export default function SendMoney() {
           value: amountParsed,
         });
       } else {
-        // ERC-20 token transfer
         hash = await walletClient.writeContract({
           chain: ARC_TESTNET_CHAIN,
           account: fromAddress,
@@ -150,7 +148,6 @@ export default function SendMoney() {
         });
       }
 
-      // Wait for transaction to be mined
       const publicClient = createPublicClient({ chain: ARC_TESTNET_CHAIN, transport: http() });
       const txReceipt = await publicClient.waitForTransactionReceipt({ hash });
       
@@ -158,7 +155,6 @@ export default function SendMoney() {
         throw new Error('Transaction failed or reverted on the blockchain.');
       }
 
-      // Record transaction
       await supabase.from('transactions').insert({
         wallet_address: fromAddress.toLowerCase(),
         tx_hash: hash,
@@ -181,21 +177,21 @@ export default function SendMoney() {
 
   if (receipt) {
     return (
-      <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
+      <div className="flex min-h-screen bg-arc-bg text-arc-text">
         <Sidebar />
         <main className="pz-shell flex-1 flex items-start justify-center pt-24">
-          <div className="pz-card w-full max-w-sm text-center">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style={{ background: '#ECFDF5' }}>
-              <CheckCircle2 className="w-8 h-8" style={{ color: 'var(--success)' }} />
+          <div className="glass-panel w-full max-w-sm text-center rounded-3xl p-8">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 bg-emerald-500/10 border border-emerald-500/20">
+              <CheckCircle2 className="w-8 h-8 text-emerald-500" />
             </div>
-            <h2 className="text-2xl font-bold mb-1" style={{ color: 'var(--text)' }}>Sent!</h2>
-            <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>Your transaction has been submitted to Arc Testnet.</p>
-            <div className="p-4 rounded-xl text-sm text-left space-y-3 mb-6" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
-              <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Amount</span><span className="font-bold">{receipt.amount} {receipt.token}</span></div>
-              <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Recipient</span><span className="font-mono text-xs max-w-[160px] truncate">{receipt.recipient}</span></div>
-              <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Fee</span><span className="font-semibold">$0.00</span></div>
+            <h2 className="text-2xl font-bold mb-1 text-arc-text">Sent!</h2>
+            <p className="text-sm mb-6 text-arc-textMuted">Your transaction has been submitted to Arc Testnet.</p>
+            <div className="p-4 rounded-xl text-sm text-left space-y-3 mb-6 bg-arc-panelStrong border border-arc-border">
+              <div className="flex justify-between"><span className="text-arc-textMuted">Amount</span><span className="font-bold text-arc-text">{receipt.amount} {receipt.token}</span></div>
+              <div className="flex justify-between"><span className="text-arc-textMuted">Recipient</span><span className="font-mono text-xs max-w-[160px] truncate text-arc-text">{receipt.recipient}</span></div>
+              <div className="flex justify-between"><span className="text-arc-textMuted">Fee</span><span className="font-semibold text-arc-text">$0.00</span></div>
             </div>
-            <button onClick={() => router.push('/dashboard')} className="pz-btn pz-btn-primary pz-btn-lg w-full">
+            <button onClick={() => router.push('/dashboard')} className="pz-btn pz-btn-primary pz-btn-lg w-full !rounded-2xl">
               Back to Dashboard
             </button>
           </div>
@@ -205,116 +201,97 @@ export default function SendMoney() {
   }
 
   return (
-    <div className="flex min-h-screen" style={{ background: 'var(--bg)' }}>
+    <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
       <main className="pz-shell flex-1 flex flex-col items-center sm:items-start pt-16 relative">
         <div className="absolute top-8 right-8 hidden sm:block">
           <UserProfile />
         </div>
         <div className="w-full max-w-sm">
-          <div className="pz-card">
+          <div className="glass-panel p-6 rounded-3xl">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 border border-blue-200">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-arc-cyan/10 text-arc-cyan border border-arc-cyan/20">
                 <ArrowUpRight className="w-5 h-5" />
               </div>
-              <h1 className="text-xl font-bold" style={{ color: 'var(--text)' }}>Send Funds</h1>
+              <h1 className="text-xl font-bold text-arc-text">Send Funds</h1>
             </div>
             
             {errorMsg && (
-              <div className="p-4 rounded-2xl text-sm font-medium mb-5" style={{ background: 'var(--red-soft)', border: '1px solid #FECACA', color: 'var(--danger)' }}>
+              <div className="p-4 rounded-2xl text-sm font-medium mb-5 bg-red-500/10 border border-red-500/20 text-red-500">
                 {errorMsg}
               </div>
             )}
 
             <form onSubmit={handleSend} className="space-y-5">
-              {/* Recipient */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--muted)' }}>Recipient Address</label>
+                <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-arc-textMuted">Recipient Address</label>
                 <div className="relative">
                   <input
                     type="text" required placeholder="0x..."
                     value={recipient} onChange={e => setRecipient(e.target.value)}
-                    className="pz-input text-sm pr-12 h-12"
+                    className="w-full bg-arc-panelStrong/50 border border-arc-border rounded-xl py-3 px-4 text-sm text-arc-text outline-none focus:border-arc-cyan/50"
                   />
                   <button type="button" onClick={() => setShowScanner(true)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors" style={{ color: 'var(--muted)' }}>
-                    <QrCode className="w-5 h-5 hover:text-[#2563EB]" />
+                    className="absolute right-3 top-1/2 -translate-y-1/2 transition-colors text-arc-textMuted">
+                    <QrCode className="w-5 h-5 hover:text-arc-cyan" />
                   </button>
                 </div>
               </div>
 
-              {/* Asset Selector */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--muted)' }}>Select Asset</label>
+                <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-arc-textMuted">Select Asset</label>
                 <button type="button" onClick={() => setShowTokenModal(true)}
-                  className="w-full flex items-center justify-between pz-input h-12 hover:border-slate-300 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <TokenIcon symbol={selectedToken.symbol} logo={selectedToken.logo} size={24} />
-                    <div>
-                      <div className="text-sm font-bold">{selectedToken.symbol}</div>
-                      <div className="text-[10px] text-slate-500 font-medium">Balance: {parseFloat(balances[selectedToken.symbol] || '0').toFixed(4)}</div>
-                    </div>
+                  className="w-full flex items-center justify-between bg-arc-panelStrong/50 border border-arc-border rounded-xl py-3 px-4 text-sm text-arc-text hover:border-arc-cyan/50 transition-colors">
+                  <div className="flex items-center gap-2">
+                    <TokenIcon symbol={selectedToken.symbol} logo={selectedToken.logo} size={20} />
+                    <span className="font-medium">{selectedToken.symbol}</span>
                   </div>
-                  <ChevronDown className="w-4 h-4 text-slate-400" />
+                  <ChevronDown className="w-4 h-4 text-arc-textMuted" />
                 </button>
               </div>
 
-              {/* Amount */}
               <div>
-                <div className="flex justify-between items-end mb-2">
-                  <label className="block text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>Amount</label>
-                  <button type="button" onClick={() => {
-                      const bal = balances[selectedToken.symbol];
-                      if (!bal) return;
-                      const numBal = parseFloat(bal);
-                      const safeBal = selectedToken.symbol === 'USDC' ? Math.max(0, numBal - 0.05) : numBal;
-                      const strVal = safeBal.toString();
-                      const dotIdx = strVal.indexOf('.');
-                      setAmount(dotIdx !== -1 ? strVal.slice(0, dotIdx + 5) : strVal);
-                    }}
-                    className="text-[10px] font-bold text-blue-600 hover:underline">MAX</button>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-arc-textMuted">Amount</label>
+                  <span className="text-[10px] font-bold text-arc-textMuted">Balance: {parseFloat(balances[selectedToken.symbol] || '0').toFixed(4)}</span>
                 </div>
                 <div className="relative">
                   <input
-                    type="number" required min="0.000001" step="0.000001" placeholder="0.00"
+                    type="number" step="any" required placeholder="0.00"
                     value={amount} onChange={e => setAmount(e.target.value)}
-                    className="pz-input text-lg font-bold h-14 pr-16"
+                    className="w-full bg-arc-panelStrong/50 border border-arc-border rounded-xl py-3 px-4 text-sm text-arc-text outline-none focus:border-arc-cyan/50"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">{selectedToken.symbol}</span>
+                  <button type="button" onClick={() => setAmount(balances[selectedToken.symbol] || '0')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-arc-cyan hover:underline">
+                    MAX
+                  </button>
                 </div>
               </div>
 
-              {/* Summary */}
-              <div className="p-4 rounded-2xl text-xs space-y-2.5" style={{ background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
-                <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Estimated Fee</span><span className="font-bold text-slate-700">$0.00</span></div>
-                <div className="flex justify-between"><span style={{ color: 'var(--muted)' }}>Network</span><span className="font-bold text-slate-700">Arc Testnet</span></div>
-              </div>
-
-              <button type="submit" disabled={processing || !amount || !recipient} 
-                className="pz-btn pz-btn-primary pz-btn-lg w-full h-14 shadow-lg shadow-blue-200 hover:shadow-blue-300 transition-all font-bold text-base">
-                {processing ? 'Processing Transaction…' : `Send ${selectedToken.symbol}`}
+              <button type="submit" disabled={processing || !amount || !recipient}
+                className="pz-btn pz-btn-primary pz-btn-lg w-full !rounded-2xl shadow-lg shadow-arc-blue/20">
+                {processing ? <RefreshCw className="w-5 h-5 animate-spin" /> : 'Confirm Transfer'}
               </button>
             </form>
           </div>
         </div>
 
-        {/* Token Selection Modal */}
         {showTokenModal && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
-            <div className="pz-card w-full max-w-sm max-h-[80vh] flex flex-col p-0 overflow-hidden shadow-2xl">
-              <div className="p-4 border-b flex items-center justify-between">
-                <h3 className="font-bold">Select Token</h3>
-                <button onClick={() => setShowTokenModal(false)} className="p-1 hover:bg-slate-100 rounded-lg transition-colors">
-                  <X className="w-5 h-5 text-slate-500" />
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+            <div className="glass-panel rounded-[32px] w-full max-w-sm max-h-[80vh] flex flex-col p-0 overflow-hidden shadow-2xl border-arc-border">
+              <div className="p-4 border-b border-arc-border flex items-center justify-between">
+                <h3 className="font-bold text-arc-text">Select Token</h3>
+                <button onClick={() => setShowTokenModal(false)} className="p-1 hover:bg-arc-panelStrong rounded-lg transition-colors">
+                  <X className="w-5 h-5 text-arc-textMuted" />
                 </button>
               </div>
               <div className="p-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-arc-textMuted" />
                   <input 
                     type="text" placeholder="Search tokens..."
                     value={searchToken} onChange={e => setSearchToken(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-slate-100 border-transparent rounded-xl text-sm focus:ring-0"
+                    className="w-full pl-10 pr-4 py-2 bg-arc-panelStrong border-transparent rounded-xl text-sm text-arc-text focus:ring-0"
                   />
                 </div>
               </div>
@@ -323,16 +300,16 @@ export default function SendMoney() {
                   <button 
                     key={token.symbol} 
                     onClick={() => { setSelectedToken(token); setShowTokenModal(false); }}
-                    className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 transition-colors group">
+                    className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-arc-panelStrong/50 transition-colors group">
                     <div className="flex items-center gap-3">
                       <TokenIcon symbol={token.symbol} logo={token.logo} size={32} />
                       <div className="text-left">
-                        <div className="font-bold text-sm group-hover:text-blue-600 transition-colors">{token.symbol}</div>
-                        <div className="text-[10px] text-slate-500">{token.name}</div>
+                        <div className="font-bold text-sm text-arc-text group-hover:text-arc-cyan transition-colors">{token.symbol}</div>
+                        <div className="text-[10px] text-arc-textMuted">{token.name}</div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-sm font-bold">{parseFloat(balances[token.symbol] || '0').toFixed(2)}</div>
+                    <div className="text-right text-arc-text font-medium text-sm">
+                      {parseFloat(balances[token.symbol] || '0').toFixed(4)}
                     </div>
                   </button>
                 ))}
@@ -341,9 +318,8 @@ export default function SendMoney() {
           </div>
         )}
 
-        {/* QR Scanner */}
         {showScanner && (
-          <div className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-md">
+          <div className="fixed inset-0 z-[70] flex flex-col bg-black/95 backdrop-blur-md">
             <div className="p-6 flex justify-end">
               <button onClick={() => setShowScanner(false)} className="p-2.5 bg-white/10 rounded-full text-white hover:bg-white/20 transition-colors">
                 <X className="w-5 h-5" />
@@ -364,4 +340,3 @@ export default function SendMoney() {
     </div>
   );
 }
-

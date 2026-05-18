@@ -314,34 +314,34 @@ export default function SwapToken() {
 
   if (receipt) {
     return (
-      <div className="flex min-h-screen bg-[#F8FAFC]">
+      <div className="flex min-h-screen bg-arc-bg text-arc-text">
         <Sidebar />
         <main className="flex-1 flex items-center justify-center p-6">
-          <div className="bg-white rounded-[32px] p-8 max-w-sm w-full shadow-[0_8px_32px_rgba(0,0,0,0.06)] text-center animate-fade-up">
-            <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-8 h-8 text-blue-600" />
+          <div className="glass-panel rounded-[32px] p-8 max-w-sm w-full text-center animate-fade-up">
+            <div className="w-16 h-16 rounded-full bg-arc-cyan/10 flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 className="w-8 h-8 text-arc-cyan" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">
+            <h2 className="text-2xl font-bold text-arc-text mb-2">
               {receipt.isBridge ? 'Bridge Initiated' : 'Swap Confirmed'}
             </h2>
-            <p className="text-sm text-slate-500 mb-8 leading-relaxed">
+            <p className="text-sm text-arc-textMuted mb-8 leading-relaxed">
               {receipt.isBridge 
                 ? `Moving funds to ${receipt.toNet}. Bridging typically takes 3-5 minutes to finalize.` 
                 : 'Your transaction was successfully submitted to the network.'}
             </p>
-            <div className="bg-slate-50 rounded-2xl p-4 text-left space-y-3 mb-8 border border-slate-100">
-              <div className="flex justify-between text-sm"><span className="text-slate-500">Sent</span><span className="font-semibold text-slate-900">{receipt.amountIn} {receipt.tokenIn.symbol}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-slate-500">Received</span><span className="font-semibold text-blue-600">{receipt.amountOut} {receipt.tokenOut.symbol}</span></div>
+            <div className="bg-arc-panelStrong rounded-2xl p-4 text-left space-y-3 mb-8 border border-arc-border">
+              <div className="flex justify-between text-sm"><span className="text-arc-textMuted">Sent</span><span className="font-semibold text-arc-text">{receipt.amountIn} {receipt.tokenIn.symbol}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-arc-textMuted">Received</span><span className="font-semibold text-arc-cyan">{receipt.amountOut} {receipt.tokenOut.symbol}</span></div>
               {receipt.isBridge && (
-                 <div className="flex justify-between text-[10px] pt-2 border-t border-slate-200">
-                    <span className="text-slate-400">Transaction</span>
-                    <a href={`https://testnet.arcscan.app/tx/${receipt.hash}`} target="_blank" rel="noreferrer" className="text-blue-500 hover:underline truncate max-w-[120px]">
+                 <div className="flex justify-between text-[10px] pt-2 border-t border-arc-border">
+                    <span className="text-arc-textMuted">Transaction</span>
+                    <a href={`https://testnet.arcscan.app/tx/${receipt.hash}`} target="_blank" rel="noreferrer" className="text-arc-cyan hover:underline truncate max-w-[120px]">
                       {receipt.hash}
                     </a>
                  </div>
               )}
             </div>
-            <button onClick={() => router.push('/dashboard')} className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl transition-all shadow-lg shadow-blue-100 active:scale-95">
+            <button onClick={() => router.push('/dashboard')} className="w-full py-4 bg-arc-blue hover:bg-arc-blue/90 text-white font-bold rounded-2xl transition-all shadow-lg shadow-arc-blue/20 active:scale-95">
               Back to Dashboard
             </button>
           </div>
@@ -351,7 +351,7 @@ export default function SwapToken() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC]">
+    <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
       <main className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 relative">
         <div className="absolute top-8 right-8 hidden sm:block">
@@ -359,44 +359,44 @@ export default function SwapToken() {
         </div>
         
         {/* Uniswap-style Exchange Card */}
-        <div className="w-full max-w-[480px] bg-white rounded-[32px] p-2 shadow-[0_8px_32px_rgba(0,0,0,0.08)] relative">
+        <div className="w-full max-w-[480px] glass-panel rounded-[32px] p-2 relative shadow-2xl shadow-black/20">
           
           <div className="p-3">
             <div className="flex justify-between items-center mb-4 px-2">
-              <h2 className="text-base font-bold text-slate-800">Swap</h2>
-              <Settings className="w-5 h-5 text-slate-400 cursor-pointer hover:text-slate-600 transition-colors" />
+              <h2 className="text-base font-bold text-arc-text">Swap</h2>
+              <Settings className="w-5 h-5 text-arc-textMuted cursor-pointer hover:text-arc-text transition-colors" />
             </div>
 
             {errorMsg && (
-              <div className="mx-2 mb-4 p-3 bg-red-50 border border-red-100 rounded-xl text-red-600 text-xs font-medium">
+              <div className="mx-2 mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-xs font-medium">
                 {errorMsg}
               </div>
             )}
 
             <div className="space-y-1 relative">
               {/* Pay Panel */}
-              <div className="bg-[#F5F6FC] rounded-[24px] p-4 transition-all hover:bg-[#F0F2FA] group border border-transparent focus-within:border-slate-200">
-                <div className="text-xs font-bold text-slate-400 mb-3 uppercase tracking-wider">You Pay</div>
+              <div className="bg-arc-panelStrong/50 rounded-[24px] p-4 transition-all hover:bg-arc-panelStrong group border border-transparent focus-within:border-arc-border">
+                <div className="text-xs font-bold text-arc-textMuted mb-3 uppercase tracking-wider">You Pay</div>
                 <div className="flex items-center justify-between gap-4">
                   <input
                     type="number"
                     placeholder="0"
                     value={amountIn}
                     onChange={(e) => setAmountIn(e.target.value)}
-                    className="bg-transparent text-4xl font-semibold outline-none w-full text-slate-900 placeholder:text-slate-300"
+                    className="bg-transparent text-4xl font-semibold outline-none w-full text-arc-text placeholder:text-arc-textMuted/30"
                   />
                   <button
                     onClick={() => { setSelectingTarget('in'); setModalNetwork(networkIn); }}
-                    className="flex items-center gap-2 bg-white px-3 py-2 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition-all flex-shrink-0"
+                    className="flex items-center gap-2 bg-arc-panel px-3 py-2 rounded-2xl shadow-sm border border-arc-border hover:border-arc-cyan/50 transition-all flex-shrink-0"
                   >
                     <div className="relative">
                       <TokenIcon symbol={tokenIn.symbol} logo={tokenIn.logo} size={24} />
-                      <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border border-slate-50 flex items-center justify-center text-[8px] shadow-sm">
+                      <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-arc-panel border border-arc-border flex items-center justify-center text-[8px] shadow-sm">
                         {networkIn.icon}
                       </div>
                     </div>
-                    <span className="font-bold text-sm text-slate-800">{tokenIn.symbol}</span>
-                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                    <span className="font-bold text-sm text-arc-text">{tokenIn.symbol}</span>
+                    <ChevronDown className="w-4 h-4 text-arc-textMuted" />
                   </button>
                 </div>
                 <div className="mt-3 flex justify-between items-center text-xs font-medium">
@@ -453,22 +453,22 @@ export default function SwapToken() {
             </div>
 
             {/* Exchange Summary */}
-            <div className="mt-6 p-4 rounded-[24px] bg-[#F5F6FC] border border-slate-100 space-y-3 transition-all animate-fade-in">
-              <div className="flex justify-between items-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+            <div className="mt-6 p-4 rounded-[24px] bg-arc-panelStrong/50 border border-arc-border space-y-3 transition-all animate-fade-in">
+              <div className="flex justify-between items-center text-xs font-bold text-arc-textMuted uppercase tracking-widest mb-1">
                 <span>Summary</span>
                 <Settings className="w-3.5 h-3.5" />
               </div>
               
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-slate-500">{isBridge ? 'Estimated Time' : 'Max Slippage'}</span>
-                <span className="text-sm font-bold text-slate-800">
+                <span className="text-sm font-medium text-arc-textMuted">{isBridge ? 'Estimated Time' : 'Max Slippage'}</span>
+                <span className="text-sm font-bold text-arc-text">
                   {isBridge ? '10-15 mins' : `${(SWAP_SLIPPAGE_BPS / 100).toFixed(2)}%`}
                 </span>
               </div>
 
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-slate-500">{isBridge ? 'Bridge Fee' : 'Network Fee'}</span>
-                <span className="text-sm font-bold text-slate-800">
+                <span className="text-sm font-medium text-arc-textMuted">{isBridge ? 'Bridge Fee' : 'Network Fee'}</span>
+                <span className="text-sm font-bold text-arc-text">
                   {isBridge 
                     ? (bridgeEstimate ? `${parseFloat(bridgeEstimate.total).toFixed(4)} ${tokenIn.symbol}` : 'Estimating...') 
                     : '$0.03'}
@@ -477,8 +477,8 @@ export default function SwapToken() {
 
               {!isBridge && (
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-slate-500">Price Impact</span>
-                  <span className="text-sm font-bold text-green-500">
+                  <span className="text-sm font-medium text-arc-textMuted">Price Impact</span>
+                  <span className="text-sm font-bold text-emerald-400">
                     {amountIn && amountOut ? (Math.max(0, (parseFloat(amountIn) - parseFloat(amountOut)) / parseFloat(amountIn)) * 100).toFixed(2) : '0.00'}%
                   </span>
                 </div>
@@ -491,8 +491,8 @@ export default function SwapToken() {
               disabled={processing || quoteLoading || !amountIn || isInvalidBridge}
               className={`w-full mt-4 py-4 rounded-[20px] font-bold text-lg transition-all shadow-lg ${
                 isInvalidBridge 
-                  ? 'bg-red-50 text-red-400 cursor-not-allowed shadow-none' 
-                  : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-100 active:scale-[0.98]'
+                  ? 'bg-red-500/10 text-red-400 cursor-not-allowed shadow-none' 
+                  : 'bg-arc-blue hover:bg-arc-blue/90 text-white shadow-arc-blue/20 active:scale-[0.98]'
               }`}
             >
               {processing ? (
@@ -521,26 +521,26 @@ export default function SwapToken() {
 
         {/* Unified Selection Modal */}
         {selectingTarget && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fade-in">
-            <div className="bg-white rounded-[32px] w-full max-w-md shadow-2xl overflow-hidden animate-fade-up">
-              <div className="p-6 border-b border-slate-100">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+            <div className="glass-panel rounded-[32px] w-full max-w-md shadow-2xl overflow-hidden animate-fade-up border-arc-border">
+              <div className="p-6 border-b border-arc-border">
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-bold text-slate-900">Select Token</h3>
-                  <button onClick={() => setSelectingTarget(null)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
-                    <X className="w-5 h-5 text-slate-400" />
+                  <h3 className="text-xl font-bold text-arc-text">Select Token</h3>
+                  <button onClick={() => setSelectingTarget(null)} className="p-2 hover:bg-arc-panelStrong rounded-full transition-colors">
+                    <X className="w-5 h-5 text-arc-textMuted" />
                   </button>
                 </div>
                 
                 {/* Embedded Network Selector */}
-                <div className="flex gap-2 bg-slate-50 p-1.5 rounded-[20px] mb-2">
+                <div className="flex gap-2 bg-arc-panelStrong/50 p-1.5 rounded-[20px] mb-2">
                   {NETWORKS.map((n) => (
                     <button
                       key={n.id}
                       onClick={() => setModalNetwork(n)}
                       className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-2xl text-xs font-bold transition-all ${
                         modalNetwork.id === n.id 
-                          ? 'bg-white text-blue-600 shadow-sm border border-slate-100' 
-                          : 'text-slate-400 hover:text-slate-600'
+                          ? 'bg-arc-panel text-arc-cyan shadow-sm border border-arc-border' 
+                          : 'text-arc-textMuted hover:text-arc-text'
                       }`}
                     >
                       <span className="text-base">{n.icon}</span>
@@ -556,18 +556,18 @@ export default function SwapToken() {
                     <button
                       key={t.symbol}
                       onClick={() => selectTokenAndNetwork(t, modalNetwork)}
-                      className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-slate-50 transition-colors group"
+                      className="w-full flex items-center justify-between p-4 rounded-2xl hover:bg-arc-panelStrong/50 transition-colors group"
                     >
                       <div className="flex items-center gap-4">
                         <TokenIcon symbol={t.symbol} logo={t.logo} size={36} />
                         <div className="text-left">
-                          <div className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">{t.symbol}</div>
-                          <div className="text-xs text-slate-400">{t.name}</div>
+                          <div className="font-bold text-arc-text group-hover:text-arc-cyan transition-colors">{t.symbol}</div>
+                          <div className="text-xs text-arc-textMuted">{t.name}</div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-bold text-slate-900">{balances[t.symbol] || '0.00'}</div>
-                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Balance</div>
+                        <div className="font-bold text-arc-text">{balances[t.symbol] || '0.00'}</div>
+                        <div className="text-[10px] font-bold text-arc-textMuted uppercase tracking-tighter">Balance</div>
                       </div>
                     </button>
                   ))}

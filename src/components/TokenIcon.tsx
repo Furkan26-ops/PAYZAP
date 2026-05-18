@@ -20,7 +20,7 @@ export default function TokenIcon({
   if (!logo || failed) {
     return (
       <div
-        className={`flex items-center justify-center rounded-full bg-white text-[10px] font-bold text-slate-700 ${className}`}
+        className={`flex items-center justify-center rounded-full bg-arc-panelStrong text-[10px] font-bold text-arc-text border border-arc-border ${className}`}
         style={{ width: size, height: size }}
       >
         {symbol.slice(0, 3)}
