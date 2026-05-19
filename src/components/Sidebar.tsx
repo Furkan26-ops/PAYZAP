@@ -28,7 +28,7 @@ export default function Sidebar() {
   return (
     <aside className="pz-sidebar border-arc-border bg-arc-panel/50 backdrop-blur-xl">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-2 mb-8">
+      <div className="hidden md:flex items-center gap-2.5 px-2 mb-8">
         <Image
           src="/logo.png"
           alt="PAYZAP"
@@ -40,13 +40,13 @@ export default function Sidebar() {
       </div>
 
       {/* Network badge */}
-      <div className="mx-2 mb-6 flex items-center gap-2 bg-arc-panelStrong border border-arc-border rounded-lg px-3 py-2">
+      <div className="hidden md:flex mx-2 mb-6 items-center gap-2 bg-arc-panelStrong border border-arc-border rounded-lg px-3 py-2">
         <span className="w-2 h-2 rounded-full flex-shrink-0 bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
         <span className="text-xs font-semibold uppercase tracking-wide text-arc-textMuted">Arc Testnet</span>
       </div>
 
       {/* Nav */}
-      <nav className="flex flex-col gap-1.5 flex-1 mt-2">
+      <nav className="flex flex-row md:flex-col w-full justify-around md:justify-start gap-1 md:gap-1.5 flex-1 md:mt-2">
         {navItems.map(({ href, icon: Icon, label }) => (
           <Link
             key={href}
@@ -58,13 +58,13 @@ export default function Sidebar() {
             }`}
           >
             <Icon className={`w-5 h-5 flex-shrink-0 ${pathname === href ? 'text-white' : 'text-slate-500 group-hover:text-slate-900'}`} />
-            <span className="font-medium">{label}</span>
+            <span className="font-medium text-[10px] md:text-sm">{label}</span>
           </Link>
         ))}
       </nav>
 
       {/* Logout Button */}
-      <div className="mt-auto pt-4 w-full">
+      <div className="hidden md:block mt-auto pt-4 w-full">
         <button 
           className="flex items-center gap-3 px-4 py-3 w-full rounded-full font-bold text-red-500 hover:bg-red-50 transition-colors"
           onClick={handleLogout}

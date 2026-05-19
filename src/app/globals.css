@@ -129,6 +129,33 @@ input[type="number"] {
   background: var(--bg);
 }
 
+@media (max-width: 768px) {
+  .pz-sidebar {
+    width: 100%;
+    min-height: 70px;
+    height: 70px;
+    top: auto;
+    bottom: 0;
+    flex-direction: row !important;
+    padding: 0.5rem;
+    border-right: none;
+    border-top: 1px solid var(--border);
+    z-index: 50;
+  }
+  .pz-shell {
+    margin-left: 0;
+    padding: 1rem 1rem 90px 1rem;
+  }
+  .pz-sidebar-link {
+    padding: 0.5rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    text-align: center;
+  }
+  .pz-sidebar-link:hover { transform: none; }
+}
+
 /* ═══════════════════════════════════════
    CARDS
 ═══════════════════════════════════════ */
@@ -242,6 +269,7 @@ input[type="number"] {
 ═══════════════════════════════════════ */
 .pz-page-header {
   display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
   margin-bottom: 2rem;
 }
 .pz-page-title { font-size: 1.5rem; font-weight: 700; color: var(--text); }
