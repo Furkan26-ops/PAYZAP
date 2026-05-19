@@ -14,7 +14,7 @@ export const TOKENS: Token[] = [
     address: '0x3600000000000000000000000000000000000000', 
     decimals: 18,
     color: 'bg-indigo-100 text-indigo-600', 
-    logo: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png'
+    logo: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png'
   },
   { 
     symbol: 'EURC', 
@@ -22,7 +22,7 @@ export const TOKENS: Token[] = [
     address: '0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a', // Official Arc EURC Contract
     decimals: 6,
     color: 'bg-purple-100 text-purple-600', 
-    logo: 'https://assets.coingecko.com/coins/images/26049/large/EURC.png'
+    logo: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1aBaEA1f7C830bD89Acc67eC4af516284b1bC33c/logo.png'
   },
   { 
     symbol: 'USYC', 
@@ -30,7 +30,7 @@ export const TOKENS: Token[] = [
     address: '0xe9185F0c5F296Ed1797AaE4238D26CCaBEadb86C', // Official Arc USYC Contract
     decimals: 6,
     color: 'bg-blue-100 text-blue-600', 
-    logo: 'https://assets.coingecko.com/coins/images/33038/large/usyc.jpg' 
+    logo: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%230D8ABC"/><text x="50" y="55" font-family="Arial" font-size="28" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">USYC</text></svg>' 
   },
   { 
     symbol: 'USDT', 
@@ -38,7 +38,7 @@ export const TOKENS: Token[] = [
     address: '0x175CdB1D338945f0D851A741ccF787D343E57952',
     decimals: 18,
     color: 'bg-emerald-100 text-emerald-600', 
-    logo: 'https://cryptologos.cc/logos/tether-usdt-logo.png'
+    logo: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png'
   },
   { 
     symbol: 'XYLO', 
@@ -46,7 +46,7 @@ export const TOKENS: Token[] = [
     address: '0x3DF3966F5138143dce7a9cFDdC2c0310ce083BB1',
     decimals: 18,
     color: 'bg-amber-100 text-amber-600', 
-    logo: 'https://cryptologos.cc/logos/xyo-network-xyo-logo.png' 
+    logo: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23F59E0B"/><text x="50" y="55" font-family="Arial" font-size="28" fill="white" text-anchor="middle" dominant-baseline="middle" font-weight="bold">XYLO</text></svg>' 
   }
 ];
 
