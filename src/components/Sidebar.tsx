@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, ArrowUpRight, ArrowDownUp,
-  ArrowDownLeft, History,
+  ArrowDownLeft, History, LogOut
 } from 'lucide-react';
 
 const navItems = [
@@ -46,22 +46,33 @@ export default function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex flex-col gap-0.5 flex-1">
+      <nav className="flex flex-col gap-1.5 flex-1 mt-2">
         {navItems.map(({ href, icon: Icon, label }) => (
           <Link
             key={href}
             href={href}
-            className={`pz-sidebar-link group transition-all duration-200 ${
+            className={`pz-sidebar-link group transition-all duration-200 !rounded-full ${
               pathname === href 
-                ? 'bg-arc-panelStrong text-arc-cyan border-r-2 border-arc-cyan' 
-                : 'text-arc-textMuted hover:text-arc-text hover:bg-arc-panelStrong/50'
+                ? '!bg-blue-600 !text-white shadow-md shadow-blue-500/20' 
+                : '!text-slate-400 hover:!text-slate-900 hover:!bg-slate-50'
             }`}
           >
-            <Icon className={`w-4 h-4 flex-shrink-0 ${pathname === href ? 'text-arc-cyan' : 'text-arc-textMuted group-hover:text-arc-text'}`} />
-            {label}
+            <Icon className={`w-5 h-5 flex-shrink-0 ${pathname === href ? 'text-white' : 'text-slate-400 group-hover:text-slate-900'}`} />
+            <span className="font-medium">{label}</span>
           </Link>
         ))}
       </nav>
+
+      {/* Logout Button */}
+      <div className="mt-auto pt-4 w-full">
+        <button 
+          className="flex items-center gap-3 px-4 py-3 w-full rounded-full font-bold text-red-500 hover:bg-red-50 transition-colors"
+          onClick={handleLogout}
+        >
+          <LogOut className="w-5 h-5" />
+          <span className="hidden sm:inline">Logout</span>
+        </button>
+      </div>
     </aside>
   );
 }
