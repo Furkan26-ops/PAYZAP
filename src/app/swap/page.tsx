@@ -26,9 +26,9 @@ const ARC_TESTNET_CHAIN = {
 };
 
 const NETWORKS = [
-  { id: 'Arc_Testnet', name: 'Arc Testnet', icon: '⚡' },
-  { id: 'Ethereum_Sepolia', name: 'Ethereum Sepolia', icon: '⟠' },
-  { id: 'Solana_Devnet', name: 'Solana Devnet', icon: '☀️' },
+  { id: 'Arc_Testnet', name: 'Arc Testnet', icon: '/logo.png' },
+  { id: 'Ethereum_Sepolia', name: 'Ethereum Sepolia', icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png' },
+  { id: 'Solana_Devnet', name: 'Solana Devnet', icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png' },
 ];
 
 const ARC_NATIVE_USDC_GAS_RESERVE = 0.05;
@@ -397,8 +397,8 @@ export default function SwapToken() {
                   >
                     <div className="relative">
                       <TokenIcon symbol={tokenIn.symbol} logo={tokenIn.logo} size={24} />
-                      <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-arc-panel border border-arc-border flex items-center justify-center text-[8px] shadow-sm">
-                        {networkIn.icon}
+                      <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-arc-panel border border-arc-border flex items-center justify-center text-[8px] shadow-sm overflow-hidden">
+                        <img src={networkIn.icon} alt={networkIn.name} className="w-full h-full object-cover" />
                       </div>
                     </div>
                     <span className="font-bold text-sm text-arc-text">{tokenIn.symbol}</span>
@@ -441,8 +441,8 @@ export default function SwapToken() {
                   >
                     <div className="relative">
                       <TokenIcon symbol={tokenOut.symbol} logo={tokenOut.logo} size={24} />
-                      <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border border-slate-50 flex items-center justify-center text-[8px] shadow-sm">
-                        {networkOut.icon}
+                      <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border border-slate-50 flex items-center justify-center text-[8px] shadow-sm overflow-hidden">
+                        <img src={networkOut.icon} alt={networkOut.name} className="w-full h-full object-cover" />
                       </div>
                     </div>
                     <span className="font-bold text-sm text-slate-800">{tokenOut.symbol}</span>
@@ -549,7 +549,7 @@ export default function SwapToken() {
                           : 'text-arc-textMuted hover:text-arc-text'
                       }`}
                     >
-                      <span className="text-base">{n.icon}</span>
+                      <img src={n.icon} alt={n.name} className="w-4 h-4 object-cover rounded-full" />
                       {n.name.split(' ')[0]}
                     </button>
                   ))}
