@@ -22,7 +22,7 @@ export const TOKENS: Token[] = [
     address: '0x89B50855Aa3bE2F677cD6303Cec089B5F319D72a', // Official Arc EURC Contract
     decimals: 6,
     color: 'bg-purple-100 text-purple-600', 
-    logo: 'https://s2.coinmarketcap.com/static/img/coins/64x64/20585.png'
+    logo: 'https://assets.coingecko.com/coins/images/26049/large/EURC.png'
   },
   { 
     symbol: 'USYC', 
@@ -30,7 +30,7 @@ export const TOKENS: Token[] = [
     address: '0xe9185F0c5F296Ed1797AaE4238D26CCaBEadb86C', // Official Arc USYC Contract
     decimals: 6,
     color: 'bg-blue-100 text-blue-600', 
-    logo: 'https://ui-avatars.com/api/?name=USYC&background=0D8ABC&color=fff&rounded=true&bold=true' 
+    logo: 'https://assets.coingecko.com/coins/images/33038/large/usyc.jpg' 
   },
   { 
     symbol: 'USDT', 
@@ -46,7 +46,7 @@ export const TOKENS: Token[] = [
     address: '0x3DF3966F5138143dce7a9cFDdC2c0310ce083BB1',
     decimals: 18,
     color: 'bg-amber-100 text-amber-600', 
-    logo: 'https://ui-avatars.com/api/?name=XYLO&background=F59E0B&color=fff&rounded=true&bold=true' 
+    logo: 'https://cryptologos.cc/logos/xyo-network-xyo-logo.png' 
   }
 ];
 
