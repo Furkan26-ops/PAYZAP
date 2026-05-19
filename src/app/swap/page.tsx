@@ -26,7 +26,7 @@ const ARC_TESTNET_CHAIN = {
 };
 
 const NETWORKS = [
-  { id: 'Arc_Testnet', name: 'Arc Testnet', icon: 'https://mintcdn.com/arcio-docs/ZZqL_C61H0lLVlWZ/logo/ARC_Doc_WHT.svg?w=280&fit=max&auto=format&n=ZZqL_C61H0lLVlWZ&q=85&s=ecc0ac43785aff759289363b7fcfc95a' },
+  { id: 'Arc_Testnet', name: 'Arc Testnet', icon: '/arc-network-logo.png' },
   { id: 'Ethereum_Sepolia', name: 'Ethereum Sepolia', icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png' },
   { id: 'Solana_Devnet', name: 'Solana Devnet', icon: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/solana/info/logo.png' },
 ];
@@ -398,7 +398,7 @@ export default function SwapToken() {
                     <div className="relative">
                       <TokenIcon symbol={tokenIn.symbol} logo={tokenIn.logo} size={24} />
                       <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-arc-panel border border-arc-border flex items-center justify-center text-[8px] shadow-sm overflow-hidden">
-                        <img src={networkIn.icon} alt={networkIn.name} className="w-full h-full object-cover" style={{ filter: networkIn.id === 'Arc_Testnet' ? 'invert(1)' : 'none' }} />
+                        <img src={networkIn.icon} alt={networkIn.name} className="w-full h-full object-cover" />
                       </div>
                     </div>
                     <span className="font-bold text-sm text-arc-text">{tokenIn.symbol}</span>
@@ -442,7 +442,7 @@ export default function SwapToken() {
                     <div className="relative">
                       <TokenIcon symbol={tokenOut.symbol} logo={tokenOut.logo} size={24} />
                       <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border border-slate-50 flex items-center justify-center text-[8px] shadow-sm overflow-hidden">
-                        <img src={networkOut.icon} alt={networkOut.name} className="w-full h-full object-cover" style={{ filter: networkOut.id === 'Arc_Testnet' ? 'invert(1)' : 'none' }} />
+                        <img src={networkOut.icon} alt={networkOut.name} className="w-full h-full object-cover" />
                       </div>
                     </div>
                     <span className="font-bold text-sm text-slate-800">{tokenOut.symbol}</span>
@@ -549,7 +549,7 @@ export default function SwapToken() {
                           : 'text-arc-textMuted hover:text-arc-text'
                       }`}
                     >
-                      <img src={n.icon} alt={n.name} className="w-4 h-4 object-cover rounded-full" style={{ filter: n.id === 'Arc_Testnet' ? 'invert(1)' : 'none' }} />
+                      <img src={n.icon} alt={n.name} className="w-4 h-4 object-cover rounded-full" />
                       {n.name.split(' ')[0]}
                     </button>
                   ))}
