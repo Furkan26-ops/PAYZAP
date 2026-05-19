@@ -56,6 +56,12 @@ async function readArcTokenBalance(
   token: Token,
   address: string
 ) {
+  // On Arc Testnet, USDC is the native gas token.
+  if (token.symbol === 'USDC') {
+    const raw = await publicClient.getBalance({ address: address as `0x${string}` });
+    return Number(formatUnits(raw, 18));
+  }
+
   if (token.address && token.address !== '0x0000000000000000000000000000000000000000') {
     const raw = await publicClient.readContract({
       address: token.address,
