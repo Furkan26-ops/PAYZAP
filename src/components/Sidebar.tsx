@@ -54,10 +54,10 @@ export default function Sidebar() {
             className={`pz-sidebar-link group transition-all duration-200 !rounded-full ${
               pathname === href 
                 ? '!bg-blue-600 !text-white shadow-md shadow-blue-500/20' 
-                : '!text-slate-400 hover:!text-slate-900 hover:!bg-slate-50'
+                : '!text-slate-500 hover:!text-slate-900 hover:!bg-slate-50'
             }`}
           >
-            <Icon className={`w-5 h-5 flex-shrink-0 ${pathname === href ? 'text-white' : 'text-slate-400 group-hover:text-slate-900'}`} />
+            <Icon className={`w-5 h-5 flex-shrink-0 ${pathname === href ? 'text-white' : 'text-slate-500 group-hover:text-slate-900'}`} />
             <span className="font-medium">{label}</span>
           </Link>
         ))}
