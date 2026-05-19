@@ -129,7 +129,7 @@ export default function Login() {
 
         <div className="space-y-8">
           <div className="flex gap-4 items-start">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center flex-shrink-0 text-white shadow-sm">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center flex-shrink-0 text-emerald-600 shadow-sm">
               <Zap className="w-6 h-6" />
             </div>
             <div>
