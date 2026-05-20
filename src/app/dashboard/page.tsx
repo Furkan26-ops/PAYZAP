@@ -140,12 +140,23 @@ export default function Dashboard() {
     init();
   }, [router]);
 
-  const inflowCount = useMemo(() => recentTxs.filter(tx => tx.type === 'receive').length, [recentTxs]);
-  const outflowCount = useMemo(() => recentTxs.filter(tx => tx.type !== 'receive').length, [recentTxs]);
-  const totalFlow  = useMemo(() => recentTxs.reduce((s, tx) => {
-    const n = parseFloat(String(tx.amountDisplay || '0').split(' ')[0].split('->')[0].trim());
-    return s + (Number.isFinite(n) ? n : 0);
-  }, 0), [recentTxs]);
+  const totalInflow = useMemo(() => {
+    return recentTxs
+      .filter(tx => tx.type === 'receive')
+      .reduce((s, tx) => {
+        const n = parseFloat(String(tx.amountDisplay || '0').split(' ')[0].replace(/,/g, ''));
+        return s + (Number.isFinite(n) ? n : 0);
+      }, 0);
+  }, [recentTxs]);
+
+  const totalOutflow = useMemo(() => {
+    return recentTxs
+      .filter(tx => tx.type !== 'receive')
+      .reduce((s, tx) => {
+        const n = parseFloat(String(tx.amountDisplay || '0').split(' ')[0].replace(/,/g, ''));
+        return s + (Number.isFinite(n) ? n : 0);
+      }, 0);
+  }, [recentTxs]);
 
   const quickActions = [
     { href: '/send',    icon: ArrowUpRight,  label: 'Send',    bg: 'var(--blue-soft)',   color: 'var(--blue)' },
@@ -236,7 +247,7 @@ export default function Dashboard() {
           <div className="glass-panel rounded-3xl p-6">
             <div className="flex justify-between items-center mb-6">
               <span className="text-sm font-bold text-arc-text">Inflow</span>
-              <span className="text-xs font-bold text-emerald-500">+ {inflowCount} Inflow</span>
+              <span className="text-xs font-bold text-emerald-500">+ ${totalInflow.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
             </div>
             <div className="h-40 w-full mb-2">
               <ResponsiveContainer width="100%" height="100%">
@@ -266,7 +277,7 @@ export default function Dashboard() {
           <div className="glass-panel rounded-3xl p-6">
             <div className="flex justify-between items-center mb-6">
               <span className="text-sm font-bold text-arc-text">Outflow</span>
-              <span className="text-xs font-bold text-red-500">- {outflowCount} Outflow</span>
+              <span className="text-xs font-bold text-red-500">- ${totalOutflow.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
             </div>
             <div className="h-40 w-full mb-2">
               <ResponsiveContainer width="100%" height="100%">
