@@ -33,11 +33,18 @@ export default function RequestMoney() {
           <UserProfile />
         </div>
         <div className="max-w-[480px] w-full">
-          <div className="glass-panel text-center flex flex-col items-center rounded-3xl p-8">
-            <h1 className="text-xl font-bold mb-2 text-arc-text">Accept Funds</h1>
-            <p className="text-sm font-medium px-4 mb-8 text-arc-textMuted leading-relaxed">
+          <div className="glass-panel p-6 rounded-3xl">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center bg-arc-cyan/10 text-arc-cyan border border-arc-cyan/20">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+              <h1 className="text-xl font-bold text-arc-text">Accept Funds</h1>
+            </div>
+            <p className="text-sm font-medium mb-8 text-arc-textMuted">
               Scan this QR code or share your wallet address to receive Arc Testnet assets.
             </p>
+            
+            <div className="flex flex-col items-center">
 
             {/* QR Code */}
             <div className="bg-white p-4 rounded-3xl shadow-xl shadow-black/10 mb-8 inline-block border border-arc-border">
@@ -56,6 +63,7 @@ export default function RequestMoney() {
                 : <><Copy className="w-5 h-5" /> Copy Wallet Address</>
               }
             </button>
+          </div>
           </div>
         </div>
       </main>

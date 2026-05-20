@@ -31,7 +31,7 @@ export default function HistoryPage() {
     <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
       <main className="pz-shell flex-1">
-        <div className="pz-page-header flex justify-between items-center mb-8">
+        <div className="pz-page-header flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-8">
           <h1 className="text-2xl font-bold text-arc-text">Transaction History</h1>
           <div className="flex items-center gap-4">
             <button className="pz-btn pz-btn-primary pz-btn-sm flex items-center gap-2">
