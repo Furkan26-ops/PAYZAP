@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="light" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased bg-arc-bg text-arc-text selection:bg-arc-cyan/30`}>
+      <body className={`${inter.variable} font-sans antialiased bg-arc-bg text-arc-text selection:bg-arc-cyan/30 overflow-x-hidden`}>
         <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false} disableTransitionOnChange>
           {children}
         </ThemeProvider>

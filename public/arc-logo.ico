@@ -1,0 +1,1282 @@
+<!DOCTYPE html><!-- Last Published: Fri May 15 2026 13:14:43 GMT+0000 (Coordinated Universal Time) -->
+<html data-wf-domain="www.arc.io" data-wf-page="689a669291ff6cdfe5a2670e" data-wf-site="685311a976e7c248b5dfde95" data-wf-intellimize-customer-id="117402861" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link href="https://cdn.prod.website-files.com" rel="preconnect" crossorigin="anonymous" />
+    <title>Not Found</title>
+    <meta content="Not Found" property="og:title" />
+    <meta content="Not Found" property="twitter:title" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="RBnRfnNmWxz5ls7Jgfcp4-3yXZmCbnwIKIrC5to8ZiU" name="google-site-verification" />
+    <link href="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/css/circle-arc.shared.f52dd5e4f.min.css" rel="stylesheet" type="text/css" integrity="sha384-9S3V5PcHc2huC2/say9UvSWfcIMP4KC1ASkHFWlWfNKwvEGrunTrIPOFz8cOl7+X" crossorigin="anonymous" />
+    <script type="text/javascript">
+      ! function(o, c) {
+        var n = c.documentElement,
+          t = " w-mod-";
+        n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n.className += t + "touch")
+      }(window, document);
+    </script>
+    <link href="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/68921f69e5659feee825637e_9a3d143150a36125b5d7f0c2367c9ca6_arc-favicon-test.png" rel="shortcut icon" type="image/x-icon" />
+    <link href="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/68926aad995d4eae931403a4_arc-favicon-256x256.png" rel="apple-touch-icon" />
+    <link href="https://www.arc.io/404" rel="canonical" />
+    <style>
+      .anti-flicker,
+      .anti-flicker * {
+        visibility: hidden !important;
+        opacity: 0 !important;
+      }
+    </style>
+    <style>
+      [data-wf-hidden-variation],
+      [data-wf-hidden-variation] * {
+        display: none !important;
+      }
+    </style>
+    <script type="text/javascript">
+      if (localStorage.getItem('intellimize_data_tracking_type') !== 'disabled') {
+        localStorage.setItem('intellimize_opt_out_117402861', 'true');
+      }
+      if (localStorage.getItem('intellimize_data_tracking_type') !== 'disabled') {
+        localStorage.setItem('intellimize_data_tracking_type', 'disabled');
+      }
+    </script>
+    <script type="text/javascript">
+      (function(e) {
+        var s = {
+          r: []
+        };
+        e.wf = {
+          r: s.r,
+          ready: t => {
+            s.r.push(t)
+          }
+        }
+      })(window)
+    </script>
+    <script type="text/javascript">
+      (function(e, t, p) {
+        var n = document.documentElement,
+          s = {
+            p: [],
+            r: []
+          },
+          u = {
+            p: s.p,
+            r: s.r,
+            push: function(e) {
+              s.p.push(e)
+            },
+            ready: function(e) {
+              s.r.push(e)
+            }
+          };
+        e.intellimize = u, n.className += " " + p, setTimeout(function() {
+          n.className = n.className.replace(RegExp(" ?" + p), "")
+        }, t)
+      })(window, 4000, 'anti-flicker')
+    </script>
+    <link href="https://cdn.intellimize.co/snippet/117402861.js" rel="preload" as="script" />
+    <script type="text/javascript">
+      var wfClientScript = document.createElement("script");
+      wfClientScript.src = "https://cdn.intellimize.co/snippet/117402861.js", wfClientScript.async = !0, wfClientScript.onerror = function() {
+        document.documentElement.className = document.documentElement.className.replace(RegExp(" ?anti-flicker"), "")
+      }, document.head.appendChild(wfClientScript);
+    </script>
+    <link href="https://api.intellimize.co" rel="preconnect" crossorigin="true" />
+    <link href="https://log.intellimize.co" rel="preconnect" crossorigin="true" />
+    <link href="https://117402861.intellimizeio.com" rel="preconnect" /><!-- Google Tag Manager -->
+    <script>
+      (function(w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+          'gtm.start': new Date().getTime(),
+          event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-KF4K8LDS');
+    </script>
+    <!-- End Google Tag Manager -->
+    <meta name="msvalidate.01" content="315D95779AB4A7C750F74977DD0F72A6" />
+
+    <script>
+      window.Webflow = window.Webflow || {};
+      Webflow.analytics = Webflow.analytics || {};
+      Webflow.analytics.optIn = Webflow.analytics.optIn || function() {
+        console.warn("Patched Webflow.analytics.optIn called — wf is not defined.");
+      };
+      Webflow.analytics.optOut = Webflow.analytics.optOut || function() {
+        console.warn("Patched Webflow.analytics.optOut called — wf is not defined.");
+      };
+    </script>
+
+    <script>
+      window.OptanonWrapper = function() {
+        window.dataLayer = window.dataLayer || [];
+
+        function updateConsentStatus(retry = 0) {
+          try {
+            const otCookie = document.cookie.split("; ").find(row => row.startsWith("OptanonConsent="));
+            if (!otCookie) throw new Error("OneTrust cookie not found.");
+
+            const otGroupsPart = otCookie.split("&").find(row => row.startsWith("groups="));
+            if (!otGroupsPart) {
+              if (retry < 5) {
+                console.warn("Consent groups not available yet — retrying...");
+                setTimeout(() => updateConsentStatus(retry + 1), 500);
+                return;
+              } else {
+                throw new Error("OneTrust 'groups=' data missing after retries.");
+              }
+            }
+
+            const otGroups = decodeURIComponent(otGroupsPart.split("=")[1]);
+
+            const analyticsConsent = otGroups.includes("2:1") ? "granted" : "denied"; // Performance
+            const adConsent = otGroups.includes("4:1") ? "granted" : "denied"; // Targeting
+
+            window.dataLayer.push({
+              event: "consent_update",
+              ad_storage: adConsent,
+              analytics_storage: analyticsConsent,
+              functionality_storage: analyticsConsent,
+              personalization_storage: analyticsConsent,
+              security_storage: "granted"
+            });
+
+            // Optional: Sync with Webflow analytics if available
+            if (typeof Webflow !== "undefined" && Webflow.analytics) {
+              if (analyticsConsent === "granted" && typeof Webflow.analytics.optIn === "function") {
+                Webflow.analytics.optIn();
+              } else if (typeof Webflow.analytics.optOut === "function") {
+                Webflow.analytics.optOut();
+              }
+            }
+          } catch (e) {
+            console.error("Consent handling error:", e);
+          }
+        }
+
+        // Defer execution until Webflow is fully loaded
+        window.Webflow = window.Webflow || [];
+        window.Webflow.push(() => {
+          updateConsentStatus();
+        });
+
+        // Re-run on consent preference change
+        if (typeof OneTrust !== "undefined" && OneTrust.OnConsentChanged) {
+          OneTrust.OnConsentChanged(() => updateConsentStatus());
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <div class="global-css">
+        <div class="w-embed"><!-- Global custom CSS -->
+          <style>
+            /* Mast base settings */
+            :root {
+              /* Reset Font Weight variable values */
+              --type-weight--100: 100;
+              --type-weight--200: 200;
+              --type-weight--300: 300;
+              --type-weight--400: 400;
+              --type-weight--500: 500;
+              --type-weight--600: 600;
+              --type-weight--700: 700;
+              --type-weight--800: 800;
+              --type-weight--900: 900;
+            }
+
+            /* Apply font smoothing */
+            body {
+              -webkit-font-smoothing: antialiased;
+              -moz-font-smoothing: antialiased;
+              -o-font-smoothing: antialiased;
+            }
+
+            /* Reset apple form styles */
+            input,
+            textarea,
+            select {
+              -webkit-appearance: none;
+              -moz-appearance: none;
+              appearance: none;
+              border-radius: 0;
+              background-image: none;
+            }
+
+            /* Adjust input autofill to brand colors */
+            input:-webkit-autofill,
+            input:-webkit-autofill:focus {
+              background-color: var(--colors--background) !important;
+              color: var(--colors--text) !important;
+              -webkit-box-shadow: 0 0 0 50px var(--colors--background) inset;
+              -webkit-text-fill-color: var(--colors--text);
+            }
+
+            /* Text Selection Color */
+            ::selection {
+              background: var(--primary-colors--protocol-navy);
+              color: var(--base-colors--white);
+            }
+
+            ::-moz-selection {
+              background: var(--primary-colors--protocol-navy);
+              color: var(--colors--white);
+            }
+
+            /* Remove top margin on rich text first child */
+            .w-richtext>:first-child {
+              margin-top: 0;
+            }
+
+            /* Remove bottom margin of rich text last child */
+            .w-richtext>:last-child,
+            .w-richtext ol li:last-child,
+            .w-richtext ul li:last-child {
+              margin-bottom: 0;
+            }
+
+            .rich-text h1,
+            .rich-text h2,
+            .rich-text h3,
+            .rich-text h4 {
+              text-wrap: balance;
+            }
+
+            ol li:last-child,
+            ul li:last-child {
+              margin-bottom: 0;
+            }
+
+            /* Row/col gap modifiers */
+            .row.row-gap-0 .col {
+              margin: 0;
+              padding: 0;
+            }
+
+            .row.row-gap-md .col {
+              padding-left: calc(var(--_layout---grid--gap-md) / 2);
+              padding-right: calc(var(--_layout---grid--gap-md) / 2);
+            }
+
+            .row.row-gap-sm .col {
+              padding-left: calc(var(--_layout---grid--gap-sm) / 2);
+              padding-right: calc(var(--_layout---grid--gap-sm) / 2);
+            }
+
+            /* Line clamp modifiers */
+            .u-text-clamp-1 {
+              -webkit-line-clamp: 1;
+              -webkit-box-orient: vertical;
+            }
+
+            .u-text-clamp-2 {
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+            }
+
+            .u-text-clamp-3 {
+              -webkit-line-clamp: 3;
+              -webkit-box-orient: vertical;
+            }
+
+            /* Build mode modifiers */
+            .slot.cc-column .btn {
+              align-self: flex-start;
+            }
+
+            .slot.cc-column .heading-component * {
+              margin: 0;
+            }
+
+            .slot.cc-column .accordion-item {
+              margin: 0;
+            }
+
+            .card:has(.u-link-cover:focus-visible) {
+              outline: 2px solid var(--colors--primary-accent);
+              outline-offset: 2px;
+            }
+
+            html.wf-design-mode .card:has(.slot.cc-card) .u-link-cover {
+              pointer-events: none;
+            }
+
+            /* Modal mods */
+            body:has(dialog[open]) {
+              overflow: hidden !important;
+            }
+
+            dialog.modal[open] {
+              animation: fadein 400ms ease-out forwards;
+            }
+
+            dialog.modal::backdrop {
+              background: color-mix(in srgb, var(--_color---neutral--black) 80%, transparent);
+            }
+
+            @keyframes fadein {
+              0% {
+                opacity: 0;
+              }
+
+              100% {
+                opacity: 1;
+              }
+            }
+
+            dialog::-webkit-scrollbar {
+              width: 10px;
+            }
+
+            dialog::-webkit-scrollbar-track {
+              border-radius: 10px;
+              background-color: transparent;
+            }
+
+            dialog::-webkit-scrollbar-thumb {
+              border-radius: 10px;
+              border: 2px solid var(--colors--background);
+              background: var(--colors--text);
+            }
+
+            dialog::-webkit-scrollbar-thumb:window-inactive {
+              background: var(--colors--text);
+            }
+
+
+            /* Hubspot Form Designer Only Class */
+            html.wf-design-mode .hubspot-form {
+              background: url(https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/688f77393f6719c6c89c236d_65e72768d3562db0109f1502_hs-form-bg.webp);
+              background-size: 41px;
+            }
+
+            /* Hubspot Forms */
+            .hs-input {
+              border: 1px solid var(--secondary-colors--static-ether);
+              border-radius: 4px;
+              width: 100%;
+              height: auto;
+              padding: 8px 12px;
+              font-size: 16px;
+              color: #000;
+            }
+
+            .hs-input.error {
+              border-style: solid;
+              border-color: #E7000B;
+            }
+
+            .hs-error-msg {
+              color: #E7000B;
+              padding-left: 0;
+              list-style: none;
+              font-weight: 400 !important;
+              font-size: 12px;
+            }
+
+            .submitted-message {
+              font-size: 16px;
+              line-height: 1.4em;
+            }
+
+            .hs-form-field {
+              margin-bottom: 24px;
+            }
+
+            .hs-form-field>label {
+              font-size: 14px;
+              font-weight: 500;
+              margin-bottom: 8px;
+            }
+
+            .no-labels-form .hs-form-field>label,
+            .footer-subscribe-wrapper .hs-form-field>label {
+              white-space: nowrap;
+              border: 0 solid rgba(0, 0, 0, 0);
+              width: 1px;
+              height: 1px;
+              margin-top: -1px;
+              padding: 0;
+              position: absolute;
+              overflow: hidden;
+            }
+
+            .hs-form .hs-form-field>label p,
+            .hs-form .hs-form-field>label span {
+              display: inline;
+            }
+
+            .hs-form-radio label,
+            .hs-form-checkbox label {
+              margin-bottom: 16px;
+            }
+
+            .hs-form-booleancheckbox input,
+            .hs-form-checkbox input {
+              width: 24px;
+              height: 24px;
+              padding: 0;
+              background-color: #ffffff;
+              border: 1px solid var(--secondary-colors--static-ether);
+              flex-shrink: 0;
+              border-radius: 4px;
+            }
+
+            .hs-form-booleancheckbox input:checked,
+            .hs-form-checkbox input:checked {
+              background-color: var(--primary-colors--protocol-navy);
+              background-image: url(https://cdn.prod.website-files.com/668c08d1b8a9330bd1d786ad/66be159b6f15661b9ce00c28__base-checkbox-radio.svg);
+            }
+
+            .hs-form-booleancheckbox label.hs-form-booleancheckbox-display,
+            .hs-form-checkbox label.hs-form-checkbox-display {
+              display: flex;
+              column-gap: 8px;
+            }
+
+            .hs-form-booleancheckbox span,
+            .hs-form-checkbox span {
+              cursor: pointer;
+              font-weight: 400;
+            }
+
+            .hs-form-radio input {
+              width: 24px;
+              height: 24px;
+              padding: 0;
+              background-color: #ffffff;
+              border: 1px solid var(--secondary-colors--static-ether);
+              flex-shrink: 0;
+              border-radius: 100px;
+            }
+
+            .hs-form-radio input:checked {
+              background-color: var(--primary-colors--protocol-navy);
+              border: 1px solid var(--primary-colors--protocol-navy);
+              background-image: url(https://cdn.prod.website-files.com/668c08d1b8a9330bd1d786ad/66be159b6f15661b9ce00c28__base-checkbox-radio.svg);
+            }
+
+            .hs-form-radio label.hs-form-radio-display {
+              display: flex;
+              column-gap: 8px;
+            }
+
+            .hs-form-radio span {
+              cursor: pointer;
+              font-weight: 400;
+            }
+
+            .hubspot-form select {
+              background-image: url(https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/6893b77dd41489d144ff76ec_chevron-down.svg);
+              background-repeat: no-repeat;
+              background-position: 98% 50%;
+            }
+
+            .hubspot-form legend {
+              margin-bottom: 8px;
+            }
+
+            .hubspot-form form {
+              width: 100% !important;
+            }
+
+            .hubspot-form label span {
+              display: inline;
+            }
+
+            .inputs-list {
+              list-style-type: none;
+              padding-left: 0;
+            }
+
+            /* Footer Subscribe Form */
+            .footer-subscribe-wrapper .hs-form-field>label {
+              white-space: nowrap;
+              border: 0 solid rgba(0, 0, 0, 0);
+              width: 1px;
+              height: 1px;
+              margin-top: -1px;
+              padding: 0;
+              position: absolute;
+              overflow: hidden;
+            }
+
+            .footer-subscribe-wrapper .hs-input {
+              padding-right: 130px;
+              height: 41px;
+              padding: 10.25px 12px;
+              font-size: 16px;
+            }
+
+            .footer-subscribe-wrapper .hs-richtext {
+              margin-bottom: 16px;
+              font-size: var(--_type---body-small--font-size);
+              color: inherit;
+            }
+
+            .hubspot-form .hs-button {
+              top: 0;
+              right: 0;
+              background-color: var(--base-colors--black);
+              border: 1px solid var(--base-colors--black);
+              color: #ffffff;
+              padding: 8px 20px;
+              width: auto;
+              height: 41px;
+              border-radius: 8px;
+              cursor: pointer;
+            }
+
+            .hubspot-form .hs-button:hover {
+              background-color: #292929;
+              border: 1px solid #292929;
+            }
+
+            .footer_subscribe-wrapper .hs-input {
+              border-radius: 8px;
+            }
+
+            .footer_subscribe-wrapper .hubspot-form .hs-button {
+              position: absolute;
+              top: 0;
+              right: -3px;
+              background-color: var(--secondary-colors--sky-sync);
+              border: 1px solid var(--secondary-colors--sky-sync);
+              padding: 8px 20px;
+              width: auto;
+              height: 39px;
+              border-radius: 8px;
+              color: #000;
+            }
+
+            .footer_subscribe-wrapper .hubspot-form .hs-button:hover {
+              background-color: #cdddf2;
+              border: 1px solid #cdddf2;
+            }
+
+            .footer_subscribe-wrapper .hs-form-field>label {
+              display: none;
+            }
+
+            .legal-consent-container,
+            .legal-consent-container .hs-richtext,
+            .legal-consent-container .hs-richtext p,
+            .legal-consent-container .hs-richtext p a {
+              font-size: 12px !important;
+              color: inherit;
+              margin-top: 12px;
+            }
+
+            .hs-form-d2cda10e-269d-4ddf-abcf-16cbece1672c_9516e1dc-f96b-45dc-bcb4-1a66abe2ef81 .hs-richtext,
+            .hs-form-d2cda10e-269d-4ddf-abcf-16cbece1672c_9516e1dc-f96b-45dc-bcb4-1a66abe2ef81 .hs-richtext p a,
+            .hs-form-d2cda10e-269d-4ddf-abcf-16cbece1672c_9516e1dc-f96b-45dc-bcb4-1a66abe2ef81 .hs-richtext,
+            .hs-form-d2cda10e-269d-4ddf-abcf-16cbece1672c_9516e1dc-f96b-45dc-bcb4-1a66abe2ef81 .hs-richtext {
+              color: #fff !important;
+              font-size: 12px !important;
+            }
+
+            /* Card - CTA text button hover states */
+            .card_text-cta:hover .btn.card_text-cta-btn,
+            .card_text-cta:focus .btn.card_text-cta-btn {
+              background: var(--_buttons---background-hover);
+              border: 1px solid var(--_buttons---border-hover);
+              color: var(--_buttons---text-hover);
+            }
+
+            /* Text Links animation */
+            @media (hover: hover) {
+
+              .text-link:hover .text-link_underline,
+              .blog_hero-card:hover .text-link .text-link_underline {
+                max-width: 100%;
+              }
+            }
+
+            .text-link:focus .text-link_underline,
+            .blog_hero-card:focus .text-link .text-link_underline {
+              max-width: 100%;
+            }
+
+
+            /* OneTrust link */
+            #ot-sdk-btn.ot-sdk-show-settings.privacy-choice-link,
+            #ot-sdk-btn.optanon-show-settings.privacy-choice-link {
+              background-color: transparent;
+              padding: 0;
+              color: transparent;
+              height: 24px;
+            }
+
+            .privacy-choice-link:before {
+              border: none;
+              content: "Your Privacy Choices \00a0 \00a0 ";
+              display: block;
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 150%;
+              text-decoration: none;
+              line-height: 100%;
+              color: #ffffff;
+              left: 0;
+              margin-bottom: 6px;
+              padding: 0;
+              position: absolute;
+              top: 4px;
+              visibility: visible;
+              white-space: nowrap;
+            }
+
+            .privacy-choice-link:after {
+              content: url(https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/6893a2116101df3ff5efba0e_opt-out-30x14.svg);
+              left: 142px;
+              position: absolute;
+              top: 2px;
+              visibility: visible;
+            }
+
+            /* NEW Navbar */
+            @media screen and (min-width: 992px) {
+              .navbar-links_wrapper-hover:hover .navbar-link {
+                opacity: 0.4;
+              }
+
+              .navbar-links_wrapper-hover:hover .navbar-link:hover {
+                opacity: 1;
+              }
+
+              .navbar-link:hover .navbar-link_wrap .navbar-border {
+                width: 100%;
+              }
+            }
+
+            .navbar-menu.w--open .navbar-menu_top:where(.w-variant-36f4ad47-f1d2-2673-f80e-8f46904dd8cc) {
+              background-color: var(--base-colors--black) !important;
+            }
+
+            .navbar-menu.w--open .navbar-menu_middle:where(.w-variant-36f4ad47-f1d2-2673-f80e-8f46904dd8cc) {
+              background-color: var(--base-colors--black) !important;
+            }
+
+            .navbar-menu.w--open .navbar-menu_bottom:where(.w-variant-36f4ad47-f1d2-2673-f80e-8f46904dd8cc) {
+              background-color: var(--base-colors--black) !important;
+            }
+
+            .navbar-wrapper:has(.navbar-menu.w--open) .navbar-logo .nav_logo-onlight {
+              display: block !important;
+            }
+
+            .navbar-wrapper:has(.navbar-menu.w--open) .navbar-logo .nav_logo-ondark {
+              display: none !important;
+            }
+
+            .navbar-link:hover .navbar-link_toggle>.navbar-border {
+              width: 100%;
+            }
+
+            .navbar-link:hover>.navbar-border {
+              width: 100%;
+            }
+
+            .navbar-dropdown_item:hover .u-position-relative p+.navbar-border {
+              width: 100%;
+            }
+
+
+            a:has(sup) {
+              text-decoration: none !important;
+            }
+          </style>
+        </div>
+      </div>
+      <main class="page-main">
+        <div data-animation="over-right" class="navbar w-nav" data-wf--navbar--variant="light-mode" data-easing2="ease" data-scroll-disable="true" data-easing="ease" data-collapse="medium" data-w-id="dfb65e4a-7d52-4397-4636-90f199d9e026" role="banner" data-duration="400" id="site-nav">
+          <div class="container w-container">
+            <div class="navbar-wrapper"><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:dfb65e4a-7d52-4397-4636-90f199d9e029" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="dfb65e4a-7d52-4397-4636-90f199d9e029" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%5D" href="/" class="navbar-logo w-nav-brand">
+                <div class="u-sr-only">Home</div><img loading="lazy" src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/688f6e47d217527a8db50637_logo.webp" alt="Arc logo" class="nav_logo nav_logo-onlight" /><img loading="lazy" src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/688f6e47eca8d8e359537b5f_logo-ondark.svg" alt="Arc logo" class="nav_logo nav_logo-ondark" />
+              </a>
+              <nav role="navigation" class="navbar-links w-nav-menu">
+                <div class="navbar-links_wrapper">
+                  <div class="navbar-links_wrapper-hover">
+                    <div data-hover="true" data-selector="fg-dropdown" class="navbar-link"><button aria-haspopup="true" aria-expanded="false" aria-controls="" data-selector="fg-dropdown-toggle" class="navbar-link_toggle">
+                        <div>Build</div>
+                        <div data-selector="fg-dropdown-arrow" class="navbar-link_toggle-arrow w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none">
+                            <path d="M1 1.5L5 5.5L9 1.5" stroke="var(--_navbar---main-link)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg></div>
+                        <div class="navbar-link_toggle-arrow is-responsive w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
+                            <path d="M1.25 7L14.75 7M14.75 7L8.375 13.375M14.75 7L8.375 0.625" stroke="black" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg></div>
+                        <div class="navbar-border"></div>
+                      </button>
+                      <div role="menu" aria-hidden="true" data-selector="fg-dropdown-list" class="navbar-link_nav">
+                        <div class="navbar-link_arrow w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="8" viewBox="0 0 18 8" fill="none">
+                            <path d="M7.38796 0.612039C8.20401 -0.204013 9.52709 -0.204013 10.3431 0.612039L17.7311 8H0L7.38796 0.612039Z" fill="white" />
+                          </svg></div>
+                        <div class="navbar-link_wrapper">
+                          <div class="navbar-dropdown_back">
+                            <div data-selector="fg-dropdown-toggle" class="navbar-dropdown_back-item">
+                              <div class="navbar-dropdown_back-icon w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
+                                  <path d="M14.75 7H1.25M1.25 7L7.625 0.625M1.25 7L7.625 13.375" stroke="black" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg></div>
+                              <p class="subhead u-mb-0">Back</p>
+                            </div>
+                          </div><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:f761f084-27d1-0622-429a-f2c12caee844:527b7842-e720-e69b-3db7-6694530a2597:c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%2C%7B%22componentId%22%3A%22f761f084-27d1-0622-429a-f2c12caee834%22%2C%22instanceId%22%3A%22f761f084-27d1-0622-429a-f2c12caee844%22%7D%2C%7B%22componentId%22%3A%22c1ec1747-51ac-09a2-1dff-19c32b538187%22%2C%22instanceId%22%3A%22527b7842-e720-e69b-3db7-6694530a2597%22%7D%5D" href="https://docs.arc.io" class="navbar-dropdown_item w-inline-block"><img src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/68fc12442042742525a89321_multiple-pages.svg" loading="lazy" alt="" class="nav-dropdown_icon" />
+                            <div class="nav-dropdown_content">
+                              <div class="u-position-relative">
+                                <p class="nav-dropdown_title">Documentation</p>
+                                <div class="navbar-border is-link is_dropdown-link"></div>
+                              </div>
+                              <p class="nav-dropdown_subtitle">Explore guides, APIs, and specs</p>
+                            </div>
+                          </a><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:f761f084-27d1-0622-429a-f2c12caee844:a4f5ea0c-98c2-95b4-bd51-1cd7711bb539:c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%2C%7B%22componentId%22%3A%22f761f084-27d1-0622-429a-f2c12caee834%22%2C%22instanceId%22%3A%22f761f084-27d1-0622-429a-f2c12caee844%22%7D%2C%7B%22componentId%22%3A%22c1ec1747-51ac-09a2-1dff-19c32b538187%22%2C%22instanceId%22%3A%22a4f5ea0c-98c2-95b4-bd51-1cd7711bb539%22%7D%5D" href="https://faucet.circle.com/" class="navbar-dropdown_item w-inline-block"><img src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/68fc125574af169310143ca8_coins.svg" loading="lazy" alt="" class="nav-dropdown_icon" />
+                            <div class="nav-dropdown_content">
+                              <div class="u-position-relative">
+                                <p class="nav-dropdown_title">Faucet</p>
+                                <div class="navbar-border is-link is_dropdown-link"></div>
+                              </div>
+                              <p class="nav-dropdown_subtitle">Get testnet USDC and EURC</p>
+                            </div>
+                          </a><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:f761f084-27d1-0622-429a-f2c12caee844:1f540791-3105-a172-d1f3-fcd8cd91d66a:c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%2C%7B%22componentId%22%3A%22f761f084-27d1-0622-429a-f2c12caee834%22%2C%22instanceId%22%3A%22f761f084-27d1-0622-429a-f2c12caee844%22%7D%2C%7B%22componentId%22%3A%22c1ec1747-51ac-09a2-1dff-19c32b538187%22%2C%22instanceId%22%3A%221f540791-3105-a172-d1f3-fcd8cd91d66a%22%7D%5D" href="https://testnet.arcscan.app/" class="navbar-dropdown_item w-inline-block"><img src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/68fc126e9a3bb74c3cb8ce0e_search-data-base.svg" loading="lazy" alt="" class="nav-dropdown_icon" />
+                            <div class="nav-dropdown_content">
+                              <div class="u-position-relative">
+                                <p class="nav-dropdown_title">Explorer</p>
+                                <div class="navbar-border is-link is_dropdown-link"></div>
+                              </div>
+                              <p class="nav-dropdown_subtitle">Inspect and analyze Arc</p>
+                            </div>
+                          </a><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:f761f084-27d1-0622-429a-f2c12caee844:1fed1416-73e6-136f-2b63-9c9a4b37e011:c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%2C%7B%22componentId%22%3A%22f761f084-27d1-0622-429a-f2c12caee834%22%2C%22instanceId%22%3A%22f761f084-27d1-0622-429a-f2c12caee844%22%7D%2C%7B%22componentId%22%3A%22c1ec1747-51ac-09a2-1dff-19c32b538187%22%2C%22instanceId%22%3A%221fed1416-73e6-136f-2b63-9c9a4b37e011%22%7D%5D" href="/app-kits" class="navbar-dropdown_item w-inline-block"><img src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/6a0630df0c7696384eda2fa6_cube.svg" loading="lazy" alt="" class="nav-dropdown_icon" />
+                            <div class="nav-dropdown_content">
+                              <div class="u-position-relative">
+                                <p class="nav-dropdown_title">App Kits</p>
+                                <div class="navbar-border is-link is_dropdown-link"></div>
+                              </div>
+                              <p class="nav-dropdown_subtitle">Ship faster with SDKs</p>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div data-hover="true" data-selector="fg-dropdown" class="navbar-link"><button aria-haspopup="true" aria-expanded="false" aria-controls="" data-selector="fg-dropdown-toggle" class="navbar-link_toggle">
+                        <div>Learn</div>
+                        <div data-selector="fg-dropdown-arrow" class="navbar-link_toggle-arrow w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none">
+                            <path d="M1 1.5L5 5.5L9 1.5" stroke="var(--_navbar---main-link)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg></div>
+                        <div class="navbar-link_toggle-arrow is-responsive w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
+                            <path d="M1.25 7L14.75 7M14.75 7L8.375 13.375M14.75 7L8.375 0.625" stroke="black" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg></div>
+                        <div class="navbar-border"></div>
+                      </button>
+                      <div role="menu" aria-hidden="true" data-selector="fg-dropdown-list" class="navbar-link_nav cc-learn">
+                        <div class="navbar-link_arrow w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="8" viewBox="0 0 18 8" fill="none">
+                            <path d="M7.38796 0.612039C8.20401 -0.204013 9.52709 -0.204013 10.3431 0.612039L17.7311 8H0L7.38796 0.612039Z" fill="white" />
+                          </svg></div>
+                        <div class="navbar-link_wrapper">
+                          <div class="navbar-dropdown_back">
+                            <div data-selector="fg-dropdown-toggle" class="navbar-dropdown_back-item">
+                              <div class="navbar-dropdown_back-icon w-embed"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
+                                  <path d="M14.75 7H1.25M1.25 7L7.625 0.625M1.25 7L7.625 13.375" stroke="black" stroke-width="1.125" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg></div>
+                              <p class="subhead u-mb-0">Back</p>
+                            </div>
+                          </div><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:c46019a9-a3c0-fb8f-f54e-a5cadc64ce5e:cdddbfc4-6d6d-dde6-18c2-5b5c156ac01e:c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%2C%7B%22componentId%22%3A%22cdddbfc4-6d6d-dde6-18c2-5b5c156ac016%22%2C%22instanceId%22%3A%22c46019a9-a3c0-fb8f-f54e-a5cadc64ce5e%22%7D%2C%7B%22componentId%22%3A%22c1ec1747-51ac-09a2-1dff-19c32b538187%22%2C%22instanceId%22%3A%22cdddbfc4-6d6d-dde6-18c2-5b5c156ac01e%22%7D%5D" href="/arc-token-whitepaper" class="navbar-dropdown_item w-inline-block"><img src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/69fdf63309c3f3a633df3157_book.svg" loading="lazy" alt="" class="nav-dropdown_icon" />
+                            <div class="nav-dropdown_content">
+                              <div class="u-position-relative">
+                                <p class="nav-dropdown_title">ARC whitepaper</p>
+                                <div class="navbar-border is-link is_dropdown-link"></div>
+                              </div>
+                              <p class="nav-dropdown_subtitle">A coordination asset for Arc</p>
+                            </div>
+                          </a><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:c46019a9-a3c0-fb8f-f54e-a5cadc64ce5e:56238444-551d-fcd2-b472-6c91909e4548:c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%2C%7B%22componentId%22%3A%22cdddbfc4-6d6d-dde6-18c2-5b5c156ac016%22%2C%22instanceId%22%3A%22c46019a9-a3c0-fb8f-f54e-a5cadc64ce5e%22%7D%2C%7B%22componentId%22%3A%22c1ec1747-51ac-09a2-1dff-19c32b538187%22%2C%22instanceId%22%3A%2256238444-551d-fcd2-b472-6c91909e4548%22%7D%5D" href="/litepaper" class="navbar-dropdown_item w-inline-block"><img src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/69ceb3e1754ea8c2dc0e328a_litepaper.svg" loading="lazy" alt="" class="nav-dropdown_icon" />
+                            <div class="nav-dropdown_content">
+                              <div class="u-position-relative">
+                                <p class="nav-dropdown_title">Arc litepaper</p>
+                                <div class="navbar-border is-link is_dropdown-link"></div>
+                              </div>
+                              <p class="nav-dropdown_subtitle">Discover Arc’s infrastructure</p>
+                            </div>
+                          </a><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:c46019a9-a3c0-fb8f-f54e-a5cadc64ce5e:cdddbfc4-6d6d-dde6-18c2-5b5c156ac021:c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="c1ec1747-51ac-09a2-1dff-19c32b538187" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%2C%7B%22componentId%22%3A%22cdddbfc4-6d6d-dde6-18c2-5b5c156ac016%22%2C%22instanceId%22%3A%22c46019a9-a3c0-fb8f-f54e-a5cadc64ce5e%22%7D%2C%7B%22componentId%22%3A%22c1ec1747-51ac-09a2-1dff-19c32b538187%22%2C%22instanceId%22%3A%22cdddbfc4-6d6d-dde6-18c2-5b5c156ac021%22%7D%5D" href="/blog" class="navbar-dropdown_item w-inline-block"><img src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/69ceb3e44c460d529af663d2_blog.svg" loading="lazy" alt="" class="nav-dropdown_icon" />
+                            <div class="nav-dropdown_content">
+                              <div class="u-position-relative">
+                                <p class="nav-dropdown_title">Blog</p>
+                                <div class="navbar-border is-link is_dropdown-link"></div>
+                              </div>
+                              <p class="nav-dropdown_subtitle">Read insights and updates</p>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:3e1630a3-71c4-c5d7-1b07-15b7b217a231" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="3e1630a3-71c4-c5d7-1b07-15b7b217a231" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%5D" href="/ecosystem" class="navbar-link w-inline-block">
+                      <div class="navbar-link_wrap">
+                        <div>Ecosystem</div>
+                        <div class="navbar-border is-link"></div>
+                      </div>
+                    </a><a data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:0edf784d-4364-2f75-3de0-d33cf6708171" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="0edf784d-4364-2f75-3de0-d33cf6708171" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%5D" href="/community" class="navbar-link w-inline-block">
+                      <div class="navbar-link_wrap">
+                        <div>Community</div>
+                        <div class="navbar-border is-link"></div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="navbar-button"><a data-wf--button--variant="secondary---black" data-wf-native-id-path="83f38829-3203-c968-388b-87b0eca40dd4:dfb65e4a-7d52-4397-4636-90f199d9e047:aa832cb4-2420-bde8-8091-3317b67a6dbb" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="aa832cb4-2420-bde8-8091-3317b67a6dbb" data-wf-component-context="%5B%7B%22componentId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e026%22%2C%22instanceId%22%3A%2283f38829-3203-c968-388b-87b0eca40dd4%22%7D%2C%7B%22componentId%22%3A%22aa832cb4-2420-bde8-8091-3317b67a6dbb%22%2C%22instanceId%22%3A%22dfb65e4a-7d52-4397-4636-90f199d9e047%22%7D%5D" href="https://docs.arc.io" class="btn w-variant-829936f7-d61c-34c6-32ef-e59e7b2208ea w-button">Start building</a></div>
+                </div>
+              </nav>
+              <div class="navbar-menu w-nav-button">
+                <div class="navbar-menu_wrapper">
+                  <div class="navbar-menu_top"></div>
+                  <div class="navbar-menu_middle">
+                    <div class="navbar-menu_middle-inner"></div>
+                  </div>
+                  <div class="navbar-menu_bottom"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="u-hide w-embed w-script"><!--<script>
+/* ----- Custom Dropdown ----- */
+// Open a specific dropdown
+function openDropdown(dropdownToggle, dropdownList) {
+  const dropdownArrow = dropdownToggle.querySelector('[data-selector="fg-dropdown-arrow"]');
+  dropdownList.classList.add('is-active');
+  dropdownArrow.classList.add('is-active');
+  dropdownToggle.setAttribute('aria-expanded', 'true');
+  dropdownList.setAttribute('aria-hidden', 'false');
+}
+
+// Close a specific dropdown
+function closeDropdown(dropdownToggle, dropdownList) {
+  const dropdownArrow = dropdownToggle.querySelector('[data-selector="fg-dropdown-arrow"]');
+  dropdownList.classList.remove('is-active');
+  dropdownArrow.classList.remove('is-active');
+  dropdownToggle.setAttribute('aria-expanded', 'false');
+  dropdownList.setAttribute('aria-hidden', 'true');
+}
+
+// Assign unique aria-controls and id
+const dropdowns = document.querySelectorAll('[data-selector="fg-dropdown"]');
+
+dropdowns.forEach((dropdown, index) => {
+  const dropdownToggle = dropdown.querySelector('[data-selector="fg-dropdown-toggle"]');
+  const dropdownList = dropdown.querySelector('[data-selector="fg-dropdown-list"]');
+ 
+  // Check if hover mode is enabled
+  const isHoverMode = dropdown.getAttribute('data-hover') === 'true';
+ 
+  // Dynamically assign unique IDs and aria-controls
+  const uniqueId = `dropdown${index + 1}`;
+  dropdownToggle.setAttribute('aria-controls', uniqueId);
+  dropdownList.setAttribute('id', uniqueId);
+
+  // Hover event handlers (only active on desktop)
+  const handleMouseEnter = function () {
+    if (window.innerWidth > 992) {
+      openDropdown(dropdownToggle, dropdownList);
+    }
+  };
+
+  const handleMouseLeave = function () {
+    if (window.innerWidth > 992) {
+      closeDropdown(dropdownToggle, dropdownList);
+    }
+  };
+
+  if (isHoverMode) {
+    // Add hover listeners
+    dropdown.addEventListener('mouseenter', handleMouseEnter);
+    dropdown.addEventListener('mouseleave', handleMouseLeave);
+  }
+
+  // Click handler (always works, for mobile and as fallback for desktop)
+  dropdownToggle.addEventListener('click', function (event) {
+    event.stopPropagation();
+    const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true';
+    if (!isExpanded) {
+      openDropdown(dropdownToggle, dropdownList);
+    } else {
+      closeDropdown(dropdownToggle, dropdownList);
+    }
+  });
+
+  // Keyboard navigation (works for both modes)
+  dropdownToggle.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      dropdownList.focus();
+    }
+  });
+});
+
+// Listen for global clicks to close open dropdowns
+/*document.addEventListener('click', function () {
+  dropdowns.forEach(dropdown => {
+    const dropdownToggle = dropdown.querySelector('[data-selector="fg-dropdown-toggle"]');
+    const dropdownList = dropdown.querySelector('[data-selector="fg-dropdown-list"]');
+    closeDropdown(dropdownToggle, dropdownList);
+  });
+});*/
+
+// Close dropdowns with Escape key
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') {
+    dropdowns.forEach(dropdown => {
+      const dropdownToggle = dropdown.querySelector('[data-selector="fg-dropdown-toggle"]');
+      const dropdownList = dropdown.querySelector('[data-selector="fg-dropdown-list"]');
+      closeDropdown(dropdownToggle, dropdownList);
+    });
+  }
+});
+
+
+
+
+
+///////* ----- Disable Scroll When Webflow Nav is Open ----- */////////
+
+let scrollPosition = 0;
+
+function disableScroll() {
+  scrollPosition = window.scrollY;
+  document.body.style.overflow = 'hidden';
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollPosition}px`;
+  document.body.style.width = '100%';
+}
+
+function enableScroll() {
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, scrollPosition);
+}
+
+// Watch Webflow nav with data attribute
+document.querySelectorAll('[data-scroll-disable="true"]').forEach(nav => {
+  const navButton = nav.querySelector('.w-nav-button');
+ 
+  if (navButton) {
+    new MutationObserver(() => {
+      if (navButton.classList.contains('w--open')) {
+        disableScroll();
+      } else {
+        enableScroll();
+      }
+    }).observe(navButton, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+});
+</script>--></div>
+        </div>
+        <section class="section u-pt-5">
+          <div class="w-layout-blockcontainer container w-container">
+            <div class="row">
+              <div class="col col-lg-10 col-md-12 col-sm-12">
+                <h1>Page not found</h1>
+                <p class="subhead-large">The page you are looking for doesn&#x27;t exist or has been moved.</p>
+                <div class="u-mt-3"><a data-wf--button--variant="primary---black" data-wf-native-id-path="e9b399ba-b427-a053-d3e1-7534e9e48916:aa832cb4-2420-bde8-8091-3317b67a6dbb" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="aa832cb4-2420-bde8-8091-3317b67a6dbb" data-wf-component-context="%5B%7B%22componentId%22%3A%22aa832cb4-2420-bde8-8091-3317b67a6dbb%22%2C%22instanceId%22%3A%22e9b399ba-b427-a053-d3e1-7534e9e48916%22%7D%5D" href="/" class="btn w-button">Go to the homepage</a></div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <footer id="site-footer" class="footer-section">
+          <div class="w-layout-blockcontainer container w-container">
+            <div class="footer-row">
+              <div class="footer-logo"><a data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:50ca08f1-6a4a-9bcf-625f-e72dc519b090" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="50ca08f1-6a4a-9bcf-625f-e72dc519b090" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%5D" href="/" class="footer_logo-link w-inline-block">
+                  <div class="u-sr-only">Home</div><img loading="lazy" src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/688f6e47eca8d8e359537b5f_logo-ondark.svg" alt="Arc logo" class="footer_logo" />
+                </a></div>
+              <div class="footer-content">
+                <div>
+                  <h2 class="eyebrow paragraph-tiny text-color-sky-sync">//Build</h2>
+                  <div class="footer-links"><a data-wf--text-link--variant="white" data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:b681e475-1339-4919-10bd-284cc329e0e3:77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%2C%7B%22componentId%22%3A%2277c6f2a6-a298-f380-07c9-fac7b1af1b31%22%2C%22instanceId%22%3A%22b681e475-1339-4919-10bd-284cc329e0e3%22%7D%5D" href="https://docs.arc.network/" class="text-link w-variant-74feede5-c6ba-cba0-2511-8b00ba088160 w-inline-block">
+                      <div class="text-link_wrapper">
+                        <div>Documentation</div>
+                        <div class="text-link_underline"></div>
+                      </div>
+                    </a><a data-wf--text-link--variant="white" data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:49910a22-42a1-a0c6-dc10-a2484437be4f:77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%2C%7B%22componentId%22%3A%2277c6f2a6-a298-f380-07c9-fac7b1af1b31%22%2C%22instanceId%22%3A%2249910a22-42a1-a0c6-dc10-a2484437be4f%22%7D%5D" href="https://testnet.arcscan.app/" class="text-link w-variant-74feede5-c6ba-cba0-2511-8b00ba088160 w-inline-block">
+                      <div class="text-link_wrapper">
+                        <div>Explorer</div>
+                        <div class="text-link_underline"></div>
+                      </div>
+                    </a><a data-wf--text-link--variant="white" data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:af2ac548-ad74-7609-dee3-c45a241f62c7:77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%2C%7B%22componentId%22%3A%2277c6f2a6-a298-f380-07c9-fac7b1af1b31%22%2C%22instanceId%22%3A%22af2ac548-ad74-7609-dee3-c45a241f62c7%22%7D%5D" href="https://faucet.circle.com/" class="text-link w-variant-74feede5-c6ba-cba0-2511-8b00ba088160 w-inline-block">
+                      <div class="text-link_wrapper">
+                        <div>Faucet</div>
+                        <div class="text-link_underline"></div>
+                      </div>
+                    </a></div>
+                </div>
+                <div>
+                  <h2 class="eyebrow paragraph-tiny text-color-sky-sync">//Explore</h2>
+                  <div class="footer-links"><a data-wf--text-link--variant="white" data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:f93c1160-3f8a-5acf-eebd-173a74a1793b:77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%2C%7B%22componentId%22%3A%2277c6f2a6-a298-f380-07c9-fac7b1af1b31%22%2C%22instanceId%22%3A%22f93c1160-3f8a-5acf-eebd-173a74a1793b%22%7D%5D" href="/blog" class="text-link w-variant-74feede5-c6ba-cba0-2511-8b00ba088160 w-inline-block">
+                      <div class="text-link_wrapper">
+                        <div>Blog</div>
+                        <div class="text-link_underline"></div>
+                      </div>
+                    </a><a data-wf--text-link--variant="white" data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:ea745474-d38b-01fa-556a-2193db8fcf98:77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%2C%7B%22componentId%22%3A%2277c6f2a6-a298-f380-07c9-fac7b1af1b31%22%2C%22instanceId%22%3A%22ea745474-d38b-01fa-556a-2193db8fcf98%22%7D%5D" href="/ecosystem" class="text-link w-variant-74feede5-c6ba-cba0-2511-8b00ba088160 w-inline-block">
+                      <div class="text-link_wrapper">
+                        <div>Ecosystem</div>
+                        <div class="text-link_underline"></div>
+                      </div>
+                    </a><a data-wf--text-link--variant="white" data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:306f552b-a4ac-6d0f-aeff-10b8f379c713:77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%2C%7B%22componentId%22%3A%2277c6f2a6-a298-f380-07c9-fac7b1af1b31%22%2C%22instanceId%22%3A%22306f552b-a4ac-6d0f-aeff-10b8f379c713%22%7D%5D" href="/arc-token-whitepaper" class="text-link w-variant-74feede5-c6ba-cba0-2511-8b00ba088160 w-inline-block">
+                      <div class="text-link_wrapper">
+                        <div>ARC whitepaper</div>
+                        <div class="text-link_underline"></div>
+                      </div>
+                    </a><a data-wf--text-link--variant="white" data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:8fe679c1-4921-5cbd-ceb2-d135a861146f:77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%2C%7B%22componentId%22%3A%2277c6f2a6-a298-f380-07c9-fac7b1af1b31%22%2C%22instanceId%22%3A%228fe679c1-4921-5cbd-ceb2-d135a861146f%22%7D%5D" href="/litepaper" class="text-link w-variant-74feede5-c6ba-cba0-2511-8b00ba088160 w-inline-block">
+                      <div class="text-link_wrapper">
+                        <div>Arc litepaper</div>
+                        <div class="text-link_underline"></div>
+                      </div>
+                    </a></div>
+                </div>
+                <div>
+                  <h2 class="eyebrow paragraph-tiny text-color-sky-sync">//connect</h2>
+                  <div class="footer-links"><a data-wf--text-link--variant="white" data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:031ec2df-d228-cd3e-1721-f084cbc75178:77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%2C%7B%22componentId%22%3A%2277c6f2a6-a298-f380-07c9-fac7b1af1b31%22%2C%22instanceId%22%3A%22031ec2df-d228-cd3e-1721-f084cbc75178%22%7D%5D" href="https://discord.com/invite/buildonarc" class="text-link w-variant-74feede5-c6ba-cba0-2511-8b00ba088160 w-inline-block">
+                      <div class="text-link_wrapper">
+                        <div>Discord<br /></div>
+                        <div class="text-link_underline"></div>
+                      </div>
+                    </a><a data-wf--text-link--variant="white" data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:4b08b3e6-d7e7-50a9-a21b-3991a4245bc3:77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="77c6f2a6-a298-f380-07c9-fac7b1af1b31" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%2C%7B%22componentId%22%3A%2277c6f2a6-a298-f380-07c9-fac7b1af1b31%22%2C%22instanceId%22%3A%224b08b3e6-d7e7-50a9-a21b-3991a4245bc3%22%7D%5D" href="https://x.com/arc" class="text-link w-variant-74feede5-c6ba-cba0-2511-8b00ba088160 w-inline-block">
+                      <div class="text-link_wrapper">
+                        <div>X</div>
+                        <div class="text-link_underline"></div>
+                      </div>
+                    </a></div>
+                </div>
+                <div id="w-node-_50ca08f1-6a4a-9bcf-625f-e72dc519b0b9-c519b08c" class="footer-subscribe">
+                  <h2 class="eyebrow paragraph-tiny text-color-sky-sync">//Subscribe for updates</h2>
+                  <div class="footer_subscribe-wrapper u-mb-1">
+                    <div id="subscribe-footer" hubspot-form="true" form-region="na1" form-portal-id="6778953" form-form-id="d2cda10e-269d-4ddf-abcf-16cbece1672c" form-instance-id="subscribe-footer" class="hubspot-form"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <div class="row row-justify-between">
+                <div class="col col-lg-6 col-md-7 col-sm-12">
+                  <p class="u-mb-0 paragraph-sm">© 2026 Circle Internet Group, Inc. All rights reserved</p>
+                </div>
+                <div class="col col-lg-6 col-md-12 col-sm-12 col-md-first">
+                  <div class="footer_sublinks-wrap">
+                    <ul role="list" class="footer_sublinks-list">
+                      <li class="footer_sublinks-list-item"><a data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:50ca08f1-6a4a-9bcf-625f-e72dc519b0c8" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="50ca08f1-6a4a-9bcf-625f-e72dc519b0c8" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%5D" href="https://docs.arc.network/terms" class="footer_sublinks-link w-inline-block">
+                          <div>Terms</div>
+                        </a></li>
+                      <li class="footer_sublinks-list-item"><a data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:5e2c97dc-9fb6-8386-f9bc-23ca35d56606" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="5e2c97dc-9fb6-8386-f9bc-23ca35d56606" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%5D" href="https://www.circle.com/legal/privacy-policy" class="footer_sublinks-link w-inline-block">
+                          <div>Privacy</div>
+                        </a></li>
+                      <li class="footer_sublinks-list-item"><a data-wf-native-id-path="1d58f0b1-a07c-c319-2198-caf861dea611:50ca08f1-6a4a-9bcf-625f-e72dc519b0cc" data-wf-ao-click-engagement-tracking="true" data-wf-element-id="50ca08f1-6a4a-9bcf-625f-e72dc519b0cc" data-wf-component-context="%5B%7B%22componentId%22%3A%2250ca08f1-6a4a-9bcf-625f-e72dc519b08c%22%2C%22instanceId%22%3A%221d58f0b1-a07c-c319-2198-caf861dea611%22%7D%5D" href="https://6778953.fs1.hubspotusercontent-na1.net/hubfs/6778953/Brand/Arc/Arc_Logos.zip" class="footer_sublinks-link w-inline-block">
+                          <div>Brand Kit</div>
+                        </a></li>
+                      <li class="footer_sublinks-list-item">
+                        <div class="u-d-flex u-position-relative">
+                          <div id="ot-sdk-btn" class="footer_sublinks-link ot-sdk-show-settings privacy-choice-link"></div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col col-lg-10 col-md-12 col-sm-12">
+                  <div class="footer_disclosures">
+                    <div class="footer_disclosures-rt is-second w-richtext">
+                      <p>Arc testnet is offered by Circle Technology Services, LLC (“CTS”). CTS is a software provider and does not provide regulated financial or advisory services. You are solely responsible for services you provide to users, including obtaining any necessary licenses or approvals and otherwise complying with applicable laws.</p>
+                      <p>Arc has not been reviewed or approved by the New York State Department of Financial Services.</p>
+                      <p>The product features described in these materials are for informational purposes only. All product features may be modified, delayed, or cancelled without prior notice, at any time and at the sole discretion of Circle Technology Services, LLC. Nothing herein constitutes a commitment, warranty, guarantee or investment advice.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </main>
+    </div>
+    <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=685311a976e7c248b5dfde95" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/js/circle-arc.schunk.36b8fb49256177c8.js" type="text/javascript" integrity="sha384-4abIlA5/v7XaW1HMXKBgnUuhnjBYJ/Z9C1OSg4OhmVw9O3QeHJ/qJqFBERCDPv7G" crossorigin="anonymous"></script>
+    <script src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/js/circle-arc.schunk.44e4380bf117f59c.js" type="text/javascript" integrity="sha384-NtmA1OuPvFxMa3CudtVTcNZh8MxYCM9c8vlr4r1sbxWJf0zq2JsfcmLKEzkYxOi4" crossorigin="anonymous"></script>
+    <script src="https://cdn.prod.website-files.com/685311a976e7c248b5dfde95/js/circle-arc.c78f4166.b58e0e22fa84b407.js" type="text/javascript" integrity="sha384-ZyweyQdnbisftXlMSsRvfeVSuW1jj7j5wefC4s1aMVrPBqOetmrL/7pXRUVm4yGs" crossorigin="anonymous"></script>
+    <script src="https://cdn.prod.website-files.com/gsap/3.15.0/gsap.min.js" type="text/javascript"></script>
+    <script src="https://cdn.prod.website-files.com/gsap/3.15.0/ScrollTrigger.min.js" type="text/javascript"></script>
+    <script src="https://cdn.prod.website-files.com/gsap/3.15.0/SplitText.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      gsap.registerPlugin(ScrollTrigger, SplitText);
+    </script>
+    <script>
+      (function() {
+        'use strict';
+
+        /* ----- Custom Dropdown ----- */
+        // Open a specific dropdown
+        function openDropdown(dropdownToggle, dropdownList) {
+          const dropdownArrow = dropdownToggle.querySelector('[data-selector="fg-dropdown-arrow"]');
+          dropdownList.classList.add('is-active');
+          dropdownArrow.classList.add('is-active');
+          dropdownToggle.setAttribute('aria-expanded', 'true');
+          dropdownList.setAttribute('aria-hidden', 'false');
+        }
+
+        // Close a specific dropdown
+        function closeDropdown(dropdownToggle, dropdownList) {
+          const dropdownArrow = dropdownToggle.querySelector('[data-selector="fg-dropdown-arrow"]');
+          dropdownList.classList.remove('is-active');
+          dropdownArrow.classList.remove('is-active');
+          dropdownToggle.setAttribute('aria-expanded', 'false');
+          dropdownList.setAttribute('aria-hidden', 'true');
+        }
+
+        // Assign unique aria-controls and id
+        const dropdowns = document.querySelectorAll('[data-selector="fg-dropdown"]');
+
+        dropdowns.forEach((dropdown, index) => {
+          const dropdownToggle = dropdown.querySelector('[data-selector="fg-dropdown-toggle"]');
+          const dropdownList = dropdown.querySelector('[data-selector="fg-dropdown-list"]');
+
+          // Check if hover mode is enabled
+          const isHoverMode = dropdown.getAttribute('data-hover') === 'true';
+
+          // Dynamically assign unique IDs and aria-controls
+          const uniqueId = `dropdown${index + 1}`;
+          dropdownToggle.setAttribute('aria-controls', uniqueId);
+          dropdownList.setAttribute('id', uniqueId);
+
+          // Hover event handlers (only active on desktop)
+          const handleMouseEnter = function() {
+            if (window.innerWidth > 992) {
+              openDropdown(dropdownToggle, dropdownList);
+            }
+          };
+
+          const handleMouseLeave = function() {
+            if (window.innerWidth > 992) {
+              closeDropdown(dropdownToggle, dropdownList);
+            }
+          };
+
+          if (isHoverMode) {
+            // Add hover listeners
+            dropdown.addEventListener('mouseenter', handleMouseEnter);
+            dropdown.addEventListener('mouseleave', handleMouseLeave);
+          }
+
+          // Click handler (always works, for mobile and as fallback for desktop)
+          dropdownToggle.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true';
+            if (!isExpanded) {
+              openDropdown(dropdownToggle, dropdownList);
+            } else {
+              closeDropdown(dropdownToggle, dropdownList);
+            }
+          });
+
+          // Keyboard navigation (works for both modes)
+          dropdownToggle.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowDown') {
+              e.preventDefault();
+              dropdownList.focus();
+            }
+          });
+        });
+
+        // Listen for global clicks to close open dropdowns (only on mobile/tablet)
+        document.addEventListener('click', function() {
+          if (window.matchMedia('(max-width: 991px)').matches) {
+            dropdowns.forEach(dropdown => {
+              const dropdownToggle = dropdown.querySelector('[data-selector="fg-dropdown-toggle"]');
+              const dropdownList = dropdown.querySelector('[data-selector="fg-dropdown-list"]');
+              closeDropdown(dropdownToggle, dropdownList);
+            });
+          }
+        });
+
+        // Close dropdowns with Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            dropdowns.forEach(dropdown => {
+              const dropdownToggle = dropdown.querySelector('[data-selector="fg-dropdown-toggle"]');
+              const dropdownList = dropdown.querySelector('[data-selector="fg-dropdown-list"]');
+              closeDropdown(dropdownToggle, dropdownList);
+            });
+          }
+        });
+
+      })();
+
+      (function() {
+        'use strict';
+
+        /* ----- Disable Scroll When Webflow Nav is Open ----- */
+        let scrollPosition = 0;
+
+        function disableScroll() {
+          scrollPosition = window.scrollY;
+          document.body.style.overflow = 'hidden';
+          document.body.style.position = 'fixed';
+          document.body.style.top = `-${scrollPosition}px`;
+          document.body.style.width = '100%';
+        }
+
+        function enableScroll() {
+          document.body.style.overflow = '';
+          document.body.style.position = '';
+          document.body.style.top = '';
+          document.body.style.width = '';
+          window.scrollTo(0, scrollPosition);
+        }
+
+        // Watch Webflow nav with data attribute
+        document.querySelectorAll('[data-scroll-disable="true"]').forEach(nav => {
+          const navButton = nav.querySelector('.w-nav-button');
+
+          if (navButton) {
+            new MutationObserver(() => {
+              if (navButton.classList.contains('w--open')) {
+                disableScroll();
+              } else {
+                enableScroll();
+              }
+            }).observe(navButton, {
+              attributes: true,
+              attributeFilter: ['class']
+            });
+          }
+        });
+
+      })();
+    </script>
+
+
+
+    <script>
+      function createForms() {
+        const forms = document.querySelectorAll('[hubspot-form="true"]');
+
+        forms.forEach(form => {
+          const formRegion = form.getAttribute('form-region');
+          const formPortalId = form.getAttribute('form-portal-id');
+          const formId = form.getAttribute('form-form-id');
+          const formInstanceId = form.getAttribute('form-instance-id');
+
+          hbspt.forms.create({
+            portalId: formPortalId,
+            formId: formId,
+            target: `#${formInstanceId}`,
+            region: formRegion,
+            formInstanceId: formInstanceId
+          });
+        });
+      }
+    </script>
+
+    <script charset="utf-8" type="text/javascript" defer async onload="createForms()" src="//js.hsforms.net/forms/embed/v2.js"></script>
+  </body>
+</html>

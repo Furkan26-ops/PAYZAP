@@ -28,7 +28,7 @@ export default function RequestMoney() {
   return (
     <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
-      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start relative pt-16">
+      <main className="pz-shell flex-1 flex flex-col items-center justify-center relative">
         <div className="absolute top-8 right-8 hidden sm:block">
           <UserProfile />
         </div>
