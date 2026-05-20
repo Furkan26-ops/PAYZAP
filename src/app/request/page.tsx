@@ -28,11 +28,11 @@ export default function RequestMoney() {
   return (
     <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
-      <main className="pz-shell flex-1 flex flex-col items-center justify-center relative">
-        <div className="absolute top-8 right-8 hidden sm:block">
+      <main className="pz-shell flex-1">
+        <div className="flex justify-end mb-8 hidden sm:flex">
           <UserProfile />
         </div>
-        <div className="w-full max-w-sm">
+        <div className="max-w-[480px] w-full">
           <div className="glass-panel text-center flex flex-col items-center rounded-3xl p-8">
             <h1 className="text-xl font-bold mb-2 text-arc-text">Accept Funds</h1>
             <p className="text-sm font-medium px-4 mb-8 text-arc-textMuted leading-relaxed">

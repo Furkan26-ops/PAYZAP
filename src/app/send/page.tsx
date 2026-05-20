@@ -179,8 +179,11 @@ export default function SendMoney() {
     return (
       <div className="flex min-h-screen bg-arc-bg text-arc-text">
         <Sidebar />
-        <main className="pz-shell flex-1 flex items-start justify-center pt-24">
-          <div className="glass-panel w-full max-w-sm text-center rounded-3xl p-8">
+        <main className="pz-shell flex-1">
+          <div className="flex justify-end mb-8 hidden sm:flex">
+            <UserProfile />
+          </div>
+          <div className="glass-panel w-full max-w-[480px] text-center rounded-[32px] p-8">
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 bg-emerald-500/10 border border-emerald-500/20">
               <CheckCircle2 className="w-8 h-8 text-emerald-500" />
             </div>
@@ -203,11 +206,11 @@ export default function SendMoney() {
   return (
     <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
-      <main className="pz-shell flex-1 flex flex-col items-center sm:items-start pt-16 relative">
-        <div className="absolute top-8 right-8 hidden sm:block">
+      <main className="pz-shell flex-1">
+        <div className="flex justify-end mb-8 hidden sm:flex">
           <UserProfile />
         </div>
-        <div className="w-full max-w-sm">
+        <div className="max-w-[480px] w-full">
           <div className="glass-panel p-6 rounded-3xl">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full flex items-center justify-center bg-arc-cyan/10 text-arc-cyan border border-arc-cyan/20">

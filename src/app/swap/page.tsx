@@ -322,8 +322,11 @@ export default function SwapToken() {
     return (
       <div className="flex min-h-screen bg-arc-bg text-arc-text">
         <Sidebar />
-        <main className="pz-shell flex-1 flex items-center justify-center">
-          <div className="glass-panel rounded-[32px] p-8 max-w-sm w-full text-center animate-fade-up">
+        <main className="pz-shell flex-1">
+          <div className="flex justify-end mb-8 hidden sm:flex">
+            <UserProfile />
+          </div>
+          <div className="glass-panel rounded-[32px] p-8 max-w-[480px] w-full text-center animate-fade-up">
             <div className="w-16 h-16 rounded-full bg-arc-cyan/10 flex items-center justify-center mx-auto mb-6">
               <CheckCircle2 className="w-8 h-8 text-arc-cyan" />
             </div>
@@ -359,8 +362,8 @@ export default function SwapToken() {
   return (
     <div className="flex min-h-screen bg-arc-bg text-arc-text">
       <Sidebar />
-      <main className="pz-shell flex-1 flex flex-col items-center justify-center relative">
-        <div className="absolute top-8 right-8 hidden sm:block">
+      <main className="pz-shell flex-1">
+        <div className="flex justify-end mb-8 hidden sm:flex">
           <UserProfile />
         </div>
         
