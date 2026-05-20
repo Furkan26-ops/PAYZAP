@@ -345,12 +345,12 @@ input[type="number"] {
   .pz-sidebar-link {
     flex-direction: column;
     gap: 4px;
-    padding: 8px;
+    padding: 8px 16px;
     font-size: 10px;
     align-items: center;
-    border-radius: 0;
+    border-radius: 9999px !important;
     width: auto;
-    background: transparent !important;
+    background: transparent;
     transform: none !important;
   }
   
@@ -360,7 +360,9 @@ input[type="number"] {
   }
 
   .pz-sidebar-link.active {
-    color: var(--primary);
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
   }
 
   .pz-shell {

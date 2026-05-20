@@ -51,13 +51,13 @@ export default function Sidebar() {
           <Link
             key={href}
             href={href}
-            className={`pz-sidebar-link group transition-all duration-200 md:!rounded-full ${
+            className={`pz-sidebar-link group transition-all duration-200 !rounded-full ${
               pathname === href 
-                ? 'active md:!bg-blue-600 md:!text-white !text-blue-600 shadow-md shadow-blue-500/20 md:shadow-blue-500/20' 
+                ? 'active !bg-blue-600 !text-white shadow-md shadow-blue-500/20' 
                 : '!text-slate-500 hover:!text-slate-900 md:hover:!bg-slate-50'
             }`}
           >
-            <Icon className={`w-5 h-5 flex-shrink-0 ${pathname === href ? 'md:text-white text-blue-600' : 'text-slate-500 group-hover:text-slate-900'}`} />
+            <Icon className={`w-5 h-5 flex-shrink-0 ${pathname === href ? 'text-white' : 'text-slate-500 group-hover:text-slate-900'}`} />
             <span className="font-medium text-[10px] md:text-sm">{label}</span>
           </Link>
         ))}
