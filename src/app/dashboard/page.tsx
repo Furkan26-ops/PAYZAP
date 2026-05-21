@@ -24,7 +24,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white shadow-md rounded-lg p-2 border border-slate-100">
-        <p className="text-sm font-bold text-slate-800">${payload[0].value.toLocaleString()}</p>
+        <p className="text-sm font-bold text-slate-800">${payload[0].value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p>
         <p className="text-[10px] uppercase font-bold text-slate-400">{label}</p>
       </div>
     );
@@ -115,18 +115,18 @@ export default function Dashboard() {
             labels.push(months[(currentMonth - i + 12) % 12]);
           }
 
+          const now = new Date();
           txs.forEach((tx: any) => {
             const d = new Date(tx.timestamp);
-            const m = d.getMonth();
-            const monthName = months[m];
-            const index = labels.indexOf(monthName);
+            const monthsDiff = (now.getFullYear() - d.getFullYear()) * 12 + (now.getMonth() - d.getMonth());
             
-            if (index !== -1) {
-               // Extract numeric amount from "X.XX USDC" or similar
-               const amountStr = String(tx.amountDisplay || '0').replace(/[^0-9.]/g, '');
-               const amount = parseFloat(amountStr) || 0;
-               if (tx.type === 'receive') inflows[index] += amount;
-               else outflows[index] += amount;
+            if (monthsDiff >= 0 && monthsDiff < 7) {
+               const index = 6 - monthsDiff;
+               const amount = parseFloat(String(tx.amountDisplay || '0').split(' ')[0].replace(/,/g, ''));
+               const parsedAmount = Number.isFinite(amount) ? amount : 0;
+               
+               if (tx.type === 'receive') inflows[index] += parsedAmount;
+               else outflows[index] += parsedAmount;
             }
           });
 
