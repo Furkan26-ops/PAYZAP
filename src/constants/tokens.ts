@@ -25,6 +25,14 @@ export const TOKENS: Token[] = [
     logo: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1aBaEA1f7C830bD89Acc67eC4af516284b1bC33c/logo.png'
   },
   { 
+    symbol: 'cirBTC', 
+    name: 'Circle BTC', 
+    address: '0xf0C4a4CE82A5746AbAAd9425360Ab04fbBA432BF', 
+    decimals: 8,
+    color: 'bg-orange-100 text-orange-600', 
+    logo: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/bitcoin/info/logo.png'
+  },
+  { 
     symbol: 'USYC', 
     name: 'USYC Token', 
     address: '0xe9185F0c5F296Ed1797AaE4238D26CCaBEadb86C', // Official Arc USYC Contract
@@ -51,7 +59,7 @@ export const TOKENS: Token[] = [
 ];
 
 export const ARC_TESTNET_SWAP_TOKENS: Token[] = TOKENS.filter((token) =>
-  token.symbol === 'USDC' || token.symbol === 'EURC'
+  token.symbol === 'USDC' || token.symbol === 'EURC' || token.symbol === 'cirBTC'
 );
 
 export const TOKENS_BY_SYMBOL = Object.fromEntries(
