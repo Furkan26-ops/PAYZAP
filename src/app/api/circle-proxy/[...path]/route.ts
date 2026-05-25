@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
-const CIRCLE_API_BASE_URL = 'https://api.circle.com';
+const CIRCLE_API_BASE_URL = 'https://api-sandbox.circle.com';
 
 function buildTargetUrl(pathSegments: string[], request: NextRequest) {
   const path = pathSegments.join('/');
@@ -28,6 +28,9 @@ async function proxyRequest(
 
   const contentType = request.headers.get('content-type');
   const accept = request.headers.get('accept');
+
+  console.log('[PROXY] Target:', targetUrl.toString());
+  console.log('[PROXY] Injecting Auth:', authorization ? 'YES (Redacted)' : 'NO');
 
   if (authorization) headers.set('authorization', authorization);
   if (contentType) headers.set('content-type', contentType);
