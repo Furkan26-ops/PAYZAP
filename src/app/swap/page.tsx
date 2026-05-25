@@ -205,10 +205,15 @@ export default function SwapToken() {
         const quotedAmountOut = extractSwapAmountOut(estimate);
         if (cancelled) return;
         setAmountOut(quotedAmountOut);
-      } catch (e) {
+      } catch (e: any) {
         if (cancelled) return;
         setAmountOut('');
-        setQuoteError('No quote available.');
+        const msg = String(e?.message || e || '');
+        if (msg.includes('No route') || msg.includes('not found') || msg.includes('Route or resource')) {
+          setQuoteError(`Swap route not available for ${tokenIn.symbol} → ${tokenOut.symbol} on this network. Try a different pair.`);
+        } else {
+          setQuoteError('No quote available.');
+        }
       } finally {
         if (!cancelled) setQuoteLoading(false);
       }
@@ -311,7 +316,12 @@ export default function SwapToken() {
         setReceipt({ amountIn, tokenIn, amountOut: extractSwapAmountOut(swapResult) || amountOut, tokenOut, hash: (swapResult as any).txHash });
       }
     } catch (err: any) {
-      setErrorMsg(err.message || "Execution failed.");
+      const msg = String(err?.message || err || '');
+      if (msg.includes('No route') || msg.includes('not found') || msg.includes('Route or resource')) {
+        setErrorMsg(`Swap route not available for ${tokenIn.symbol} → ${tokenOut.symbol} on Arc Testnet. This pair may not have on-chain liquidity yet. Try swapping a different pair.`);
+      } else {
+        setErrorMsg(msg || 'Execution failed.');
+      }
     } finally {
       setProcessing(false);
       setBridgeStep('idle');
@@ -377,8 +387,11 @@ export default function SwapToken() {
             </div>
 
             {errorMsg && (
-              <div className="mx-2 mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-xs font-medium">
-                {errorMsg}
+              <div className="mx-2 mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-2">
+                <span className="text-red-500 text-xs font-medium flex-1">{errorMsg}</span>
+                <button onClick={() => setErrorMsg('')} className="text-red-400 hover:text-red-600 flex-shrink-0 mt-0.5">
+                  <X className="w-3.5 h-3.5" />
+                </button>
               </div>
             )}
 
