@@ -18,7 +18,14 @@ async function proxyRequest(
   const targetUrl = buildTargetUrl(context.params.path, request);
   const headers = new Headers();
 
-  const authorization = request.headers.get('authorization');
+  let authorization = request.headers.get('authorization');
+  if (!authorization) {
+    const apiKey = process.env.CIRCLE_API_KEY || process.env.NEXT_PUBLIC_CIRCLE_API_KEY;
+    if (apiKey) {
+      authorization = `Bearer ${apiKey}`;
+    }
+  }
+
   const contentType = request.headers.get('content-type');
   const accept = request.headers.get('accept');
 
