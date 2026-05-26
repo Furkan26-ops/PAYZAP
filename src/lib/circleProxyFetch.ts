@@ -1,4 +1,5 @@
 const CIRCLE_API_BASE_URL = 'https://api.circle.com';
+const CIRCLE_SANDBOX_BASE_URL = 'https://api-sandbox.circle.com';
 const LOCAL_PROXY_BASE_PATH = '/api/circle-proxy';
 
 function toProxyUrl(input: RequestInfo | URL): string | null {
@@ -9,7 +10,10 @@ function toProxyUrl(input: RequestInfo | URL): string | null {
         ? input.toString()
         : input.url;
 
-  if (!rawUrl.startsWith(CIRCLE_API_BASE_URL)) {
+  const isProduction = rawUrl.startsWith(CIRCLE_API_BASE_URL);
+  const isSandbox = rawUrl.startsWith(CIRCLE_SANDBOX_BASE_URL);
+
+  if (!isProduction && !isSandbox) {
     return null;
   }
 

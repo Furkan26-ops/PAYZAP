@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
-const CIRCLE_API_BASE_URL = 'https://api.circle.com';
+const CIRCLE_API_BASE_URL = 'https://api-sandbox.circle.com';
 
 function buildTargetUrl(pathSegments: string[], request: NextRequest) {
   const path = pathSegments.join('/');
