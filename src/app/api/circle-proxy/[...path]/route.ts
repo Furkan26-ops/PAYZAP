@@ -28,26 +28,20 @@ async function proxyRequest(
 ) {
   const targetUrl = buildTargetUrl(context.params.path, request);
   
-  console.log('[PROXY] Incoming Headers:', Array.from(request.headers.keys()).join(', '));
-  const incomingAuth = request.headers.get('authorization');
-  console.log('[PROXY] Incoming Auth Present:', !!incomingAuth);
-
-  // Clone incoming headers
+  // DRASTIC STRIP: Only keep essential headers to match the successful test script
   const headers = new Headers();
+  const allowedHeaders = ['content-type', 'accept', 'x-request-id', 'x-user-agent'];
+  
   request.headers.forEach((value, key) => {
-    // Skip host and other sensitive/problematic headers
-    if (!['host', 'connection', 'content-length', 'origin', 'referer', 'cookie'].includes(key.toLowerCase())) {
+    if (allowedHeaders.includes(key.toLowerCase())) {
       headers.set(key, value);
     }
   });
 
-  // FALLBACK: If Authorization is missing, inject the KIT_KEY from environment
-  if (!headers.has('authorization')) {
-    const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
-    if (kitKey) {
-      headers.set('authorization', `Bearer ${kitKey}`);
-      console.log('[PROXY] Fallback: Injected KIT_KEY');
-    }
+  const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+  if (kitKey) {
+    headers.set('authorization', `Bearer ${kitKey}`);
+    console.log('[PROXY] Injecting KIT_KEY Auth');
   }
 
   console.log('[PROXY] Method:', request.method);
@@ -69,10 +63,14 @@ async function proxyRequest(
 
   const responseHeaders = new Headers();
   upstreamResponse.headers.forEach((value, key) => {
-    if (!['content-encoding', 'transfer-encoding', 'set-cookie'].includes(key.toLowerCase())) {
+    // Only forward safe response headers
+    if (!['content-encoding', 'transfer-encoding', 'set-cookie', 'access-control-allow-origin'].includes(key.toLowerCase())) {
       responseHeaders.set(key, value);
     }
   });
+
+  // Ensure CORS headers are handled by Next.js or set explicitly if needed
+  // For now, just pass through the response body.
 
   const responseBody = await upstreamResponse.text();
   if (!upstreamResponse.ok) {

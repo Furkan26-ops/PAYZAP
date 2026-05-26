@@ -1,5 +1,4 @@
 const CIRCLE_API_BASE_URL = 'https://api.circle.com';
-const CIRCLE_SANDBOX_BASE_URL = 'https://api-sandbox.circle.com';
 const LOCAL_PROXY_BASE_PATH = '/api/circle-proxy';
 
 function toProxyUrl(input: RequestInfo | URL): string | null {
@@ -13,8 +12,6 @@ function toProxyUrl(input: RequestInfo | URL): string | null {
   try {
     const url = new URL(rawUrl);
     if (url.hostname.endsWith('circle.com')) {
-      // Encode the entire original hostname and path to pass to the proxy
-      // The proxy will need to know which subdomain to hit
       return `${LOCAL_PROXY_BASE_PATH}/${url.hostname}${url.pathname}${url.search}`;
     }
   } catch (e) {
@@ -24,13 +21,9 @@ function toProxyUrl(input: RequestInfo | URL): string | null {
   return null;
 }
 
-export async function withCircleApiProxy<T>(work: () => Promise<T>): Promise<T> {
-  if (typeof window === 'undefined') {
-    return work();
-  }
-
+// PERMANENT OVERRIDE to avoid timing issues with the wrapper
+if (typeof window !== 'undefined') {
   const originalFetch = window.fetch.bind(window);
-
   window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
     const proxyUrl = toProxyUrl(input);
 
@@ -38,14 +31,10 @@ export async function withCircleApiProxy<T>(work: () => Promise<T>): Promise<T> 
       return originalFetch(input, init);
     }
 
-    // If input is a Request object, we need to extract its parts
+    console.log('[INTERCEPTOR] Proxying:', input.toString(), '->', proxyUrl);
+
     if (input instanceof Request) {
       const headers = new Headers(input.headers);
-      
-      // We don't want to pass the original authorization if it exists, 
-      // as the proxy will inject the correct one.
-      // headers.delete('authorization'); 
-
       const body = (input.method !== 'GET' && input.method !== 'HEAD') 
         ? await input.text() 
         : undefined;
@@ -61,10 +50,9 @@ export async function withCircleApiProxy<T>(work: () => Promise<T>): Promise<T> 
 
     return originalFetch(proxyUrl, init);
   };
+}
 
-  try {
-    return await work();
-  } finally {
-    window.fetch = originalFetch;
-  }
+export async function withCircleApiProxy<T>(work: () => Promise<T>): Promise<T> {
+  // Now this is just a pass-through because the global override is already active
+  return work();
 }
