@@ -34,18 +34,7 @@ if (typeof window !== 'undefined') {
     console.log('[INTERCEPTOR] Proxying:', input.toString(), '->', proxyUrl);
 
     if (input instanceof Request) {
-      const headers = new Headers(input.headers);
-      const body = (input.method !== 'GET' && input.method !== 'HEAD') 
-        ? await input.text() 
-        : undefined;
-
-      return originalFetch(proxyUrl, {
-        method: input.method,
-        headers: headers,
-        body: body,
-        credentials: 'same-origin',
-        cache: 'no-store'
-      });
+      return originalFetch(new Request(proxyUrl, input.clone()));
     }
 
     return originalFetch(proxyUrl, init);

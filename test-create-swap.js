@@ -1,7 +1,7 @@
 require('dotenv').config({ path: '.env.local' });
 
 async function testCreateSwap() {
-  const kitKey = "KIT_KEY:invalid:invalid";
+  const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
   const url = 'https://api.circle.com/v1/stablecoinKits/swap';
   
   // Example payload for a same-chain swap on Arc Testnet

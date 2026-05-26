@@ -264,13 +264,16 @@ export default function SwapToken() {
   };
 
   const handleExecute = async () => {
-    setProcessing(true);
-    setBridgeStep('approve');
+    if (!amountIn || !tokenIn || !tokenOut) return;
     setErrorMsg('');
+    setProcessing(true);
+    setBridgeStep('initiated');
+
     try {
-      const address = localStorage.getItem('walletAddress');
-      if (!address) throw new Error("Please connect wallet.");
-      
+      if (typeof window === 'undefined' || !(window as any).ethereum) {
+        throw new Error('No Ethereum wallet found. Please install MetaMask or similar.');
+      }
+
       const { AppKit } = await import('@circle-fin/app-kit');
       const { createViemAdapterFromProvider } = await import('@circle-fin/adapter-viem-v2');
       const adapter = await createViemAdapterFromProvider({ provider: (window as any).ethereum });
@@ -315,7 +318,7 @@ export default function SwapToken() {
     } catch (err: any) {
       console.error('[SWAP] Error:', err);
       const msg = String(err?.message || err || '');
-      // ...
+      setErrorMsg(msg || 'Execution failed.');
     } finally {
       setProcessing(false);
       setBridgeStep('idle');
