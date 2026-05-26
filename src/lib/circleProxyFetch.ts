@@ -10,15 +10,18 @@ function toProxyUrl(input: RequestInfo | URL): string | null {
         ? input.toString()
         : input.url;
 
-  const isProduction = rawUrl.startsWith(CIRCLE_API_BASE_URL);
-  const isSandbox = rawUrl.startsWith(CIRCLE_SANDBOX_BASE_URL);
-
-  if (!isProduction && !isSandbox) {
+  try {
+    const url = new URL(rawUrl);
+    if (url.hostname.endsWith('circle.com')) {
+      // Encode the entire original hostname and path to pass to the proxy
+      // The proxy will need to know which subdomain to hit
+      return `${LOCAL_PROXY_BASE_PATH}/${url.hostname}${url.pathname}${url.search}`;
+    }
+  } catch (e) {
     return null;
   }
 
-  const url = new URL(rawUrl);
-  return `${LOCAL_PROXY_BASE_PATH}${url.pathname}${url.search}`;
+  return null;
 }
 
 export async function withCircleApiProxy<T>(work: () => Promise<T>): Promise<T> {

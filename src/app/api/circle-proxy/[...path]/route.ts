@@ -5,8 +5,19 @@ export const runtime = 'nodejs';
 const CIRCLE_API_BASE_URL = 'https://api-sandbox.circle.com';
 
 function buildTargetUrl(pathSegments: string[], request: NextRequest) {
-  const path = pathSegments.join('/');
-  const url = new URL(`${CIRCLE_API_BASE_URL}/${path}`);
+  // The first segment is now the original hostname (e.g. 'api-sandbox.circle.com')
+  const [targetHost, ...rest] = pathSegments;
+  
+  if (!targetHost.endsWith('circle.com')) {
+    // Safety fallback
+    const path = pathSegments.join('/');
+    const url = new URL(`${CIRCLE_API_BASE_URL}/${path}`);
+    url.search = request.nextUrl.search;
+    return url;
+  }
+
+  const path = rest.join('/');
+  const url = new URL(`https://${targetHost}/${path}`);
   url.search = request.nextUrl.search;
   return url;
 }
@@ -16,27 +27,32 @@ async function proxyRequest(
   context: { params: { path: string[] } }
 ) {
   const targetUrl = buildTargetUrl(context.params.path, request);
+  
+  console.log('[PROXY] Incoming Headers:', Array.from(request.headers.keys()).join(', '));
+  const incomingAuth = request.headers.get('authorization');
+  console.log('[PROXY] Incoming Auth Present:', !!incomingAuth);
+
+  // Clone incoming headers
   const headers = new Headers();
+  request.headers.forEach((value, key) => {
+    // Skip host and other sensitive/problematic headers
+    if (!['host', 'connection', 'content-length', 'origin', 'referer', 'cookie'].includes(key.toLowerCase())) {
+      headers.set(key, value);
+    }
+  });
 
-  let authorization = request.headers.get('authorization');
-  const apiKey = process.env.CIRCLE_API_KEY || process.env.NEXT_PUBLIC_CIRCLE_API_KEY;
-  if (apiKey) {
-    // ALWAYS override with the backend API key for proxy requests
-    authorization = `Bearer ${apiKey}`;
+  // FALLBACK: If Authorization is missing, inject the KIT_KEY from environment
+  if (!headers.has('authorization')) {
+    const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+    if (kitKey) {
+      headers.set('authorization', `Bearer ${kitKey}`);
+      console.log('[PROXY] Fallback: Injected KIT_KEY');
+    }
   }
-
-  const contentType = request.headers.get('content-type');
-  const accept = request.headers.get('accept');
 
   console.log('[PROXY] Method:', request.method);
   console.log('[PROXY] Target:', targetUrl.toString());
-  console.log('[PROXY] Injecting Auth:', authorization ? 'YES (Redacted)' : 'NO');
-  console.log('[PROXY] Content-Type:', contentType);
-
-  if (authorization) headers.set('authorization', authorization);
-  if (contentType) headers.set('content-type', contentType);
-  if (accept) headers.set('accept', accept);
-
+  
   const init: RequestInit = {
     method: request.method,
     headers,
@@ -45,8 +61,6 @@ async function proxyRequest(
 
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     const body = await request.text();
-    console.log('[PROXY] Body Length:', body.length);
-    console.log('[PROXY] Body Preview:', body.slice(0, 100));
     init.body = body;
   }
 
@@ -54,11 +68,11 @@ async function proxyRequest(
   console.log('[PROXY] Upstream Status:', upstreamResponse.status, upstreamResponse.statusText);
 
   const responseHeaders = new Headers();
-  const responseContentType = upstreamResponse.headers.get('content-type');
-
-  if (responseContentType) {
-    responseHeaders.set('content-type', responseContentType);
-  }
+  upstreamResponse.headers.forEach((value, key) => {
+    if (!['content-encoding', 'transfer-encoding', 'set-cookie'].includes(key.toLowerCase())) {
+      responseHeaders.set(key, value);
+    }
+  });
 
   const responseBody = await upstreamResponse.text();
   if (!upstreamResponse.ok) {

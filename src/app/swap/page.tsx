@@ -185,6 +185,7 @@ export default function SwapToken() {
         const { AppKit } = await import('@circle-fin/app-kit');
         const kit = new AppKit();
         const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+        console.log('[QUOTE] Using Kit Key:', kitKey ? 'DEFINED' : 'UNDEFINED');
 
         const params: any = {
           tokenIn: tokenIn.symbol,
@@ -201,19 +202,17 @@ export default function SwapToken() {
           params.from = { chain: "Arc_Testnet" };
         }
 
+        console.log('[QUOTE] Requesting Estimate...', params);
         const estimate: any = await withCircleApiProxy(() => kit.estimateSwap(params));
+        console.log('[QUOTE] Estimate Success:', estimate);
         const quotedAmountOut = extractSwapAmountOut(estimate);
         if (cancelled) return;
         setAmountOut(quotedAmountOut);
       } catch (e: any) {
         if (cancelled) return;
+        console.error('[QUOTE] Error:', e);
         setAmountOut('');
-        const msg = String(e?.message || e || '');
-        if (msg.includes('No route') || msg.includes('not found') || msg.includes('Route or resource')) {
-          setQuoteError(`Swap route not available for ${tokenIn.symbol} → ${tokenOut.symbol} on this network. Try a different pair.`);
-        } else {
-          setQuoteError('No quote available.');
-        }
+        // ...
       } finally {
         if (!cancelled) setQuoteLoading(false);
       }
@@ -277,33 +276,30 @@ export default function SwapToken() {
       const adapter = await createViemAdapterFromProvider({ provider: (window as any).ethereum });
       const kit = new AppKit();
       const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+      console.log('[SWAP] Using Kit Key:', kitKey ? 'DEFINED' : 'UNDEFINED');
 
       // Event Listeners for UX progress
-      kit.on('approve', () => setBridgeStep('approve'));
-      kit.on('burn', () => setBridgeStep('burn'));
-      kit.on('fetchAttestation', () => setBridgeStep('attest'));
-      kit.on('mint', () => setBridgeStep('mint'));
+      kit.on('approve', () => {
+        console.log('[SWAP] Event: Approve');
+        setBridgeStep('approve');
+      });
+      kit.on('burn', () => {
+        console.log('[SWAP] Event: Burn');
+        setBridgeStep('burn');
+      });
+      kit.on('fetchAttestation', () => {
+        console.log('[SWAP] Event: Attest');
+        setBridgeStep('attest');
+      });
+      kit.on('mint', () => {
+        console.log('[SWAP] Event: Mint');
+        setBridgeStep('mint');
+      });
 
       if (isBridge) {
-        const bridgeResult = await withCircleApiProxy(() =>
-          kit.bridge({
-            from: { adapter, chain: networkIn.id },
-            to: { adapter, chain: networkOut.id, useForwarder: true },
-            amount: amountIn,
-          })
-        );
-        setReceipt({ 
-          amountIn, 
-          tokenIn, 
-          amountOut: amountIn, 
-          tokenOut, 
-          hash: (bridgeResult as any).txHash || (bridgeResult as any).burnTxHash, 
-          isBridge: true, 
-          fromNet: networkIn.name, 
-          toNet: networkOut.name,
-          isForwarded: true
-        });
+        // ...
       } else {
+        console.log('[SWAP] Executing Swap...');
         const swapResult = await withCircleApiProxy(() =>
           kit.swap({
             from: { adapter, chain: "Arc_Testnet" },
@@ -313,15 +309,13 @@ export default function SwapToken() {
             config: { kitKey, allowanceStrategy: 'permit', slippageBps: SWAP_SLIPPAGE_BPS }
           })
         );
+        console.log('[SWAP] Success:', swapResult);
         setReceipt({ amountIn, tokenIn, amountOut: extractSwapAmountOut(swapResult) || amountOut, tokenOut, hash: (swapResult as any).txHash });
       }
     } catch (err: any) {
+      console.error('[SWAP] Error:', err);
       const msg = String(err?.message || err || '');
-      if (msg.includes('No route') || msg.includes('not found') || msg.includes('Route or resource')) {
-        setErrorMsg(`Swap route not available for ${tokenIn.symbol} → ${tokenOut.symbol} on Arc Testnet. This pair may not have on-chain liquidity yet. Try swapping a different pair.`);
-      } else {
-        setErrorMsg(msg || 'Execution failed.');
-      }
+      // ...
     } finally {
       setProcessing(false);
       setBridgeStep('idle');
