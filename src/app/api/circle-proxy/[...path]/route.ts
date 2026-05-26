@@ -28,8 +28,10 @@ async function proxyRequest(
   const contentType = request.headers.get('content-type');
   const accept = request.headers.get('accept');
 
+  console.log('[PROXY] Method:', request.method);
   console.log('[PROXY] Target:', targetUrl.toString());
   console.log('[PROXY] Injecting Auth:', authorization ? 'YES (Redacted)' : 'NO');
+  console.log('[PROXY] Content-Type:', contentType);
 
   if (authorization) headers.set('authorization', authorization);
   if (contentType) headers.set('content-type', contentType);
@@ -42,10 +44,15 @@ async function proxyRequest(
   };
 
   if (request.method !== 'GET' && request.method !== 'HEAD') {
-    init.body = await request.text();
+    const body = await request.text();
+    console.log('[PROXY] Body Length:', body.length);
+    console.log('[PROXY] Body Preview:', body.slice(0, 100));
+    init.body = body;
   }
 
   const upstreamResponse = await fetch(targetUrl, init);
+  console.log('[PROXY] Upstream Status:', upstreamResponse.status, upstreamResponse.statusText);
+
   const responseHeaders = new Headers();
   const responseContentType = upstreamResponse.headers.get('content-type');
 
@@ -53,7 +60,12 @@ async function proxyRequest(
     responseHeaders.set('content-type', responseContentType);
   }
 
-  return new NextResponse(upstreamResponse.body, {
+  const responseBody = await upstreamResponse.text();
+  if (!upstreamResponse.ok) {
+    console.error('[PROXY] Error Response:', responseBody);
+  }
+
+  return new NextResponse(responseBody, {
     status: upstreamResponse.status,
     statusText: upstreamResponse.statusText,
     headers: responseHeaders,

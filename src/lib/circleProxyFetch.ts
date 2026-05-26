@@ -35,15 +35,25 @@ export async function withCircleApiProxy<T>(work: () => Promise<T>): Promise<T> 
       return originalFetch(input, init);
     }
 
+    // If input is a Request object, we need to extract its parts
     if (input instanceof Request) {
-      return originalFetch(
-        new Request(proxyUrl, {
-          method: input.method,
-          headers: input.headers,
-          body: input.body,
-          credentials: 'same-origin',
-        })
-      );
+      const headers = new Headers(input.headers);
+      
+      // We don't want to pass the original authorization if it exists, 
+      // as the proxy will inject the correct one.
+      // headers.delete('authorization'); 
+
+      const body = (input.method !== 'GET' && input.method !== 'HEAD') 
+        ? await input.text() 
+        : undefined;
+
+      return originalFetch(proxyUrl, {
+        method: input.method,
+        headers: headers,
+        body: body,
+        credentials: 'same-origin',
+        cache: 'no-store'
+      });
     }
 
     return originalFetch(proxyUrl, init);
