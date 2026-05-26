@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
-const CIRCLE_API_BASE_URL = 'https://api-sandbox.circle.com';
+const CIRCLE_API_BASE_URL = 'https://api.circle.com';
 
 function buildTargetUrl(pathSegments: string[], request: NextRequest) {
   const path = pathSegments.join('/');
@@ -19,11 +19,10 @@ async function proxyRequest(
   const headers = new Headers();
 
   let authorization = request.headers.get('authorization');
-  if (!authorization) {
-    const apiKey = process.env.CIRCLE_API_KEY || process.env.NEXT_PUBLIC_CIRCLE_API_KEY;
-    if (apiKey) {
-      authorization = `Bearer ${apiKey}`;
-    }
+  const apiKey = process.env.CIRCLE_API_KEY || process.env.NEXT_PUBLIC_CIRCLE_API_KEY;
+  if (apiKey) {
+    // ALWAYS override with the backend API key for proxy requests
+    authorization = `Bearer ${apiKey}`;
   }
 
   const contentType = request.headers.get('content-type');
