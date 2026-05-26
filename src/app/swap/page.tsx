@@ -85,7 +85,7 @@ export default function SwapToken() {
   const [amountIn, setAmountIn] = useState('');
   const [amountOut, setAmountOut] = useState('');
   const [processing, setProcessing] = useState(false);
-  const [bridgeStep, setBridgeStep] = useState<'idle' | 'approve' | 'burn' | 'attest' | 'mint'>('idle');
+  const [bridgeStep, setBridgeStep] = useState<'idle' | 'initiated' | 'approve' | 'burn' | 'attest' | 'mint'>('idle');
   const [bridgeEstimate, setBridgeEstimate] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [quoteLoading, setQuoteLoading] = useState(false);
