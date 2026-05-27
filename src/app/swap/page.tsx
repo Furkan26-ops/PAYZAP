@@ -184,7 +184,7 @@ export default function SwapToken() {
       try {
         const { AppKit } = await import('@circle-fin/app-kit');
         const kit = new AppKit();
-        const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+        const kitKey = process.env.NEXT_PUBLIC_KIT_KEY || 'KIT_KEY:dummyId:dummySecret';
         console.log('[QUOTE] Using Kit Key:', kitKey ? 'DEFINED' : 'UNDEFINED');
 
         const params: any = {
@@ -278,7 +278,7 @@ export default function SwapToken() {
       const { createViemAdapterFromProvider } = await import('@circle-fin/adapter-viem-v2');
       const adapter = await createViemAdapterFromProvider({ provider: (window as any).ethereum });
       const kit = new AppKit();
-      const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+      const kitKey = process.env.NEXT_PUBLIC_KIT_KEY || 'KIT_KEY:dummyId:dummySecret';
       console.log('[SWAP] Using Kit Key:', kitKey ? 'DEFINED' : 'UNDEFINED');
 
       // Event Listeners for UX progress

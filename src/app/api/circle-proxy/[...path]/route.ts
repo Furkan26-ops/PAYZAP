@@ -38,8 +38,8 @@ async function proxyRequest(
     }
   });
 
-  const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
-  if (kitKey) {
+  const kitKey = process.env.KIT_KEY || process.env.NEXT_PUBLIC_KIT_KEY;
+  if (kitKey && !kitKey.includes('dummy')) {
     headers.set('authorization', `Bearer ${kitKey}`);
     console.log('[PROXY] Injecting KIT_KEY Auth');
   }
