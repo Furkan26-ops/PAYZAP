@@ -5,7 +5,7 @@ export const runtime = 'nodejs';
 const CIRCLE_API_BASE_URL = 'https://api-sandbox.circle.com';
 
 function buildTargetUrl(pathSegments: string[], request: NextRequest) {
-  // The first segment is now the original hostname (e.g. 'api-sandbox.circle.com')
+  // The first segment is now the original hostname (e.g. 'api-sandbox.circle.com' or 'api.circle.com')
   const [targetHost, ...rest] = pathSegments;
   
   if (!targetHost.endsWith('circle.com')) {
@@ -17,8 +17,8 @@ function buildTargetUrl(pathSegments: string[], request: NextRequest) {
   }
 
   const path = rest.join('/');
-  // Force sandbox environment for testnet swaps
-  const url = new URL(`https://api-sandbox.circle.com/${path}`);
+  // Forward to the exact environment requested by the SDK
+  const url = new URL(`https://${targetHost}/${path}`);
   url.search = request.nextUrl.search;
   return url;
 }
@@ -39,8 +39,12 @@ async function proxyRequest(
     }
   });
 
-  const kitKey = process.env.KIT_KEY || process.env.NEXT_PUBLIC_KIT_KEY;
+  let kitKey = process.env.KIT_KEY || process.env.NEXT_PUBLIC_KIT_KEY;
   if (kitKey && !kitKey.includes('dummy')) {
+    // Self-healing: if the user provided the raw key without the "KIT_KEY:" prefix, prepend it automatically
+    if (!kitKey.startsWith('KIT_KEY:')) {
+      kitKey = `KIT_KEY:${kitKey}`;
+    }
     headers.set('authorization', `Bearer ${kitKey}`);
     console.log('[PROXY] Injecting KIT_KEY Auth');
   }
