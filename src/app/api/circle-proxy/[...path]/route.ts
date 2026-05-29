@@ -17,7 +17,8 @@ function buildTargetUrl(pathSegments: string[], request: NextRequest) {
   }
 
   const path = rest.join('/');
-  const url = new URL(`https://${targetHost}/${path}`);
+  // Force sandbox environment for testnet swaps
+  const url = new URL(`https://api-sandbox.circle.com/${path}`);
   url.search = request.nextUrl.search;
   return url;
 }
