@@ -5,12 +5,11 @@ export const runtime = 'nodejs';
 const CIRCLE_API_BASE_URL = 'https://api-sandbox.circle.com';
 
 function buildTargetUrl(pathSegments: string[], request: NextRequest) {
-  // The first segment is now the original hostname (e.g. 'api-sandbox.circle.com' or 'api.circle.com')
+  // The first segment is the original hostname (e.g. 'api-sandbox.circle.com' or 'api.circle.com')
   const [targetHost, ...rest] = pathSegments;
   
   const path = rest.join('/');
-  // Force sandbox environment because Arc Testnet is only on sandbox
-  const url = new URL(`https://api-sandbox.circle.com/${path}`);
+  const url = new URL(`https://${targetHost}/${path}`);
   url.search = request.nextUrl.search;
   return url;
 }
