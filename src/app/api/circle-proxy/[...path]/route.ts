@@ -8,17 +8,9 @@ function buildTargetUrl(pathSegments: string[], request: NextRequest) {
   // The first segment is now the original hostname (e.g. 'api-sandbox.circle.com' or 'api.circle.com')
   const [targetHost, ...rest] = pathSegments;
   
-  if (!targetHost.endsWith('circle.com')) {
-    // Safety fallback
-    const path = pathSegments.join('/');
-    const url = new URL(`${CIRCLE_API_BASE_URL}/${path}`);
-    url.search = request.nextUrl.search;
-    return url;
-  }
-
   const path = rest.join('/');
-  // Forward to the exact environment requested by the SDK
-  const url = new URL(`https://${targetHost}/${path}`);
+  // Force sandbox environment because Arc Testnet is only on sandbox
+  const url = new URL(`https://api-sandbox.circle.com/${path}`);
   url.search = request.nextUrl.search;
   return url;
 }

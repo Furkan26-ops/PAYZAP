@@ -22,7 +22,7 @@ function toProxyUrl(input: RequestInfo | URL): string | null {
 }
 
 // PERMANENT OVERRIDE to avoid timing issues with the wrapper
-/* if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined') {
   const originalFetch = window.fetch.bind(window);
   window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
     const proxyUrl = toProxyUrl(input);
@@ -39,7 +39,7 @@ function toProxyUrl(input: RequestInfo | URL): string | null {
 
     return originalFetch(proxyUrl, init);
   };
-} */
+}
 
 export async function withCircleApiProxy<T>(work: () => Promise<T>): Promise<T> {
   // Now this is just a pass-through because the global override is already active
