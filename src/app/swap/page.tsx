@@ -181,6 +181,7 @@ export default function SwapToken() {
 
       setQuoteLoading(true);
       setQuoteError('');
+      setErrorMsg('');
       try {
         const { AppKit } = await import('@circle-fin/app-kit');
         const kit = new AppKit();
@@ -191,7 +192,7 @@ export default function SwapToken() {
           tokenIn: tokenIn.symbol,
           amountIn: amountIn,
           tokenOut: tokenOut.symbol,
-          config: { kitKey, allowanceStrategy: 'permit', slippageBps: SWAP_SLIPPAGE_BPS }
+          config: { kitKey }
         };
 
         if (typeof window !== 'undefined' && (window as any).ethereum) {
@@ -212,7 +213,12 @@ export default function SwapToken() {
         if (cancelled) return;
         console.error('[QUOTE] Error:', e);
         setAmountOut('');
-        // ...
+        const errString = e?.message || String(e);
+        if (errString.includes('No route available') || errString.includes('Route or resource not found')) {
+          setErrorMsg(`Liquidity is currently unavailable on Arc Testnet for swapping ${tokenIn.symbol} to ${tokenOut.symbol}.`);
+        } else {
+          setErrorMsg(errString || 'Failed to estimate swap');
+        }
       } finally {
         if (!cancelled) setQuoteLoading(false);
       }
@@ -309,16 +315,20 @@ export default function SwapToken() {
             tokenIn: tokenIn.symbol,
             tokenOut: tokenOut.symbol,
             amountIn: amountIn,
-            config: { kitKey, allowanceStrategy: 'permit', slippageBps: SWAP_SLIPPAGE_BPS }
+            config: { kitKey }
           })
         );
         console.log('[SWAP] Success:', swapResult);
         setReceipt({ amountIn, tokenIn, amountOut: extractSwapAmountOut(swapResult) || amountOut, tokenOut, hash: (swapResult as any).txHash });
       }
     } catch (err: any) {
-      console.error('[SWAP] Error:', err);
-      const msg = String(err?.message || err || '');
-      setErrorMsg(msg || 'Execution failed.');
+      console.error('[SWAP] Execute error:', err);
+      const errString = err?.message || String(err);
+      if (errString.includes('No route available') || errString.includes('Route or resource not found')) {
+        setErrorMsg(`Liquidity is currently unavailable on Arc Testnet for swapping ${tokenIn.symbol} to ${tokenOut.symbol}. Try another pair or wait for mainnet liquidity.`);
+      } else {
+        setErrorMsg(errString || 'Failed to execute swap');
+      }
     } finally {
       setProcessing(false);
       setBridgeStep('idle');
